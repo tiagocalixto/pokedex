@@ -8,7 +8,6 @@ public final class Constant {
     public static final String NAME_INVALID_SIZE = "Name Length must be between 3 and 50 chars!";
     public static final String NAME_IS_REQUIRED = "Name is required!";
     public static final String NAME_IS_INVALID = "Name is invalid. Field accept's only Letters!";
-    public static final String NUMBER_INVALID_GENERIC = "Number invalid!";
     public static final String NUMBER_IS_REQUIRED = "Number can't be null or empty!";
     public static final String NUMBER_INVALID_CHAR = "Number must be a numeric value!";
     public static final String NUMBER_INVALID_RANGE = "Number must be between 1 and 151!";
@@ -28,6 +27,7 @@ public final class Constant {
     public static final String SPECIAL_DEFENSE_IS_REQUIRED = "Stats special defense is required!";
     public static final String SPEED_IS_REQUIRED = "Stats speed is required!";
     public static final String TYPE_IS_REQUIRED = "Type is required!";
+    public static final String DUPLICATED_ITEM_TYPE = "Detected duplicated item in type list!";
     public static final String DESCRIPTION_FIELD_IS_INVALID = "The Field description is invalid. Field accept's only Letters!";
     public static final String DESCRIPTION_FIELD_IS_REQUIRED = "Description is required!";
     public static final String DESCRIPTION_LENGTH_INVALID = "Description length invalid. It must contain between 3 and 50 chars!";
@@ -39,13 +39,11 @@ public final class Constant {
     public static final String INVALID_RANGE_1_1000 = "Value must be between 1 and 1000!";
     public static final String LEVEL_IS_REQUIRED = "Level is required!";
     public static final String INVALID_LEVEL_RANGE = "Level must be between 1 and 100!";
-    public static final String ID_IS_REQUIRED = "Id is required!";
-    public static final String ID_IS_TOO_LOW = "Id must be greater than zero!";
     public static final String POKEMON_IS_REQUIRED = "Pokemon is required!";
     public static final String MOVE_IS_REQUIRED = "Move is required!";
-    public static final String EMPTY_OBJECT_SAVE = "Can't save/update empty object!";
-    public static final String SAVE_ERROR = "Error occurred on save/update in data base!";
-    public static final String POKEMON_NOT_FOUND = "Pokemon not found!";
-    public static final String POKEMON = "Pokemon";
-    public static final String EMPTY_OBJECT_DELETE = "Can't remove empty object!";
+    public static final String DUPLICATED_ITEM_MOVE = "Detected duplicated item in move list!";
+    public static final String DUPLICATED_ITEM_ABILITY = "Detected duplicated item in ability list!";
+    public static final String DUPLICATED_ITEM_WEAKNESS = "Detected duplicated item in weakness list!";
+    public static final String DUPLICATED_ITEM_GENERIC = "Has a duplicated item in this list!";
 }
+

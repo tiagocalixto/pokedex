@@ -17,8 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ability")
-@SQLDelete(sql = "UPDATE ability SET deleted = true, audit_logical_delete_date = current_timestamp WHERE id = ?")
+@Table(name = "abilities")
+@SQLDelete(sql = "UPDATE abilities SET deleted = true, audit_logical_delete_date = current_timestamp WHERE id = ?")
 @Where(clause = "deleted != true")
 public class AbilityEntity extends GenericEntity {
 

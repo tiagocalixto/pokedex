@@ -16,8 +16,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "moves")
-@SQLDelete(sql = "UPDATE moves SET deleted = true, audit_logical_delete_date = current_timestamp WHERE id = ?")
+@Table(name = "move")
+@SQLDelete(sql = "UPDATE move SET deleted = true, audit_logical_delete_date = current_timestamp WHERE id = ?")
 @Where(clause = "deleted != true")
 public class MoveEntity extends GenericEntity {
 

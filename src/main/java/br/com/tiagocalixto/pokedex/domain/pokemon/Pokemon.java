@@ -19,6 +19,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Pokemon implements Serializable {
 
+    private Long id;
     private Long number;
     private String name;
     private Long weight;
@@ -29,7 +30,7 @@ public class Pokemon implements Serializable {
     private List<Type> type;
     private PokemonEvolution evolveTo;
     private PokemonEvolution evolvedFrom;
-    private List<PokemonMove> moves;
-    private List<Ability> abilities;
-    private List<Type> weaknesses;
+    private List<PokemonMove> move;
+    private List<Ability> ability;
+    private List<Type> weakness;
 }

@@ -29,24 +29,6 @@ public class PokemonEntity extends GenericEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pokemon_id_auto")
     private long id;
 
-    @Column(name = "name", nullable = false, length = 100)
-    private String name;
-
-    @Column(name = "number", nullable = false, length = 4)
-    private String number;
-
-    @Column(name = "weight")
-    private Long weight;
-
-    @Column(name = "height")
-    private BigDecimal height;
-
-    @Column(name = "about", nullable = false, length = 500)
-    private String about;
-
-    @Column(name = "url_picture", nullable = false)
-    private String urlPicture;
-
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
     private PokemonStatsEntity stats;
 
@@ -60,11 +42,29 @@ public class PokemonEntity extends GenericEntity {
     private PokemonEvolutionEntity evolvedFrom;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
-    private List<PokemonMoveEntity> moves;
+    private List<PokemonMoveEntity> move;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
-    private List<PokemonAbilityEntity> abilities;
+    private List<PokemonAbilityEntity> ability;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
-    private List<PokemonWeaknessesEntity> weaknesses;
+    private List<PokemonWeaknessesEntity> weakness;
+
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
+
+    @Column(name = "number", nullable = false, length = 4)
+    private Long number;
+
+    @Column(name = "weight")
+    private Long weight;
+
+    @Column(name = "height")
+    private BigDecimal height;
+
+    @Column(name = "about", nullable = false, length = 500)
+    private String about;
+
+    @Column(name = "url_picture", nullable = false)
+    private String urlPicture;
 }

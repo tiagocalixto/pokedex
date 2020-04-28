@@ -23,8 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
-                .antMatchers("/pokemon/**").permitAll()
-                .antMatchers("/pokemonMaintenance/**").authenticated()
+                .antMatchers("/pokemonController/**").authenticated()
                 .anyRequest().authenticated().and().httpBasic();
         http.csrf().disable();
     }

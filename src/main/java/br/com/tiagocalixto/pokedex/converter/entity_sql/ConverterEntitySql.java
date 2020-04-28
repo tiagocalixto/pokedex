@@ -1,9 +1,9 @@
-package br.com.tiagocalixto.pokedex.converter.entity;
+package br.com.tiagocalixto.pokedex.converter.entity_sql;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public interface ConverterEntity<E, D> {
+public interface ConverterEntitySql<E, D> {
 
     Optional<E> convertToEntity(Optional<D> domain);
 

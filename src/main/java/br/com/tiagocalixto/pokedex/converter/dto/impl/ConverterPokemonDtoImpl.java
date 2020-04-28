@@ -47,9 +47,9 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
             pokemonDto.setType(convertType.convertToDtoList(item.getType()));
             this.convertEvolutionToDto(Optional.ofNullable(item.getEvolveTo())).ifPresent(pokemonDto::setEvolveTo);
             this.convertEvolutionToDto(Optional.ofNullable(item.getEvolvedFrom())).ifPresent(pokemonDto::setEvolvedFrom);
-            pokemonDto.setAbilities(convertAbility.convertToDtoList(item.getAbilities()));
-            pokemonDto.setMoves(this.convertPokemonMoveToDto(item.getMoves()));
-            pokemonDto.setWeaknesses(convertType.convertToDtoList(item.getWeaknesses()));
+            pokemonDto.setAbility(convertAbility.convertToDtoList(item.getAbility()));
+            pokemonDto.setMove(this.convertPokemonMoveToDto(item.getMove()));
+            pokemonDto.setWeakness(convertType.convertToDtoList(item.getWeakness()));
         });
 
         return Optional.of(pokemonDto);
@@ -65,6 +65,7 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         Pokemon pokemon = Pokemon.builder().build();
 
         dto.ifPresent(item -> {
+            pokemon.setId(0L);
             pokemon.setName(item.getName());
             pokemon.setNumber(item.getNumber());
             pokemon.setWeight(item.getWeight());
@@ -75,9 +76,9 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
             pokemon.setType(convertType.convertToDomainList(item.getType()));
             this.convertEvolutionToDomain(Optional.ofNullable(item.getEvolveTo())).ifPresent(pokemon::setEvolveTo);
             this.convertEvolutionToDomain(Optional.ofNullable(item.getEvolvedFrom())).ifPresent(pokemon::setEvolvedFrom);
-            pokemon.setAbilities(convertAbility.convertToDomainList(item.getAbilities()));
-            pokemon.setMoves(this.convertPokemonMoveToDomain(item.getMoves()));
-            pokemon.setWeaknesses(convertType.convertToDomainList(item.getWeaknesses()));
+            pokemon.setAbility(convertAbility.convertToDomainList(item.getAbility()));
+            pokemon.setMove(this.convertPokemonMoveToDomain(item.getMove()));
+            pokemon.setWeakness(convertType.convertToDomainList(item.getWeakness()));
         });
 
         return Optional.of(pokemon);

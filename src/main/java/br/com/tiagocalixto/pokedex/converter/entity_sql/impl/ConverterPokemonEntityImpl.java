@@ -1,6 +1,6 @@
-package br.com.tiagocalixto.pokedex.converter.entity.impl;
+package br.com.tiagocalixto.pokedex.converter.entity_sql.impl;
 
-import br.com.tiagocalixto.pokedex.converter.entity.ConverterEntity;
+import br.com.tiagocalixto.pokedex.converter.entity_sql.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.AbilityEntity;
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.MoveEntity;
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.TypeEntity;
@@ -22,16 +22,16 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class ConverterPokemonEntityImpl implements ConverterEntity<PokemonEntity, Pokemon> {
+public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEntity, Pokemon> {
 
     @Autowired
-    ConverterEntity<TypeEntity, Type> convertType;
+    ConverterEntitySql<TypeEntity, Type> convertType;
 
     @Autowired
-    ConverterEntity<AbilityEntity, Ability> convertAbility;
+    ConverterEntitySql<AbilityEntity, Ability> convertAbility;
 
     @Autowired
-    ConverterEntity<MoveEntity, Move> convertMove;
+    ConverterEntitySql<MoveEntity, Move> convertMove;
 
 
     @SuppressWarnings("Duplicates")
@@ -57,9 +57,9 @@ public class ConverterPokemonEntityImpl implements ConverterEntity<PokemonEntity
                     .ifPresent(pokemonEntity::setEvolveTo);
             this.convertEvolvedFromToEntity(Optional.ofNullable(item.getEvolvedFrom()), item.getId())
                     .ifPresent(pokemonEntity::setEvolvedFrom);
-            pokemonEntity.setAbilities(this.convertAbilityToEntity(item.getAbilities(), item.getId()));
-            pokemonEntity.setMoves(this.convertMoveToEntity(item.getMoves(), item.getId()));
-            pokemonEntity.setWeaknesses(this.convertWeaknessesToEntity(item.getWeaknesses(), item.getId()));
+            pokemonEntity.setAbility(this.convertAbilityToEntity(item.getAbility(), item.getId()));
+            pokemonEntity.setMove(this.convertMoveToEntity(item.getMove(), item.getId()));
+            pokemonEntity.setWeakness(this.convertWeaknessesToEntity(item.getWeakness(), item.getId()));
         });
 
         setPokemonEntityOnRelations(pokemonEntity);
@@ -88,9 +88,9 @@ public class ConverterPokemonEntityImpl implements ConverterEntity<PokemonEntity
             pokemon.setType(this.convertTypeToDomain(item.getType()));
             this.convertEvolveToToDomain(Optional.ofNullable(item.getEvolveTo())).ifPresent(pokemon::setEvolveTo);
             this.convertEvolvedFromToDomain(Optional.ofNullable(item.getEvolvedFrom())).ifPresent(pokemon::setEvolvedFrom);
-            pokemon.setAbilities(this.convertAbilityToDomain(item.getAbilities()));
-            pokemon.setMoves(this.convertMoveToDomain(item.getMoves()));
-            pokemon.setWeaknesses(this.convertWeaknessesToDomain(item.getWeaknesses()));
+            pokemon.setAbility(this.convertAbilityToDomain(item.getAbility()));
+            pokemon.setMove(this.convertMoveToDomain(item.getMove()));
+            pokemon.setWeakness(this.convertWeaknessesToDomain(item.getWeakness()));
         });
 
         return Optional.of(pokemon);
@@ -102,7 +102,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntity<PokemonEntity
         if (domain.isEmpty())
             return Optional.empty();
 
-        PokemonStatsEntity pokemonStatsEntity = PokemonStatsEntity.builder().build().builder().build();
+        PokemonStatsEntity pokemonStatsEntity = PokemonStatsEntity.builder().build();
 
         domain.ifPresent(item -> {
             pokemonStatsEntity.setId(idPokemon);
@@ -186,12 +186,12 @@ public class ConverterPokemonEntityImpl implements ConverterEntity<PokemonEntity
         domain.stream().filter(Objects::nonNull)
                 .forEach(item -> {
                     PokemonTypeEntity pokemonTypeEntity = PokemonTypeEntity.builder().build();
+                    convertType.convertToEntity(Optional.of(item)).ifPresent(pokemonTypeEntity::setType);
                     pokemonTypeEntity.setId(
                             PokemonTypePk.builder()
                                     .idPokemonFk(idPokemon)
-                                    .idTypeFk(item.getId())
+                                    .idTypeFk(pokemonTypeEntity.getType().getId())
                                     .build());
-                    convertType.convertToEntity(Optional.of(item)).ifPresent(pokemonTypeEntity::setType);
                     list.add(pokemonTypeEntity);
                 });
 
@@ -302,12 +302,12 @@ public class ConverterPokemonEntityImpl implements ConverterEntity<PokemonEntity
         domain.stream().filter(Objects::nonNull)
                 .forEach(item -> {
                     PokemonAbilityEntity pokemonAbilityEntity = PokemonAbilityEntity.builder().build();
+                    convertAbility.convertToEntity(Optional.of(item)).ifPresent(pokemonAbilityEntity::setAbility);
                     pokemonAbilityEntity.setId(
                             PokemonAbilityPk.builder()
                                     .idPokemonFk(idPokemon)
-                                    .idAbilityFk(item.getId())
+                                    .idAbilityFk(pokemonAbilityEntity.getAbility().getId())
                                     .build());
-                    convertAbility.convertToEntity(Optional.of(item)).ifPresent(pokemonAbilityEntity::setAbility);
                     list.add(pokemonAbilityEntity);
                 });
 
@@ -340,12 +340,12 @@ public class ConverterPokemonEntityImpl implements ConverterEntity<PokemonEntity
         domain.stream().filter(Objects::nonNull)
                 .forEach(item -> {
                     PokemonMoveEntity pokemonMoveEntity = PokemonMoveEntity.builder().build();
+                    convertMove.convertToEntity(Optional.of(item.getMove())).ifPresent(pokemonMoveEntity::setMove);
                     pokemonMoveEntity.setId(
                             PokemonMovePk.builder()
                                     .idPokemonFk(idPokemon)
-                                    .idMoveFk(item.getMove().getId())
+                                    .idMoveFk(pokemonMoveEntity.getMove().getId())
                                     .build());
-                    convertMove.convertToEntity(Optional.of(item.getMove())).ifPresent(pokemonMoveEntity::setMove);
                     pokemonMoveEntity.setLevelLearn(item.getLevelLearn());
                     list.add(pokemonMoveEntity);
                 });
@@ -383,13 +383,12 @@ public class ConverterPokemonEntityImpl implements ConverterEntity<PokemonEntity
         domain.stream().filter(Objects::nonNull)
                 .forEach(item -> {
                     PokemonWeaknessesEntity pokemonWeaknessesEntity = PokemonWeaknessesEntity.builder().build();
-
+                    convertType.convertToEntity(Optional.of(item)).ifPresent(pokemonWeaknessesEntity::setType);
                     pokemonWeaknessesEntity.setId(
                             PokemonTypePk.builder()
                                     .idPokemonFk(idPokemon)
-                                    .idTypeFk(item.getId())
+                                    .idTypeFk(pokemonWeaknessesEntity.getType().getId())
                                     .build());
-                    convertType.convertToEntity(Optional.of(item)).ifPresent(pokemonWeaknessesEntity::setType);
                     list.add(pokemonWeaknessesEntity);
                 });
 
@@ -414,15 +413,14 @@ public class ConverterPokemonEntityImpl implements ConverterEntity<PokemonEntity
 
         pokemonEntity.getStats().setPokemon(pokemonEntity);
         pokemonEntity.getType().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
+        pokemonEntity.getAbility().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
+        pokemonEntity.getMove().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
+        pokemonEntity.getWeakness().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
 
         if (pokemonEntity.getEvolveTo() != null)
             pokemonEntity.getEvolveTo().setPokemon(pokemonEntity);
 
         if (pokemonEntity.getEvolvedFrom() != null)
             pokemonEntity.getEvolvedFrom().setPokemon(pokemonEntity);
-
-        pokemonEntity.getAbilities().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
-        pokemonEntity.getMoves().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
-        pokemonEntity.getWeaknesses().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
     }
 }

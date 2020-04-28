@@ -3,6 +3,7 @@ package br.com.tiagocalixto.pokedex.controller.dto.pokemon;
 
 import br.com.tiagocalixto.pokedex.controller.dto.AbilityDto;
 import br.com.tiagocalixto.pokedex.controller.dto.TypeDto;
+import br.com.tiagocalixto.pokedex.controller.input_rules.annotation.HasDuplicatedItemInList;
 import br.com.tiagocalixto.pokedex.controller.input_rules.groups.FirstStepValidation;
 import br.com.tiagocalixto.pokedex.controller.input_rules.groups.SecondStepValidation;
 import br.com.tiagocalixto.pokedex.controller.input_rules.groups.ThirdStepValidation;
@@ -79,6 +80,7 @@ public class PokemonDto implements Serializable {
     @ApiModelProperty(notes = "Stats", dataType = "object", position = 7)
     private PokemonStatsDto stats;
 
+    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_TYPE)
     @NotEmpty(message = TYPE_IS_REQUIRED, groups = FirstStepValidation.class)
     @Valid
     @ApiModelProperty(notes = "Type", dataType = "array", position = 8)
@@ -92,20 +94,23 @@ public class PokemonDto implements Serializable {
     @ApiModelProperty(notes = "Pokemon", dataType = "object", position = 10)
     private PokemonEvolutionDto evolvedFrom;
 
+    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_MOVE)
     @JsonSetter(nulls = Nulls.SKIP)
     @Builder.Default
     @Valid
     @ApiModelProperty(notes = "Pokemon Moves", dataType = "array", position = 11)
-    private List<PokemonMoveDto> moves = Collections.emptyList();
+    private List<PokemonMoveDto> move = Collections.emptyList();
 
+    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_ABILITY)
     @JsonSetter(nulls = Nulls.SKIP)
     @Builder.Default
     @Valid
     @ApiModelProperty(notes = "Ability", dataType = "array", position = 12)
-    private List<AbilityDto> abilities = Collections.emptyList();
+    private List<AbilityDto> ability = Collections.emptyList();
 
+    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_WEAKNESS)
     @NotEmpty(message = WEAKNESSES_IS_REQUIRED, groups = FirstStepValidation.class)
     @Valid
     @ApiModelProperty(notes = "Ability", dataType = "array", position = 13)
-    private List<TypeDto> weaknesses;
+    private List<TypeDto> weakness;
 }
