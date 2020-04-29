@@ -1,4 +1,4 @@
-package br.com.tiagocalixto.pokedex.converter.dto;
+package br.com.tiagocalixto.pokedex.controller.converter;
 
 import java.util.*;
 import java.util.stream.Collectors;

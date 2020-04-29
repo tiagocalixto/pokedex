@@ -1,4 +1,4 @@
-package br.com.tiagocalixto.pokedex.converter.entity_sql;
+package br.com.tiagocalixto.pokedex.data_source.sql.converter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,5 +29,13 @@ public interface ConverterEntitySql<E, D> {
         return Optional.ofNullable(entityList).orElse(Collections.emptyList())
                 .stream().map(item -> this.convertToDomain(Optional.ofNullable(item)).orElse(null))
                 .filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    default E convertToEntityNotOptional(D domain) {
+        return convertToEntity(Optional.ofNullable(domain)).orElse(null);
+    }
+
+    default D convertToDomainNotOptional(E entity) {
+        return convertToDomain(Optional.ofNullable(entity)).orElse(null);
     }
 }

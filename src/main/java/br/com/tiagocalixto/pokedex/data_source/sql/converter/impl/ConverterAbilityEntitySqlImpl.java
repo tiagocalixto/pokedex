@@ -1,7 +1,7 @@
-package br.com.tiagocalixto.pokedex.converter.entity_sql.impl;
+package br.com.tiagocalixto.pokedex.data_source.sql.converter.impl;
 
 
-import br.com.tiagocalixto.pokedex.converter.entity_sql.ConverterEntitySql;
+import br.com.tiagocalixto.pokedex.data_source.sql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.AbilityEntity;
 import br.com.tiagocalixto.pokedex.data_source.sql.repository.AbilityRepository;
 import br.com.tiagocalixto.pokedex.domain.Ability;

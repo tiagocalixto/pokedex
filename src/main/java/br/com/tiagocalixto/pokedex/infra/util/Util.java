@@ -8,6 +8,8 @@ import java.util.Date;
 
 public final class Util {
 
+    private Util(){}
+
     public static Date getCurrentTimeStamp() {
 
         Calendar calendar = Calendar.getInstance();

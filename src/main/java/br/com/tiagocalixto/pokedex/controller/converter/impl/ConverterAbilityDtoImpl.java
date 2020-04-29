@@ -1,7 +1,7 @@
-package br.com.tiagocalixto.pokedex.converter.dto.impl;
+package br.com.tiagocalixto.pokedex.controller.converter.impl;
 
 import br.com.tiagocalixto.pokedex.controller.dto.AbilityDto;
-import br.com.tiagocalixto.pokedex.converter.dto.ConverterDto;
+import br.com.tiagocalixto.pokedex.controller.converter.ConverterDto;
 import br.com.tiagocalixto.pokedex.domain.Ability;
 import org.springframework.stereotype.Component;
 

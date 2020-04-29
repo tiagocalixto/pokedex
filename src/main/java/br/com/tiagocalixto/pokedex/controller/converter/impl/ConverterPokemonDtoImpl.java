@@ -1,10 +1,10 @@
-package br.com.tiagocalixto.pokedex.converter.dto.impl;
+package br.com.tiagocalixto.pokedex.controller.converter.impl;
 
 import br.com.tiagocalixto.pokedex.controller.dto.AbilityDto;
 import br.com.tiagocalixto.pokedex.controller.dto.MoveDto;
 import br.com.tiagocalixto.pokedex.controller.dto.TypeDto;
 import br.com.tiagocalixto.pokedex.controller.dto.pokemon.*;
-import br.com.tiagocalixto.pokedex.converter.dto.ConverterDto;
+import br.com.tiagocalixto.pokedex.controller.converter.ConverterDto;
 import br.com.tiagocalixto.pokedex.domain.Ability;
 import br.com.tiagocalixto.pokedex.domain.Move;
 import br.com.tiagocalixto.pokedex.domain.Type;
