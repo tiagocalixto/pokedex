@@ -35,8 +35,8 @@ public class PokemonEntity extends GenericEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
     private List<PokemonTypeEntity> type;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
-    private PokemonEvolutionEntity evolveTo;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
+    private List<PokemonEvolutionEntity> evolveTo;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "evolution", orphanRemoval = true)
     private PokemonEvolutionEntity evolvedFrom;

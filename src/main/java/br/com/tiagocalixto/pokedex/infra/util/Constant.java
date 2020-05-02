@@ -38,12 +38,19 @@ public final class Constant {
     public static final String ACCURACY_INVALID_RANGE = "Accuracy must be between 0.1 and 100";
     public static final String INVALID_RANGE_1_1000 = "Value must be between 1 and 1000!";
     public static final String LEVEL_IS_REQUIRED = "Level is required!";
+    public static final String EVOLUTION_LEVEL_IS_REQUIRED = "For evolution type Level Up, field level is required!";
+    public static final String EVOLUTION_ITEM_IS_REQUIRED = "For evolution type Item, field item is required!";
     public static final String INVALID_LEVEL_RANGE = "Level must be between 1 and 100!";
     public static final String POKEMON_IS_REQUIRED = "Pokemon is required!";
+    public static final String EVOLUTION_TRIGGER_REQUIRED = "Evolution trigger is required!";
+    public static final String EVOLUTION_GENERIC= "Pokemon Evolution contains incorrect info!";
     public static final String MOVE_IS_REQUIRED = "Move is required!";
     public static final String DUPLICATED_ITEM_MOVE = "Detected duplicated item in move list!";
     public static final String DUPLICATED_ITEM_ABILITY = "Detected duplicated item in ability list!";
     public static final String DUPLICATED_ITEM_WEAKNESS = "Detected duplicated item in weakness list!";
     public static final String DUPLICATED_ITEM_GENERIC = "Has a duplicated item in this list!";
+    public static final String INSERT = "Insert";
+    public static final String UPDATE = "Update";
+    public static final String DELETE = "Delete";
 }
 

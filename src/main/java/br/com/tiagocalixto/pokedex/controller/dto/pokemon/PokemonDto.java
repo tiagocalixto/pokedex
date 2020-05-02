@@ -88,7 +88,7 @@ public class PokemonDto implements Serializable {
 
     @Valid
     @ApiModelProperty(notes = "Pokemon", dataType = "object", position = 9)
-    private PokemonEvolutionDto evolveTo;
+    private List<PokemonEvolutionDto> evolveTo;
 
     @Valid
     @ApiModelProperty(notes = "Pokemon", dataType = "object", position = 10)

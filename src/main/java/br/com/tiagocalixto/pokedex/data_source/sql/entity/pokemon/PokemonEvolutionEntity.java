@@ -35,6 +35,12 @@ public class PokemonEvolutionEntity extends GenericEntity {
     @JoinColumn(name = "id_evolution_fk", referencedColumnName = "id", updatable = false, insertable = false)
     private PokemonEntity evolution;
 
+    @Column(name = "trigger")
+    private String trigger;
+
     @Column(name = "level")
     private long level;
+
+    @Column(name = "item")
+    private String item;
 }

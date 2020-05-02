@@ -22,10 +22,10 @@ public class HistoricEntity implements Serializable {
     @Id
     @SequenceGenerator(name = "historic_id_auto", sequenceName = "historic_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "historic_id_auto")
-    private long id;
+    private Long id;
 
     @Column(name = "id_entity", nullable = false)
-    private long idEntity;
+    private Long idEntity;
 
     @SuppressWarnings("squid:S1948")
     @Type(type = "jsonb")
@@ -33,20 +33,20 @@ public class HistoricEntity implements Serializable {
     private JsonNode entity;
 
     @Column(name = "version")
-    private long version;
+    private Long version;
 
     @Column(name="action")
     private String action;
 
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.NONE)
-    @Column(name = "update_date", nullable = false)
-    private java.sql.Timestamp updateDate;
+    @Column(name = "entry_date", nullable = false)
+    private java.sql.Timestamp entryDate;
 
 
     @PrePersist
     public void prePersist() {
 
-        this.updateDate = new java.sql.Timestamp(Util.getCurrentTimeStamp().getTime());
+        this.entryDate = new java.sql.Timestamp(Util.getCurrentTimeStamp().getTime());
     }
 }

@@ -28,7 +28,7 @@ public class Pokemon implements Serializable {
     private String urlPicture;
     private PokemonStats stats;
     private List<Type> type;
-    private PokemonEvolution evolveTo;
+    private List<PokemonEvolution> evolveTo;
     private PokemonEvolution evolvedFrom;
     private List<PokemonMove> move;
     private List<Ability> ability;

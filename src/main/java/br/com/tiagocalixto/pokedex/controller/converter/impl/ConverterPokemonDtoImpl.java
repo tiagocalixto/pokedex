@@ -1,18 +1,26 @@
 package br.com.tiagocalixto.pokedex.controller.converter.impl;
 
+import br.com.tiagocalixto.pokedex.controller.converter.ConverterDto;
 import br.com.tiagocalixto.pokedex.controller.dto.AbilityDto;
 import br.com.tiagocalixto.pokedex.controller.dto.MoveDto;
 import br.com.tiagocalixto.pokedex.controller.dto.TypeDto;
+import br.com.tiagocalixto.pokedex.controller.dto.enums.EvolutionStoneDtoEnum;
+import br.com.tiagocalixto.pokedex.controller.dto.enums.EvolutionTriggerDtoEnum;
 import br.com.tiagocalixto.pokedex.controller.dto.pokemon.*;
-import br.com.tiagocalixto.pokedex.controller.converter.ConverterDto;
 import br.com.tiagocalixto.pokedex.domain.Ability;
 import br.com.tiagocalixto.pokedex.domain.Move;
 import br.com.tiagocalixto.pokedex.domain.Type;
-import br.com.tiagocalixto.pokedex.domain.pokemon.*;
+import br.com.tiagocalixto.pokedex.domain.enums.EvolutionStoneEnum;
+import br.com.tiagocalixto.pokedex.domain.enums.EvolutionTriggerEnum;
+import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
+import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonEvolution;
+import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonMove;
+import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonStats;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon> {
@@ -45,7 +53,7 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
             pokemonDto.setUrlPicture(item.getUrlPicture());
             this.convertStatsToDto(Optional.of(item.getStats())).ifPresent(pokemonDto::setStats);
             pokemonDto.setType(convertType.convertToDtoList(item.getType()));
-            this.convertEvolutionToDto(Optional.ofNullable(item.getEvolveTo())).ifPresent(pokemonDto::setEvolveTo);
+            pokemonDto.setEvolveTo(this.convertEvolutionDtoList(item.getEvolveTo()));
             this.convertEvolutionToDto(Optional.ofNullable(item.getEvolvedFrom())).ifPresent(pokemonDto::setEvolvedFrom);
             pokemonDto.setAbility(convertAbility.convertToDtoList(item.getAbility()));
             pokemonDto.setMove(this.convertPokemonMoveToDto(item.getMove()));
@@ -74,7 +82,7 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
             pokemon.setUrlPicture(item.getUrlPicture());
             this.convertStatsToDomain(Optional.of(item.getStats())).ifPresent(pokemon::setStats);
             pokemon.setType(convertType.convertToDomainList(item.getType()));
-            this.convertEvolutionToDomain(Optional.ofNullable(item.getEvolveTo())).ifPresent(pokemon::setEvolveTo);
+            pokemon.setEvolveTo(this.convertEvolutionDomainList(item.getEvolveTo()));
             this.convertEvolutionToDomain(Optional.ofNullable(item.getEvolvedFrom())).ifPresent(pokemon::setEvolvedFrom);
             pokemon.setAbility(convertAbility.convertToDomainList(item.getAbility()));
             pokemon.setMove(this.convertPokemonMoveToDomain(item.getMove()));
@@ -168,10 +176,22 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
 
         domain.ifPresent(item -> {
             pokemonEvolutionDto.setLevel(item.getLevel());
+            pokemonEvolutionDto.setTrigger(EvolutionTriggerDtoEnum.valueOf(item.getTrigger().toString()));
+            pokemonEvolutionDto.setItem(item.getItem() == null ? null : EvolutionStoneDtoEnum.valueOf(item.getItem().toString()));
             this.convertAbbreviatedToDto(Optional.of(item.getPokemon())).ifPresent(pokemonEvolutionDto::setPokemon);
         });
 
         return Optional.of(pokemonEvolutionDto);
+    }
+
+    private List<PokemonEvolutionDto> convertEvolutionDtoList(List<PokemonEvolution> domain) {
+
+        if (domain == null || domain.isEmpty())
+            return Collections.emptyList();
+
+        return Optional.ofNullable(domain).orElse(Collections.emptyList())
+                .stream().map(item -> this.convertEvolutionToDto(Optional.ofNullable(item)).orElse(null))
+                .filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     @SuppressWarnings("Duplicates")
@@ -184,10 +204,22 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
 
         dto.ifPresent(item -> {
             pokemonEvolution.setLevel(item.getLevel());
+            pokemonEvolution.setTrigger(EvolutionTriggerEnum.valueOf(item.getTrigger().toString()));
+            pokemonEvolution.setItem(item.getItem() == null ? null : EvolutionStoneEnum.valueOf(item.getItem().toString()));
             this.convertAbbreviatedToDomain(Optional.of(item.getPokemon())).ifPresent(pokemonEvolution::setPokemon);
         });
 
         return Optional.of(pokemonEvolution);
+    }
+
+    private List<PokemonEvolution> convertEvolutionDomainList(List<PokemonEvolutionDto> dto) {
+
+        if (dto == null || dto.isEmpty())
+            return Collections.emptyList();
+
+        return Optional.ofNullable(dto).orElse(Collections.emptyList())
+                .stream().map(item -> this.convertEvolutionToDomain(Optional.ofNullable(item)).orElse(null))
+                .filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     @SuppressWarnings("Duplicates")

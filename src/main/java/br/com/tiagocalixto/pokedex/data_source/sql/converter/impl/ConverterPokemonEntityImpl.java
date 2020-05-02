@@ -12,6 +12,8 @@ import br.com.tiagocalixto.pokedex.data_source.sql.entity.pokemon.*;
 import br.com.tiagocalixto.pokedex.domain.Ability;
 import br.com.tiagocalixto.pokedex.domain.Move;
 import br.com.tiagocalixto.pokedex.domain.Type;
+import br.com.tiagocalixto.pokedex.domain.enums.EvolutionStoneEnum;
+import br.com.tiagocalixto.pokedex.domain.enums.EvolutionTriggerEnum;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonEvolution;
 import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonMove;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEntity, Pokemon> {
@@ -53,8 +56,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
             pokemonEntity.setUrlPicture(item.getUrlPicture());
             this.convertStatsToEntity(Optional.of(item.getStats()), item.getId()).ifPresent(pokemonEntity::setStats);
             pokemonEntity.setType(this.convertTypeToEntity(item.getType(), item.getId()));
-            this.convertEvolveToToEntity(Optional.ofNullable(item.getEvolveTo()), item.getId())
-                    .ifPresent(pokemonEntity::setEvolveTo);
+            pokemonEntity.setEvolveTo(this.convertEvolveToToEntity(item.getEvolveTo(), item.getId()));
             this.convertEvolvedFromToEntity(Optional.ofNullable(item.getEvolvedFrom()), item.getId())
                     .ifPresent(pokemonEntity::setEvolvedFrom);
             pokemonEntity.setAbility(this.convertAbilityToEntity(item.getAbility(), item.getId()));
@@ -86,7 +88,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
             pokemon.setUrlPicture(item.getUrlPicture());
             this.convertStatsToDomain(Optional.of(item.getStats())).ifPresent(pokemon::setStats);
             pokemon.setType(this.convertTypeToDomain(item.getType()));
-            this.convertEvolveToToDomain(Optional.ofNullable(item.getEvolveTo())).ifPresent(pokemon::setEvolveTo);
+            pokemon.setEvolveTo(this.convertEvolveToToDomain(item.getEvolveTo()));
             this.convertEvolvedFromToDomain(Optional.ofNullable(item.getEvolvedFrom())).ifPresent(pokemon::setEvolvedFrom);
             pokemon.setAbility(this.convertAbilityToDomain(item.getAbility()));
             pokemon.setMove(this.convertMoveToDomain(item.getMove()));
@@ -214,42 +216,42 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
     }
 
     @SuppressWarnings("Duplicates")
-    private Optional<PokemonEvolutionEntity> convertEvolveToToEntity(Optional<PokemonEvolution> domain,
-                                                                     Long idEvolution) {
+    private List<PokemonEvolutionEntity> convertEvolveToToEntity(List<PokemonEvolution> domain,
+                                                                 Long idEvolution) {
 
-        if (domain.isEmpty())
-            return Optional.empty();
+        if (domain == null || domain.isEmpty())
+            return Collections.emptyList();
 
-        PokemonEvolutionEntity pokemonEvolutionEntity = PokemonEvolutionEntity.builder().build();
-
-        domain.ifPresent(item -> {
-            pokemonEvolutionEntity.setId(
-                    PokemonEvolutionPk.builder()
-                            .idPokemonFk(idEvolution)
-                            .idEvolutionFk(item.getPokemon().getId())
-                            .build());
-            this.convertAbbreviatedToEntity(Optional.of(item.getPokemon()))
-                    .ifPresent(pokemonEvolutionEntity::setEvolution);
-            pokemonEvolutionEntity.setLevel(item.getLevel());
-        });
-
-        return Optional.of(pokemonEvolutionEntity);
+        return domain.stream()
+                .map(item -> PokemonEvolutionEntity.builder()
+                        .id(PokemonEvolutionPk.builder()
+                                .idPokemonFk(idEvolution)
+                                .idEvolutionFk(item.getPokemon().getId())
+                                .build())
+                        .evolution(this.convertAbbreviatedToEntity(Optional.of(item.getPokemon()))
+                                .orElse(PokemonEntity.builder().build()))
+                        .trigger(item.getTrigger().toString())
+                        .level(item.getLevel())
+                        .item(item.getItem() == null ? null : item.getItem().toString())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @SuppressWarnings("Duplicates")
-    private Optional<PokemonEvolution> convertEvolveToToDomain(Optional<PokemonEvolutionEntity> entity) {
+    private List<PokemonEvolution> convertEvolveToToDomain(List<PokemonEvolutionEntity> entity) {
 
-        if (entity.isEmpty())
-            return Optional.empty();
+        if (entity == null || entity.isEmpty())
+            return Collections.emptyList();
 
-        PokemonEvolution pokemonEvolution = PokemonEvolution.builder().build();
-
-        entity.ifPresent(item -> {
-            this.convertAbbreviatedToDomain(Optional.of(item.getEvolution())).ifPresent(pokemonEvolution::setPokemon);
-            pokemonEvolution.setLevel(item.getLevel());
-        });
-
-        return Optional.of(pokemonEvolution);
+        return entity.stream()
+                .map(item -> PokemonEvolution.builder()
+                        .pokemon(this.convertAbbreviatedToDomain(Optional.of(item.getEvolution()))
+                                .orElse(Pokemon.builder().build()))
+                        .trigger(EvolutionTriggerEnum.valueOf(item.getTrigger()))
+                        .item(item.getItem() == null ? null : EvolutionStoneEnum.valueOf(item.getItem()))
+                        .level(item.getLevel())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @SuppressWarnings("Duplicates")
@@ -269,7 +271,9 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
                             .build());
             this.convertAbbreviatedToEntity(Optional.of(item.getPokemon()))
                     .ifPresent(pokemonEvolutionEntity::setPokemon);
+            pokemonEvolutionEntity.setTrigger(item.getTrigger().toString());
             pokemonEvolutionEntity.setLevel(item.getLevel());
+            pokemonEvolutionEntity.setItem(item.getItem() == null ? null : item.getItem().toString());
         });
 
         return Optional.of(pokemonEvolutionEntity);
@@ -285,7 +289,9 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
 
         entity.ifPresent(item -> {
             this.convertAbbreviatedToDomain(Optional.of(item.getPokemon())).ifPresent(pokemonEvolution::setPokemon);
+            pokemonEvolution.setTrigger(EvolutionTriggerEnum.valueOf(item.getTrigger()));
             pokemonEvolution.setLevel(item.getLevel());
+            pokemonEvolution.setItem(item.getItem() == null ? null : EvolutionStoneEnum.valueOf(item.getItem()));
         });
 
         return Optional.of(pokemonEvolution);
@@ -416,11 +422,9 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         pokemonEntity.getAbility().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
         pokemonEntity.getMove().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
         pokemonEntity.getWeakness().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
-
-        if (pokemonEntity.getEvolveTo() != null)
-            pokemonEntity.getEvolveTo().setPokemon(pokemonEntity);
+        pokemonEntity.getEvolveTo().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
 
         if (pokemonEntity.getEvolvedFrom() != null)
-            pokemonEntity.getEvolvedFrom().setPokemon(pokemonEntity);
+            pokemonEntity.getEvolvedFrom().setEvolution(pokemonEntity);
     }
 }

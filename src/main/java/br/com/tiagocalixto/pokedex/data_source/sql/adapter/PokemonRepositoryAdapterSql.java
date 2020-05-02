@@ -1,22 +1,27 @@
 package br.com.tiagocalixto.pokedex.data_source.sql.adapter;
 
 import br.com.tiagocalixto.pokedex.data_source.sql.converter.ConverterEntitySql;
+import br.com.tiagocalixto.pokedex.data_source.sql.entity.HistoricEntity;
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.pokemon.PokemonEntity;
 import br.com.tiagocalixto.pokedex.data_source.sql.repository.PokemonRepository;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
-import br.com.tiagocalixto.pokedex.ports.PokemonFindRepositoryPort;
-import br.com.tiagocalixto.pokedex.ports.PokemonMaintenanceRepositoryPort;
+import br.com.tiagocalixto.pokedex.infra.util.Util;
+import br.com.tiagocalixto.pokedex.data_source_ports.PokemonFindRepositoryPort;
+import br.com.tiagocalixto.pokedex.data_source_ports.PokemonMaintenanceRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.tiagocalixto.pokedex.infra.util.Constant.INSERT;
+
 @Component("PokemonRepositorySql")
-public class PokemonRepositoryAdapterSql implements PokemonFindRepositoryPort, PokemonMaintenanceRepositoryPort {
+public class PokemonRepositoryAdapterSql extends GenericAdapterSql implements PokemonFindRepositoryPort,
+                                                                              PokemonMaintenanceRepositoryPort {
 
     @Autowired
     PokemonRepository repository;
@@ -77,7 +82,26 @@ public class PokemonRepositoryAdapterSql implements PokemonFindRepositoryPort, P
     }
 
     @Override
-    public void saveHistoric(Pokemon pokemon) {
+    public void saveHistoric(Pokemon pokemon, String action) {
 
+        long version = 1L;
+
+        if (!action.equalsIgnoreCase(INSERT)) {
+
+            List<HistoricEntity> historicList = findHistoricByIdEntity(pokemon.getId());
+            HistoricEntity lastHistoric = historicList.stream().max(Comparator.comparing(HistoricEntity::getVersion))
+                    .orElse(HistoricEntity.builder().version(0L).build());
+            version = lastHistoric.getVersion() + 1;
+        }
+
+        HistoricEntity historic = HistoricEntity.builder()
+                .id(0L)
+                .action(action)
+                .idEntity(pokemon.getId())
+                .entity(Util.convertObjectToJson(pokemon))
+                .version(version)
+                .build();
+
+        saveHistoric(historic);
     }
 }
