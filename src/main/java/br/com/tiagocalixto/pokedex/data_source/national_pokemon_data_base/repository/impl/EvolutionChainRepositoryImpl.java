@@ -10,7 +10,6 @@ import me.sargunvohra.lib.pokekotlin.model.EvolutionChain;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public class EvolutionChainRepositoryImpl implements EvolutionChainRepository {
     }
 
     @Override
-    public List<EvolutionChainEvolveToApi> getEvolutions(Long number) {
+    public EvolutionChainPokemonApi getEvolutions(Long number) {
 
         List<EvolutionChainPokemonApi> allPokemonOnChain = new ArrayList<>();
         allPokemonOnChain.add(getFirstPokemonOfChain());
@@ -40,9 +39,9 @@ public class EvolutionChainRepositoryImpl implements EvolutionChainRepository {
             List<ChainLink> nextLevelSecondary = new ArrayList<>();
 
             nextLevelChain.forEach(item -> {
-                        listNextEvolveTo.add(getNextPokemonOfChain(item));
-                        nextLevelSecondary.addAll(item.getEvolvesTo());
-                    });
+                listNextEvolveTo.add(getNextPokemonOfChain(item));
+                nextLevelSecondary.addAll(item.getEvolvesTo());
+            });
 
             allPokemonOnChain.addAll(listNextEvolveTo);
             nextLevelChain = nextLevelSecondary;
@@ -53,9 +52,10 @@ public class EvolutionChainRepositoryImpl implements EvolutionChainRepository {
 
     private EvolutionChainPokemonApi getFirstPokemonOfChain() {
 
-       return EvolutionChainPokemonApi.builder()
+        return EvolutionChainPokemonApi.builder()
                 .name(chain.getChain().getSpecies().getName())
                 .number(Long.valueOf(chain.getChain().getSpecies().getId()))
+                .idChain(Long.valueOf(chain.getId()))
                 .evolveTo(getListEvolveTo(chain.getChain().getEvolvesTo()))
                 .build();
     }
@@ -65,6 +65,7 @@ public class EvolutionChainRepositoryImpl implements EvolutionChainRepository {
         return EvolutionChainPokemonApi.builder()
                 .name(evolveTo.getSpecies().getName())
                 .number(Long.valueOf(evolveTo.getSpecies().getId()))
+                .idChain(Long.valueOf(chain.getId()))
                 .evolveTo(getListEvolveTo(evolveTo.getEvolvesTo()))
                 .build();
     }
@@ -79,12 +80,10 @@ public class EvolutionChainRepositoryImpl implements EvolutionChainRepository {
                 .collect(Collectors.toList());
     }
 
-    private List<EvolutionChainEvolveToApi> getEvolutionByNumber(List<EvolutionChainPokemonApi> evolveToList, Long number){
+    private EvolutionChainPokemonApi getEvolutionByNumber(List<EvolutionChainPokemonApi> evolveToList, Long number) {
 
-        EvolutionChainPokemonApi evolution = evolveToList.stream()
+        return evolveToList.stream()
                 .filter(item -> item.getNumber().equals(number))
                 .findFirst().orElse(null);
-
-        return evolution == null ? Collections.emptyList() : evolution.getEvolveTo();
     }
 }

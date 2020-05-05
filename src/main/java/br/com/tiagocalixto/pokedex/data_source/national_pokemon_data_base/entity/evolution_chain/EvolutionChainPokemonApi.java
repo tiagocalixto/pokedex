@@ -17,5 +17,6 @@ public class EvolutionChainPokemonApi {
 
     String name;
     Long number;
+    Long idChain;
     List<EvolutionChainEvolveToApi> evolveTo;
 }
