@@ -1,24 +1,31 @@
-package br.com.tiagocalixto.pokedex.data_source.national_pokemon_data_base.repository.impl;
+package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.impl;
 
-import br.com.tiagocalixto.pokedex.data_source.national_pokemon_data_base.entity.evolution_chain.EvolutionChainEvolveToApi;
-import br.com.tiagocalixto.pokedex.data_source.national_pokemon_data_base.entity.evolution_chain.EvolutionChainPokemonApi;
-import br.com.tiagocalixto.pokedex.data_source.national_pokemon_data_base.repository.EvolutionChainRepository;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolution_chain.EvolutionChainEvolveToApi;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolution_chain.EvolutionChainPokemonApi;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.EvolutionChainApiRepository;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient;
 import me.sargunvohra.lib.pokekotlin.model.ChainLink;
 import me.sargunvohra.lib.pokekotlin.model.EvolutionChain;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Component
-public class EvolutionChainRepositoryImpl implements EvolutionChainRepository {
+public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiRepository {
 
     private EvolutionChain chain;
-    private PokeApi pokeApi = new PokeApiClient();
+    private PokeApi pokeApi;
+
+    @Autowired
+    public EvolutionChainApiRepositoryImpl(PokeApi pokeApi){
+
+        this.pokeApi = pokeApi;
+    }
+
 
     @Override
     public void getEvolutionChainFromNationalDataBase(Integer idEvolutionChain) {

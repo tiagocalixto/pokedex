@@ -52,5 +52,13 @@ public final class Constant {
     public static final String INSERT = "Insert";
     public static final String UPDATE = "Update";
     public static final String DELETE = "Delete";
+    public static final String ATTACK = "attack";
+    public static final String DEFENSE = "defense";
+    public static final String SPEED = "speed";
+    public static final String HP = "hp";
+    public static final String SPECIAL_DEFENSE = "special-defense";
+    public static final String SPECIAL_ATTACK = "special-attack";
+    public static final String EMPTY = "";
+
 }
 

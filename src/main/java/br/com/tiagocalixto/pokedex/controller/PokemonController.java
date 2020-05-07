@@ -2,11 +2,8 @@ package br.com.tiagocalixto.pokedex.controller;
 
 import br.com.tiagocalixto.pokedex.controller.adapter.PokemonControllerAdapter;
 import br.com.tiagocalixto.pokedex.controller.dto.pokemon.PokemonDto;
-import br.com.tiagocalixto.pokedex.controller.input_rules.groups.FirstStepValidation;
-import br.com.tiagocalixto.pokedex.controller.input_rules.groups.SecondStepValidation;
 import br.com.tiagocalixto.pokedex.controller.input_rules.groups.ValidationOrder;
-import br.com.tiagocalixto.pokedex.data_source.national_pokemon_data_base.repository.impl.EvolutionChainRepositoryImpl;
-import com.fasterxml.jackson.databind.JsonNode;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.impl.EvolutionChainApiRepositoryImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -24,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -48,7 +44,7 @@ public class PokemonController {
     threadTest test = new threadTest();
 
     @Autowired
-    EvolutionChainRepositoryImpl chainOfficial;
+    EvolutionChainApiRepositoryImpl chainOfficial;
 
     @SneakyThrows
     @ApiResponses(value = {
