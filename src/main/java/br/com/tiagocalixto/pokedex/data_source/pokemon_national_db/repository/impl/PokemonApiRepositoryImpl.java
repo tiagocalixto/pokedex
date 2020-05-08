@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
@@ -37,9 +38,12 @@ public class PokemonApiRepositoryImpl implements PokemonApiRepository {
     }
 
     @Override
-    public PokemonApi getPokemon(Long number) {
+    public Optional<PokemonApi> getPokemon() {
 
-        return PokemonApi.builder()
+        if (this.pokemon == null)
+            return Optional.empty();
+
+        return Optional.of(PokemonApi.builder()
                 .name(this.pokemon.getName())
                 .number(Long.valueOf(this.pokemon.getId()))
                 .height(BigDecimal.valueOf(this.pokemon.getHeight()))
@@ -48,7 +52,7 @@ public class PokemonApiRepositoryImpl implements PokemonApiRepository {
                 .ability(this.getAbility(this.pokemon.getAbilities()))
                 .move(this.getMove(this.pokemon.getMoves()))
                 .type(this.getType(this.pokemon.getTypes()))
-                .build();
+                .build());
     }
 
     private PokemonStatsApi getStats(List<PokemonStat> stat) {

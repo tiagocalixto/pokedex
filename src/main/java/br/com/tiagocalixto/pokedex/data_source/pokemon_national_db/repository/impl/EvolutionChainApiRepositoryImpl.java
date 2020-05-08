@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,7 +35,10 @@ public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiReposit
     }
 
     @Override
-    public EvolutionChainPokemonApi getEvolutions(Long number) {
+    public Optional<EvolutionChainPokemonApi> getEvolutions(Long number) {
+
+        if(this.chain == null)
+            return Optional.empty();
 
         List<EvolutionChainPokemonApi> allPokemonOnChain = new ArrayList<>();
         allPokemonOnChain.add(getFirstPokemonOfChain());
@@ -54,7 +58,7 @@ public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiReposit
             nextLevelChain = nextLevelSecondary;
         }
 
-        return getEvolutionByNumber(allPokemonOnChain, number);
+        return Optional.of(getEvolutionByNumber(allPokemonOnChain, number));
     }
 
     private EvolutionChainPokemonApi getFirstPokemonOfChain() {

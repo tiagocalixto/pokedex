@@ -8,6 +8,8 @@ import me.sargunvohra.lib.pokekotlin.model.PokemonSpecies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class PokemonSpecieApiRepositoryImpl implements PokemonSpecieApiRepository {
 
@@ -28,9 +30,12 @@ public class PokemonSpecieApiRepositoryImpl implements PokemonSpecieApiRepositor
     }
 
     @Override
-    public PokemonSpecieApi getPokemonSpecie() {
+    public Optional<PokemonSpecieApi> getPokemonSpecie() {
 
-        return PokemonSpecieApi.builder()
+        if(this.species == null)
+            return Optional.empty();
+
+        return Optional.of(PokemonSpecieApi.builder()
                 .evolvedFrom(this.species.getEvolvesFromSpecies() == null ? null :
                         PokemonSpecieEvolvedFrom.builder()
                         .id(Long.valueOf(this.species.getEvolvesFromSpecies().getId()))
@@ -38,6 +43,6 @@ public class PokemonSpecieApiRepositoryImpl implements PokemonSpecieApiRepositor
                         .build())
                 .generation(this.species.getGeneration().getName())
                 .idEvolutionChain(Long.valueOf(this.species.getEvolutionChain().getId()))
-                .build();
+                .build());
     }
 }
