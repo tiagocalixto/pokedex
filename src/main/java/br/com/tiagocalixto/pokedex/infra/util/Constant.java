@@ -31,7 +31,6 @@ public final class Constant {
     public static final String DESCRIPTION_FIELD_IS_INVALID = "The Field description is invalid. Field accept's only Letters!";
     public static final String DESCRIPTION_FIELD_IS_REQUIRED = "Description is required!";
     public static final String DESCRIPTION_LENGTH_INVALID = "Description length invalid. It must contain between 3 and 50 chars!";
-    public static final String WEAKNESSES_IS_REQUIRED = "Weaknesses is required!";
     public static final String PP_REQUIRED = "PP is Required!";
     public static final String POWER_REQUIRED = "Power is Required!";
     public static final String ACCURACY_REQUIRED = "Accuracy is Required!";
@@ -59,6 +58,8 @@ public final class Constant {
     public static final String SPECIAL_DEFENSE = "special-defense";
     public static final String SPECIAL_ATTACK = "special-attack";
     public static final String EMPTY = "";
+    public static final Long FIRST_NUMBER = 1L;
+    public static final Long LAST_NUMBER = 151L;
 
 }
 

@@ -23,11 +23,15 @@ import static br.com.tiagocalixto.pokedex.infra.util.Constant.INSERT;
 public class PokemonRepositoryAdapterSql extends GenericAdapterSql implements PokemonFindRepositoryPort,
                                                                               PokemonMaintenanceRepositoryPort {
 
-    @Autowired
-    PokemonRepository repository;
+    private PokemonRepository repository;
+    private ConverterEntitySql<PokemonEntity, Pokemon> converter;
 
     @Autowired
-    ConverterEntitySql<PokemonEntity, Pokemon> converter;
+    public PokemonRepositoryAdapterSql(PokemonRepository repository,
+                                       ConverterEntitySql<PokemonEntity, Pokemon> converter){
+        this.repository = repository;
+        this.converter = converter;
+    }
 
 
     @Override

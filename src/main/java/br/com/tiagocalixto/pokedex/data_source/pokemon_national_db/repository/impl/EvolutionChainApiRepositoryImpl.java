@@ -4,25 +4,20 @@ import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolut
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolution_chain.EvolutionChainPokemonApi;
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.EvolutionChainApiRepository;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
-import me.sargunvohra.lib.pokekotlin.client.PokeApiClient;
 import me.sargunvohra.lib.pokekotlin.model.ChainLink;
 import me.sargunvohra.lib.pokekotlin.model.EvolutionChain;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
 public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiRepository {
 
     private EvolutionChain chain;
     private PokeApi pokeApi;
 
-    @Autowired
-    public EvolutionChainApiRepositoryImpl(PokeApi pokeApi){
+    public EvolutionChainApiRepositoryImpl(PokeApi pokeApi) {
 
         this.pokeApi = pokeApi;
     }
@@ -37,7 +32,7 @@ public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiReposit
     @Override
     public Optional<EvolutionChainPokemonApi> getEvolutions(Long number) {
 
-        if(this.chain == null)
+        if (this.chain == null)
             return Optional.empty();
 
         List<EvolutionChainPokemonApi> allPokemonOnChain = new ArrayList<>();

@@ -8,8 +8,6 @@ import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemo
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.PokemonApiRepository;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
 import me.sargunvohra.lib.pokekotlin.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,13 +16,11 @@ import java.util.stream.Collectors;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
 
-@Component
 public class PokemonApiRepositoryImpl implements PokemonApiRepository {
 
     private Pokemon pokemon;
     private PokeApi pokeApi;
 
-    @Autowired
     public PokemonApiRepositoryImpl(PokeApi pokeApi) {
 
         this.pokeApi = pokeApi;
@@ -79,7 +75,7 @@ public class PokemonApiRepositoryImpl implements PokemonApiRepository {
                         .mapToLong(PokemonStat::getBaseStat)
                         .findFirst().orElse(0L))
                 .specialDefense(stat.stream()
-                        .filter(item -> item.getStat().getName().equalsIgnoreCase(SPECIAL_ATTACK))
+                        .filter(item -> item.getStat().getName().equalsIgnoreCase(SPECIAL_DEFENSE))
                         .mapToLong(PokemonStat::getBaseStat)
                         .findFirst().orElse(0L))
                 .build();

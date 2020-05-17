@@ -5,19 +5,15 @@ import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemo
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.PokemonSpecieApiRepository;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
 import me.sargunvohra.lib.pokekotlin.model.PokemonSpecies;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
 public class PokemonSpecieApiRepositoryImpl implements PokemonSpecieApiRepository {
 
     private PokemonSpecies species;
     private PokeApi pokeApi;
 
-    @Autowired
-    public PokemonSpecieApiRepositoryImpl(PokeApi pokeApi){
+    public PokemonSpecieApiRepositoryImpl(PokeApi pokeApi) {
 
         this.pokeApi = pokeApi;
     }
@@ -32,15 +28,15 @@ public class PokemonSpecieApiRepositoryImpl implements PokemonSpecieApiRepositor
     @Override
     public Optional<PokemonSpecieApi> getPokemonSpecie() {
 
-        if(this.species == null)
+        if (this.species == null)
             return Optional.empty();
 
         return Optional.of(PokemonSpecieApi.builder()
                 .evolvedFrom(this.species.getEvolvesFromSpecies() == null ? null :
                         PokemonSpecieEvolvedFrom.builder()
-                        .id(Long.valueOf(this.species.getEvolvesFromSpecies().getId()))
-                        .name(this.species.getEvolvesFromSpecies().getName())
-                        .build())
+                                .id(Long.valueOf(this.species.getEvolvesFromSpecies().getId()))
+                                .name(this.species.getEvolvesFromSpecies().getName())
+                                .build())
                 .generation(this.species.getGeneration().getName())
                 .idEvolutionChain(Long.valueOf(this.species.getEvolutionChain().getId()))
                 .build());

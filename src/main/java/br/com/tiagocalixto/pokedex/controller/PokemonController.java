@@ -37,14 +37,13 @@ import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
 @Validated
 public class PokemonController {
 
+    private PokemonControllerAdapter useCaseAdapter;
 
     @Autowired
-    PokemonControllerAdapter useCaseAdapter;
-    PokeApi pokeApi = new PokeApiClient();
-    threadTest test = new threadTest();
+    public PokemonController(PokemonControllerAdapter useCaseAdapter){
+        this.useCaseAdapter = useCaseAdapter;
+    }
 
-    @Autowired
-    EvolutionChainApiRepositoryImpl chainOfficial;
 
     @SneakyThrows
     @ApiResponses(value = {
@@ -57,37 +56,6 @@ public class PokemonController {
                                                             @PathVariable Long number) {
 
 
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                test.getPOkemonFromApi(Integer.valueOf(number.toString()));
-            }
-        });
-
-        Thread t2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                test.getPOkemonSpeciesFromApi(Integer.valueOf(number.toString()));
-                test.getchainFromApi(test.getSpecies().getEvolutionChain().getId());
-            }
-        });
-
-        System.out.println("################################################################");
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("start : " + LocalDateTime.now());
-        t1.start();
-        t2.start();
-        t1.join();
-        t2.join();
-        System.out.println("----------------------------------------------------------------");
-        System.out.println("end : " + LocalDateTime.now());
-
-        Pokemon poke = test.getPokemon();
-        PokemonSpecies species = test.getSpecies();
-        EvolutionChain chain = test.getChain();
-
-        chainOfficial.getEvolutionChainFromNationalDataBase(67);
-        System.out.println(chainOfficial.getEvolutions(133L));
 
         return new ResponseEntity<>(useCaseAdapter.findByNumber(number), HttpStatus.OK);
     }

@@ -109,7 +109,6 @@ public class PokemonDto implements Serializable {
     private List<AbilityDto> ability = Collections.emptyList();
 
     @HasDuplicatedItemInList(message = DUPLICATED_ITEM_WEAKNESS)
-    @NotEmpty(message = WEAKNESSES_IS_REQUIRED, groups = FirstStepValidation.class)
     @Valid
     @ApiModelProperty(notes = "Ability", dataType = "array", position = 13)
     private List<TypeDto> weakness;
