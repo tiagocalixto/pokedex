@@ -32,10 +32,12 @@ public interface ConverterEntitySql<E, D> {
     }
 
     default E convertToEntityNotOptional(D domain) {
+
         return convertToEntity(Optional.ofNullable(domain)).orElse(null);
     }
 
     default D convertToDomainNotOptional(E entity) {
+
         return convertToDomain(Optional.ofNullable(entity)).orElse(null);
     }
 }

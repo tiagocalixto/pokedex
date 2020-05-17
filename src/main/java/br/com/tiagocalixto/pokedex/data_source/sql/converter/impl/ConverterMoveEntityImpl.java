@@ -14,11 +14,14 @@ import java.util.Optional;
 @Component
 public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, Move> {
 
-    @Autowired
-    ConverterEntitySql<TypeEntity, Type> convertType;
+    private ConverterEntitySql<TypeEntity, Type> convertType;
+    private MoveRepository repository;
 
     @Autowired
-    MoveRepository repository;
+    public ConverterMoveEntityImpl (MoveRepository repository, ConverterEntitySql<TypeEntity, Type> convertType){
+        this.convertType = convertType;
+        this.repository = repository;
+    }
 
     @SuppressWarnings("Duplicates")
     @Override
@@ -34,7 +37,8 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
                 .orElse(MoveEntity.builder()
                         .id(0L)
                         .description(move.getDescription())
-                        .build());
+                        .build()
+                );
 
         moveEntity.setPower(move.getPower());
         moveEntity.setPp(move.getPp());

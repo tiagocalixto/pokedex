@@ -10,8 +10,12 @@ import java.util.List;
 @Component
 public class GenericAdapterSql {
 
+    private HistoricRepository historicRepository;
+
     @Autowired
-    HistoricRepository historicRepository;
+    public GenericAdapterSql(HistoricRepository historicRepository){
+        this.historicRepository = historicRepository;
+    }
 
 
     protected void saveHistoric(HistoricEntity historic){

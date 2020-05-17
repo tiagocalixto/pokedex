@@ -27,14 +27,18 @@ import java.util.stream.Collectors;
 @Component
 public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEntity, Pokemon> {
 
-    @Autowired
-    ConverterEntitySql<TypeEntity, Type> convertType;
+    private ConverterEntitySql<TypeEntity, Type> convertType;
+    private ConverterEntitySql<AbilityEntity, Ability> convertAbility;
+    private ConverterEntitySql<MoveEntity, Move> convertMove;
 
     @Autowired
-    ConverterEntitySql<AbilityEntity, Ability> convertAbility;
-
-    @Autowired
-    ConverterEntitySql<MoveEntity, Move> convertMove;
+    public ConverterPokemonEntityImpl (ConverterEntitySql<TypeEntity, Type> convertType,
+                                       ConverterEntitySql<AbilityEntity, Ability> convertAbility,
+                                       ConverterEntitySql<MoveEntity, Move> convertMove){
+        this.convertType = convertType;
+        this.convertAbility = convertAbility;
+        this.convertMove = convertMove;
+    }
 
 
     @SuppressWarnings("Duplicates")

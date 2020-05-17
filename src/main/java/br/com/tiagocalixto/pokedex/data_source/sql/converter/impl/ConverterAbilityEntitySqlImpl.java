@@ -13,8 +13,12 @@ import java.util.Optional;
 @Component
 public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<AbilityEntity, Ability> {
 
+    private AbilityRepository repository;
+
     @Autowired
-    AbilityRepository repository;
+    public ConverterAbilityEntitySqlImpl (AbilityRepository repository){
+        this.repository = repository;
+    }
 
 
     @SuppressWarnings("Duplicates")
@@ -31,7 +35,8 @@ public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<Ability
                         AbilityEntity.builder()
                                 .id(0L)
                                 .description(ability.getDescription())
-                                .build());
+                                .build()
+                );
 
         return Optional.of(abilityEntity);
     }

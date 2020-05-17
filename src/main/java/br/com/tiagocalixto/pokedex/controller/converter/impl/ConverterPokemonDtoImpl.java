@@ -25,14 +25,17 @@ import java.util.stream.Collectors;
 @Component
 public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon> {
 
-    @Autowired
-    ConverterDto<TypeDto, Type> convertType;
+    private ConverterDto<TypeDto, Type> convertType;
+    private ConverterDto<MoveDto, Move> convertMove;
+    private ConverterDto<AbilityDto, Ability> convertAbility;
 
     @Autowired
-    ConverterDto<MoveDto, Move> convertMove;
-
-    @Autowired
-    ConverterDto<AbilityDto, Ability> convertAbility;
+    public ConverterPokemonDtoImpl(ConverterDto<TypeDto, Type> convertType, ConverterDto<MoveDto, Move> convertMove,
+                                   ConverterDto<AbilityDto, Ability> convertAbility) {
+        this.convertType = convertType;
+        this.convertMove = convertMove;
+        this.convertAbility = convertAbility;
+    }
 
 
     @SuppressWarnings("Duplicates")

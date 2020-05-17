@@ -12,8 +12,13 @@ import java.util.Optional;
 @Component
 public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity, Type> {
 
+    private TypeRepository repository;
+
     @Autowired
-    TypeRepository repository;
+    public ConverterTypeEntitySqlImpl(TypeRepository repository){
+        this.repository = repository;
+    }
+
 
     @SuppressWarnings("Duplicates")
     @Override
@@ -24,12 +29,12 @@ public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity
 
         Type type = domain.orElseGet(Type::new);
 
-        TypeEntity typeEntity = repository.findFirstByDescriptionIgnoreCaseAndIgnoreAccents(type.getDescription()).orElse(
-                TypeEntity.builder()
+        TypeEntity typeEntity = repository.findFirstByDescriptionIgnoreCaseAndIgnoreAccents(type.getDescription())
+                .orElse(TypeEntity.builder()
                         .id(0L)
                         .description(type.getDescription())
                         .build()
-        );
+                );
 
         return Optional.of(typeEntity);
     }
@@ -44,7 +49,7 @@ public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity
         Type type = Type.builder().build();
 
         entity.ifPresent(item ->
-            type.setDescription(item.getDescription())
+                type.setDescription(item.getDescription())
         );
 
         return Optional.of(type);

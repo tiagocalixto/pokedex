@@ -3,6 +3,7 @@ package br.com.tiagocalixto.pokedex.data_source.sql.adapter;
 import br.com.tiagocalixto.pokedex.data_source.sql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.HistoricEntity;
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.pokemon.PokemonEntity;
+import br.com.tiagocalixto.pokedex.data_source.sql.repository.HistoricRepository;
 import br.com.tiagocalixto.pokedex.data_source.sql.repository.PokemonRepository;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.infra.util.Util;
@@ -27,8 +28,9 @@ public class PokemonRepositoryAdapterSql extends GenericAdapterSql implements Po
     private ConverterEntitySql<PokemonEntity, Pokemon> converter;
 
     @Autowired
-    public PokemonRepositoryAdapterSql(PokemonRepository repository,
+    public PokemonRepositoryAdapterSql(HistoricRepository historicRepository, PokemonRepository repository,
                                        ConverterEntitySql<PokemonEntity, Pokemon> converter){
+        super(historicRepository);
         this.repository = repository;
         this.converter = converter;
     }
