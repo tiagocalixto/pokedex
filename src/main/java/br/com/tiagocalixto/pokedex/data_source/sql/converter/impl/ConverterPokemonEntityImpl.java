@@ -35,6 +35,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
     public ConverterPokemonEntityImpl (ConverterEntitySql<TypeEntity, Type> convertType,
                                        ConverterEntitySql<AbilityEntity, Ability> convertAbility,
                                        ConverterEntitySql<MoveEntity, Move> convertMove){
+
         this.convertType = convertType;
         this.convertAbility = convertAbility;
         this.convertMove = convertMove;
@@ -50,7 +51,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
 
         PokemonEntity pokemonEntity = PokemonEntity.builder().build();
 
-        domain.ifPresent(item -> {
+        domain.ifPresent(item -> { //todo 4 - convert object managed by hibernate - using find by
             pokemonEntity.setId(item.getId());
             pokemonEntity.setName(item.getName());
             pokemonEntity.setNumber(item.getNumber());
@@ -58,7 +59,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
             pokemonEntity.setHeight(item.getHeight());
             pokemonEntity.setAbout(item.getAbout());
             pokemonEntity.setUrlPicture(item.getUrlPicture());
-            this.convertStatsToEntity(Optional.of(item.getStats()), item.getId()).ifPresent(pokemonEntity::setStats);
+            this.convertStatsToEntity(Optional.ofNullable(item.getStats()), item.getId()).ifPresent(pokemonEntity::setStats);
             pokemonEntity.setType(this.convertTypeToEntity(item.getType(), item.getId()));
             pokemonEntity.setEvolveTo(this.convertEvolveToToEntity(item.getEvolveTo(), item.getId()));
             this.convertEvolvedFromToEntity(Optional.ofNullable(item.getEvolvedFrom()), item.getId())
@@ -90,10 +91,11 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
             pokemon.setHeight(item.getHeight());
             pokemon.setAbout(item.getAbout());
             pokemon.setUrlPicture(item.getUrlPicture());
-            this.convertStatsToDomain(Optional.of(item.getStats())).ifPresent(pokemon::setStats);
+            this.convertStatsToDomain(Optional.ofNullable(item.getStats())).ifPresent(pokemon::setStats);
             pokemon.setType(this.convertTypeToDomain(item.getType()));
             pokemon.setEvolveTo(this.convertEvolveToToDomain(item.getEvolveTo()));
-            this.convertEvolvedFromToDomain(Optional.ofNullable(item.getEvolvedFrom())).ifPresent(pokemon::setEvolvedFrom);
+            this.convertEvolvedFromToDomain(Optional.ofNullable(item.getEvolvedFrom()))
+                    .ifPresent(pokemon::setEvolvedFrom);
             pokemon.setAbility(this.convertAbilityToDomain(item.getAbility()));
             pokemon.setMove(this.convertMoveToDomain(item.getMove()));
             pokemon.setWeakness(this.convertWeaknessesToDomain(item.getWeakness()));
@@ -192,7 +194,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         domain.stream().filter(Objects::nonNull)
                 .forEach(item -> {
                     PokemonTypeEntity pokemonTypeEntity = PokemonTypeEntity.builder().build();
-                    convertType.convertToEntity(Optional.of(item)).ifPresent(pokemonTypeEntity::setType);
+                    convertType.convertToEntity(Optional.ofNullable(item)).ifPresent(pokemonTypeEntity::setType);
                     pokemonTypeEntity.setId(
                             PokemonTypePk.builder()
                                     .idPokemonFk(idPokemon)
@@ -213,7 +215,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         List<Type> list = new ArrayList<>();
 
         entity.stream().filter(Objects::nonNull)
-                .forEach(item -> convertType.convertToDomain(Optional.of(item.getType()))
+                .forEach(item -> convertType.convertToDomain(Optional.ofNullable(item.getType()))
                         .ifPresent(list::add));
 
         return list;
@@ -232,7 +234,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
                                 .idPokemonFk(idEvolution)
                                 .idEvolutionFk(item.getPokemon().getId())
                                 .build())
-                        .evolution(this.convertAbbreviatedToEntity(Optional.of(item.getPokemon()))
+                        .evolution(this.convertAbbreviatedToEntity(Optional.ofNullable(item.getPokemon()))
                                 .orElse(PokemonEntity.builder().build()))
                         .trigger(item.getTrigger().toString())
                         .level(item.getLevel())
@@ -249,7 +251,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
 
         return entity.stream()
                 .map(item -> PokemonEvolution.builder()
-                        .pokemon(this.convertAbbreviatedToDomain(Optional.of(item.getEvolution()))
+                        .pokemon(this.convertAbbreviatedToDomain(Optional.ofNullable(item.getEvolution()))
                                 .orElse(Pokemon.builder().build()))
                         .trigger(EvolutionTriggerEnum.valueOf(item.getTrigger()))
                         .item(item.getItem() == null ? null : EvolutionStoneEnum.valueOf(item.getItem()))
@@ -273,7 +275,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
                             .idPokemonFk(item.getPokemon().getId())
                             .idEvolutionFk(idPokemon)
                             .build());
-            this.convertAbbreviatedToEntity(Optional.of(item.getPokemon()))
+            this.convertAbbreviatedToEntity(Optional.ofNullable(item.getPokemon()))
                     .ifPresent(pokemonEvolutionEntity::setPokemon);
             pokemonEvolutionEntity.setTrigger(item.getTrigger().toString());
             pokemonEvolutionEntity.setLevel(item.getLevel());
@@ -292,7 +294,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         PokemonEvolution pokemonEvolution = PokemonEvolution.builder().build();
 
         entity.ifPresent(item -> {
-            this.convertAbbreviatedToDomain(Optional.of(item.getPokemon())).ifPresent(pokemonEvolution::setPokemon);
+            this.convertAbbreviatedToDomain(Optional.ofNullable(item.getPokemon())).ifPresent(pokemonEvolution::setPokemon);
             pokemonEvolution.setTrigger(EvolutionTriggerEnum.valueOf(item.getTrigger()));
             pokemonEvolution.setLevel(item.getLevel());
             pokemonEvolution.setItem(item.getItem() == null ? null : EvolutionStoneEnum.valueOf(item.getItem()));
@@ -312,7 +314,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         domain.stream().filter(Objects::nonNull)
                 .forEach(item -> {
                     PokemonAbilityEntity pokemonAbilityEntity = PokemonAbilityEntity.builder().build();
-                    convertAbility.convertToEntity(Optional.of(item)).ifPresent(pokemonAbilityEntity::setAbility);
+                    convertAbility.convertToEntity(Optional.ofNullable(item)).ifPresent(pokemonAbilityEntity::setAbility);
                     pokemonAbilityEntity.setId(
                             PokemonAbilityPk.builder()
                                     .idPokemonFk(idPokemon)
@@ -333,7 +335,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         List<Ability> list = new ArrayList<>();
 
         entity.stream().filter(Objects::nonNull)
-                .forEach(item -> convertAbility.convertToDomain(Optional.of(item.getAbility()))
+                .forEach(item -> convertAbility.convertToDomain(Optional.ofNullable(item.getAbility()))
                         .ifPresent(list::add));
 
         return list;
@@ -350,7 +352,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         domain.stream().filter(Objects::nonNull)
                 .forEach(item -> {
                     PokemonMoveEntity pokemonMoveEntity = PokemonMoveEntity.builder().build();
-                    convertMove.convertToEntity(Optional.of(item.getMove())).ifPresent(pokemonMoveEntity::setMove);
+                    convertMove.convertToEntity(Optional.ofNullable(item.getMove())).ifPresent(pokemonMoveEntity::setMove);
                     pokemonMoveEntity.setId(
                             PokemonMovePk.builder()
                                     .idPokemonFk(idPokemon)
@@ -375,7 +377,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
                 .forEach(item -> {
                     PokemonMove pokemonMove = PokemonMove.builder().build();
                     pokemonMove.setLevelLearn(item.getLevelLearn());
-                    convertMove.convertToDomain(Optional.of(item.getMove())).ifPresent(pokemonMove::setMove);
+                    convertMove.convertToDomain(Optional.ofNullable(item.getMove())).ifPresent(pokemonMove::setMove);
                     list.add(pokemonMove);
                 });
 
@@ -393,7 +395,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         domain.stream().filter(Objects::nonNull)
                 .forEach(item -> {
                     PokemonWeaknessesEntity pokemonWeaknessesEntity = PokemonWeaknessesEntity.builder().build();
-                    convertType.convertToEntity(Optional.of(item)).ifPresent(pokemonWeaknessesEntity::setType);
+                    convertType.convertToEntity(Optional.ofNullable(item)).ifPresent(pokemonWeaknessesEntity::setType);
                     pokemonWeaknessesEntity.setId(
                             PokemonTypePk.builder()
                                     .idPokemonFk(idPokemon)
@@ -414,7 +416,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         List<Type> list = new ArrayList<>();
 
         entity.stream().filter(Objects::nonNull)
-                .forEach(item -> convertType.convertToDomain(Optional.of(item.getType())).ifPresent(list::add));
+                .forEach(item -> convertType.convertToDomain(Optional.ofNullable(item.getType())).ifPresent(list::add));
 
         return list;
     }

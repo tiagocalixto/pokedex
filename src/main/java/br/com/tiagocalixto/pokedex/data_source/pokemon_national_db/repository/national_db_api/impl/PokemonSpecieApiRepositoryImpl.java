@@ -1,8 +1,8 @@
-package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.impl;
+package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl;
 
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonSpecieApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonSpecieEvolvedFrom;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.PokemonSpecieApiRepository;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonSpecieNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolution_chain.EvolutionChainEvolvedFromNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.PokemonSpecieApiRepository;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
 import me.sargunvohra.lib.pokekotlin.model.PokemonSpecies;
 
@@ -26,14 +26,14 @@ public class PokemonSpecieApiRepositoryImpl implements PokemonSpecieApiRepositor
     }
 
     @Override
-    public Optional<PokemonSpecieApi> getPokemonSpecie() {
+    public Optional<PokemonSpecieNationalDb> getPokemonSpecie() {
 
         if (this.species == null)
             return Optional.empty();
 
-        return Optional.of(PokemonSpecieApi.builder()
+        return Optional.of(PokemonSpecieNationalDb.builder()
                 .evolvedFrom(this.species.getEvolvesFromSpecies() == null ? null :
-                        PokemonSpecieEvolvedFrom.builder()
+                        EvolutionChainEvolvedFromNationalDb.builder()
                                 .id(Long.valueOf(this.species.getEvolvesFromSpecies().getId()))
                                 .name(this.species.getEvolvesFromSpecies().getName())
                                 .build())

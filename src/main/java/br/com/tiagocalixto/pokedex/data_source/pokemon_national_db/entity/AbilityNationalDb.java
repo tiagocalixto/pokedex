@@ -1,5 +1,4 @@
-package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon;
-
+package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -14,8 +13,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class PokemonSpecieEvolvedFrom implements Serializable {
+public class AbilityNationalDb implements Serializable {
 
-    Long id;
-    String name;
+    private String description;
+    private String about;
 }

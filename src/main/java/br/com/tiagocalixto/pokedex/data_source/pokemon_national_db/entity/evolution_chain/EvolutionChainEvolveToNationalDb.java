@@ -1,6 +1,6 @@
 package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolution_chain;
 
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.TypeApi;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.TypeNationalDb;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,9 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class EvolutionChainEvolveToApi implements Serializable {
+public class EvolutionChainEvolveToNationalDb implements Serializable {
 
     private String name;
     private Long number;
-    private List<TypeApi> type;
+    private List<TypeNationalDb> type;
 }

@@ -1,13 +1,15 @@
 package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.adapter;
 
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonSpecieApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.EvolutionChainApiRepository;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.PokemonApiRepository;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.PokemonSpecieApiRepository;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.impl.EvolutionChainApiRepositoryImpl;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.impl.PokemonApiRepositoryImpl;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.impl.PokemonSpecieApiRepositoryImpl;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.converter.ConverterNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonSpecieNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.cache.PokemonCache;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.EvolutionChainApiRepository;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.PokemonApiRepository;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.PokemonSpecieApiRepository;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl.EvolutionChainApiRepositoryImpl;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl.PokemonApiRepositoryImpl;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl.PokemonSpecieApiRepositoryImpl;
 import br.com.tiagocalixto.pokedex.data_source_ports.FindGenericRepositoryPort;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import lombok.SneakyThrows;
@@ -15,40 +17,47 @@ import me.sargunvohra.lib.pokekotlin.client.PokeApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-@Component
+@Component("pokemonNationalDb")
 public class PokemonNationalDbRepositoryAdapter implements FindGenericRepositoryPort<Pokemon> {
 
     private PokeApi pokeApi;
+    private PokemonCache cache;
+    private ConverterNationalDb<PokemonNationalDb, Pokemon> converter;
 
     @Autowired
-    public PokemonNationalDbRepositoryAdapter(PokeApi pokeApi) {
+    public PokemonNationalDbRepositoryAdapter(PokeApi pokeApi, PokemonCache cache,
+                                              ConverterNationalDb<PokemonNationalDb, Pokemon> converter) {
+
         this.pokeApi = pokeApi;
+        this.cache = cache;
+        this.converter = converter;
     }
 
 
     @Override
     public Optional<Pokemon> findById(Long id) {
 
-        //todo 1 - try to find in cache before access pokeApi
+        Optional<PokemonNationalDb> entity = cache.findById(id);
 
-        // this.getPokemon(); todo 2 - you need to build converters
-        return Optional.empty();
-        //todo 3 - if find in api save on data on cache
+        if (entity.isEmpty()) {
+            entity = getPokemonFromNationalDataBase(id);
+            entity.ifPresent(item -> cache.save(item));
+        }
+
+        return converter.convertToDomain(entity);
     }
 
     @Override
     public boolean isExistsById(Long id) {
-        return false;
-        //   specieRepository.getSpecieFromNationalDataBase(Integer.valueOf(id.toString()));
-        //  return specieRepository.getPokemonSpecie().isPresent();
+
+        PokemonSpecieApiRepository specieRepository = new PokemonSpecieApiRepositoryImpl(this.pokeApi);
+        return specieRepository.getPokemonSpecie().isPresent();
     }
 
     @SneakyThrows
-    private Optional<PokemonApi> getPokemonFromNationalDataBase(Long id) {
+    private Optional<PokemonNationalDb> getPokemonFromNationalDataBase(Long id) {
 
         EvolutionChainApiRepository evolutionRepository = new EvolutionChainApiRepositoryImpl(this.pokeApi);
         PokemonSpecieApiRepository specieRepository = new PokemonSpecieApiRepositoryImpl(this.pokeApi);
@@ -61,7 +70,7 @@ public class PokemonNationalDbRepositoryAdapter implements FindGenericRepository
         Thread specie = new Thread(() -> {
             specieRepository.getSpecieFromNationalDataBase(Integer.valueOf(id.toString()));
             evolutionRepository.getEvolutionChainFromNationalDataBase(Integer.valueOf(
-                    specieRepository.getPokemonSpecie().map(PokemonSpecieApi::getIdEvolutionChain)
+                    specieRepository.getPokemonSpecie().map(PokemonSpecieNationalDb::getIdEvolutionChain)
                             .orElse(0L).toString()));
         });
 
@@ -73,14 +82,14 @@ public class PokemonNationalDbRepositoryAdapter implements FindGenericRepository
         return getPokemon(evolutionRepository, specieRepository, pokemonRepository);
     }
 
-    private Optional<PokemonApi> getPokemon(EvolutionChainApiRepository evolutionRepository,
-                                            PokemonSpecieApiRepository specieRepository,
-                                            PokemonApiRepository pokemonRepository) {
+    private Optional<PokemonNationalDb> getPokemon(EvolutionChainApiRepository evolutionRepository,
+                                                   PokemonSpecieApiRepository specieRepository,
+                                                   PokemonApiRepository pokemonRepository) {
 
-        Optional<PokemonApi> pokemon = pokemonRepository.getPokemon();
+        Optional<PokemonNationalDb> pokemon = pokemonRepository.getPokemon();
 
         pokemon.ifPresent(i -> {
-            i.setSpecie(specieRepository.getPokemonSpecie().orElseGet(() -> PokemonSpecieApi.builder().build()));
+            i.setSpecie(specieRepository.getPokemonSpecie().orElseGet(() -> PokemonSpecieNationalDb.builder().build()));
             i.getSpecie().setEvolveTo(evolutionRepository.getEvolutions(i.getNumber()).orElse(null));
         });
 

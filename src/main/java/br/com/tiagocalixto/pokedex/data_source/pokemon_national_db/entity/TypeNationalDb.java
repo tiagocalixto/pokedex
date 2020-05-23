@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class TypeApi implements Serializable {
+public class TypeNationalDb implements Serializable {
 
     private String description;
 }

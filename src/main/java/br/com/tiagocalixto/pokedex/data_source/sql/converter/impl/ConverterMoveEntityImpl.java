@@ -44,7 +44,7 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
         moveEntity.setPp(move.getPp());
         moveEntity.setAbout(move.getAbout());
         moveEntity.setAccuracy(move.getAccuracy());
-        convertType.convertToEntity(Optional.of(move.getType())).ifPresent(moveEntity::setType);
+        convertType.convertToEntity(Optional.ofNullable(move.getType())).ifPresent(moveEntity::setType);
 
         return Optional.of(moveEntity);
     }
@@ -64,7 +64,7 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
             move.setPp(item.getPp());
             move.setAbout(item.getAbout());
             move.setAccuracy(item.getAccuracy());
-            convertType.convertToDomain(Optional.of(item.getType())).ifPresent(move::setType);
+            convertType.convertToDomain(Optional.ofNullable(item.getType())).ifPresent(move::setType);
         });
 
         return Optional.of(move);

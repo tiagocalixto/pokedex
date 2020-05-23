@@ -1,11 +1,11 @@
-package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.impl;
+package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl;
 
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.AbilityApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.MoveApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.TypeApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonStatsApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.PokemonApiRepository;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.AbilityNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.MoveNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.TypeNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.pokemon.PokemonStatsNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.PokemonApiRepository;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
 import me.sargunvohra.lib.pokekotlin.model.*;
 
@@ -34,12 +34,13 @@ public class PokemonApiRepositoryImpl implements PokemonApiRepository {
     }
 
     @Override
-    public Optional<PokemonApi> getPokemon() {
+    public Optional<PokemonNationalDb> getPokemon() {
 
         if (this.pokemon == null)
             return Optional.empty();
 
-        return Optional.of(PokemonApi.builder()
+        return Optional.of(PokemonNationalDb.builder()
+                .id(Long.valueOf(this.pokemon.getId()))
                 .name(this.pokemon.getName())
                 .number(Long.valueOf(this.pokemon.getId()))
                 .height(BigDecimal.valueOf(this.pokemon.getHeight()))
@@ -51,9 +52,9 @@ public class PokemonApiRepositoryImpl implements PokemonApiRepository {
                 .build());
     }
 
-    private PokemonStatsApi getStats(List<PokemonStat> stat) {
+    private PokemonStatsNationalDb getStats(List<PokemonStat> stat) {
 
-        return PokemonStatsApi.builder()
+        return PokemonStatsNationalDb.builder()
                 .attack(stat.stream()
                         .filter(item -> item.getStat().getName().equalsIgnoreCase(ATTACK))
                         .mapToLong(PokemonStat::getBaseStat)
@@ -81,30 +82,30 @@ public class PokemonApiRepositoryImpl implements PokemonApiRepository {
                 .build();
     }
 
-    private List<AbilityApi> getAbility(List<PokemonAbility> abilities) {
+    private List<AbilityNationalDb> getAbility(List<PokemonAbility> abilities) {
 
         return abilities.stream()
-                .map(item -> AbilityApi.builder()
+                .map(item -> AbilityNationalDb.builder()
                         .about(EMPTY)
                         .description(item.getAbility().getName())
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private List<MoveApi> getMove(List<PokemonMove> moves) {
+    private List<MoveNationalDb> getMove(List<PokemonMove> moves) {
 
         return moves.stream()
-                .map(item -> MoveApi.builder()
+                .map(item -> MoveNationalDb.builder()
                         .about(EMPTY)
                         .description(item.getMove().getName())
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private List<TypeApi> getType(List<PokemonType> types) {
+    private List<TypeNationalDb> getType(List<PokemonType> types) {
 
         return types.stream()
-                .map(item -> TypeApi.builder()
+                .map(item -> TypeNationalDb.builder()
                         .description(item.getType().getName())
                         .build())
                 .collect(Collectors.toList());

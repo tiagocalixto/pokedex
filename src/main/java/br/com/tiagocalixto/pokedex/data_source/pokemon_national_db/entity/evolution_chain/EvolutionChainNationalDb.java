@@ -14,10 +14,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class EvolutionChainPokemonApi implements Serializable {
+public class EvolutionChainNationalDb implements Serializable {
 
     private String name;
     private Long number;
     private Long idChain;
-    private List<EvolutionChainEvolveToApi> evolveTo;
+    private List<EvolutionChainEvolveToNationalDb> evolveTo;
 }

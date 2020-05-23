@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class MoveApi implements Serializable {
+public class MoveNationalDb implements Serializable {
 
     private String description;
     private Long pp;

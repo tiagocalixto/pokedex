@@ -1,11 +1,10 @@
-package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.impl;
+package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl;
 
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolution_chain.EvolutionChainEvolveToApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolution_chain.EvolutionChainPokemonApi;
-import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.EvolutionChainApiRepository;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolution_chain.EvolutionChainEvolveToNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.evolution_chain.EvolutionChainNationalDb;
+import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.EvolutionChainApiRepository;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
 import me.sargunvohra.lib.pokekotlin.model.ChainLink;
-import me.sargunvohra.lib.pokekotlin.model.EvolutionChain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiRepository {
 
-    private EvolutionChain chain;
+    private me.sargunvohra.lib.pokekotlin.model.EvolutionChain chain;
     private PokeApi pokeApi;
 
     public EvolutionChainApiRepositoryImpl(PokeApi pokeApi) {
@@ -30,18 +29,18 @@ public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiReposit
     }
 
     @Override
-    public Optional<EvolutionChainPokemonApi> getEvolutions(Long number) {
+    public Optional<EvolutionChainNationalDb> getEvolutions(Long number) {
 
         if (this.chain == null)
             return Optional.empty();
 
-        List<EvolutionChainPokemonApi> allPokemonOnChain = new ArrayList<>();
+        List<EvolutionChainNationalDb> allPokemonOnChain = new ArrayList<>();
         allPokemonOnChain.add(getFirstPokemonOfChain());
         List<ChainLink> nextLevelChain = chain.getChain().getEvolvesTo();
 
         while (!nextLevelChain.isEmpty()) {
 
-            List<EvolutionChainPokemonApi> listNextEvolveTo = new ArrayList<>();
+            List<EvolutionChainNationalDb> listNextEvolveTo = new ArrayList<>();
             List<ChainLink> nextLevelSecondary = new ArrayList<>();
 
             nextLevelChain.forEach(item -> {
@@ -56,9 +55,9 @@ public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiReposit
         return Optional.of(getEvolutionByNumber(allPokemonOnChain, number));
     }
 
-    private EvolutionChainPokemonApi getFirstPokemonOfChain() {
+    private EvolutionChainNationalDb getFirstPokemonOfChain() {
 
-        return EvolutionChainPokemonApi.builder()
+        return EvolutionChainNationalDb.builder()
                 .name(chain.getChain().getSpecies().getName())
                 .number(Long.valueOf(chain.getChain().getSpecies().getId()))
                 .idChain(Long.valueOf(chain.getId()))
@@ -66,9 +65,9 @@ public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiReposit
                 .build();
     }
 
-    private EvolutionChainPokemonApi getNextPokemonOfChain(ChainLink evolveTo) {
+    private EvolutionChainNationalDb getNextPokemonOfChain(ChainLink evolveTo) {
 
-        return EvolutionChainPokemonApi.builder()
+        return EvolutionChainNationalDb.builder()
                 .name(evolveTo.getSpecies().getName())
                 .number(Long.valueOf(evolveTo.getSpecies().getId()))
                 .idChain(Long.valueOf(chain.getId()))
@@ -76,17 +75,17 @@ public class EvolutionChainApiRepositoryImpl implements EvolutionChainApiReposit
                 .build();
     }
 
-    private List<EvolutionChainEvolveToApi> getListEvolveTo(List<ChainLink> evolveTo) {
+    private List<EvolutionChainEvolveToNationalDb> getListEvolveTo(List<ChainLink> evolveTo) {
 
         return evolveTo.stream()
-                .map(item -> EvolutionChainEvolveToApi.builder()
+                .map(item -> EvolutionChainEvolveToNationalDb.builder()
                         .name(item.getSpecies().getName())
                         .number(Long.valueOf(item.getSpecies().getId()))
                         .build())
                 .collect(Collectors.toList());
     }
 
-    private EvolutionChainPokemonApi getEvolutionByNumber(List<EvolutionChainPokemonApi> evolveToList, Long number) {
+    private EvolutionChainNationalDb getEvolutionByNumber(List<EvolutionChainNationalDb> evolveToList, Long number) {
 
         return evolveToList.stream()
                 .filter(item -> item.getNumber().equals(number))
