@@ -60,7 +60,7 @@ public class ConverterPokemonNationalDbImpl implements ConverterNationalDb<Pokem
             pokemon.setWeight(item.getWeight());
             pokemon.setHeight(item.getHeight());
             pokemon.setAbout(EMPTY);
-            pokemon.setUrlPicture(EMPTY);
+            pokemon.setUrlPicture(item.getUrlPicture());
             this.convertStats(Optional.ofNullable(item.getStats())).ifPresent(pokemon::setStats);
             pokemon.setType(this.typeConverter.convertToDomainList(item.getType()));
             pokemon.setMove(this.convertPokemonMove(item.getMove()));

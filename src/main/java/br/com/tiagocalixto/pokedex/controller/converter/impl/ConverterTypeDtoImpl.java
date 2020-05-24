@@ -20,9 +20,9 @@ public class ConverterTypeDtoImpl implements ConverterDto<TypeDto, Type> {
 
         TypeDto typeDto = TypeDto.builder().build();
 
-        domain.ifPresent(item -> {
-            typeDto.setDescription(item.getDescription());
-        });
+        domain.ifPresent(item ->
+            typeDto.setDescription(item.getDescription())
+        );
 
         return Optional.of(typeDto);
     }
@@ -36,9 +36,9 @@ public class ConverterTypeDtoImpl implements ConverterDto<TypeDto, Type> {
 
         Type type = Type.builder().build();
 
-        dto.ifPresent(item -> {
-            type.setDescription(item.getDescription());
-        });
+        dto.ifPresent(item ->
+            type.setDescription(item.getDescription())
+        );
 
         return Optional.of(type);
     }

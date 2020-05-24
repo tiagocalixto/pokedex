@@ -45,6 +45,7 @@ public class PokemonApiRepositoryImpl implements PokemonApiRepository {
                 .number(Long.valueOf(this.pokemon.getId()))
                 .height(BigDecimal.valueOf(this.pokemon.getHeight()))
                 .weight(Long.valueOf(this.pokemon.getWeight()))
+                .urlPicture("https://img.pokemondb.net/artwork/" + this.pokemon.getName().toLowerCase() + ".jpg")
                 .stats(this.getStats(this.pokemon.getStats()))
                 .ability(this.getAbility(this.pokemon.getAbilities()))
                 .move(this.getMove(this.pokemon.getMoves()))

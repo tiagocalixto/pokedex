@@ -72,7 +72,7 @@ public class PokemonDto implements Serializable {
     @Pattern(regexp = "[(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)",
             message = URL_PICTURE_INVALID_FORMAT, groups = SecondStepValidation.class)
     @ApiModelProperty(notes = "Url with pokemon picture", dataType = "string",
-            example = "https://img.pokemondb.net/artwork/large/squirtle.jpg", position = 6)
+            example = "https://img.pokemondb.net/artwork/squirtle.jpg", position = 6)
     private String urlPicture;
 
     @NotNull(message = STATS_IS_REQUIRED, groups = FirstStepValidation.class)

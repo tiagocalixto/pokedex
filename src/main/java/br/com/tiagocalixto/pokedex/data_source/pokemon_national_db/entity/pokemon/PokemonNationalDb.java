@@ -29,6 +29,7 @@ public class PokemonNationalDb implements Serializable {
     private String name;
     private Long weight;
     private BigDecimal height;
+    private String urlPicture;
     private PokemonStatsNationalDb stats;
     private List<TypeNationalDb> type;
     private PokemonSpecieNationalDb specie;

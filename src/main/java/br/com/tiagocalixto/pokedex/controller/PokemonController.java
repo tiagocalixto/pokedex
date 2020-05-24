@@ -3,16 +3,12 @@ package br.com.tiagocalixto.pokedex.controller;
 import br.com.tiagocalixto.pokedex.controller.adapter.PokemonControllerAdapter;
 import br.com.tiagocalixto.pokedex.controller.dto.pokemon.PokemonDto;
 import br.com.tiagocalixto.pokedex.controller.input_rules.groups.ValidationOrder;
-import br.com.tiagocalixto.pokedex.data_source_ports.FindGenericRepositoryPort;
-import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -58,8 +54,7 @@ public class PokemonController {
             @ApiResponse(code = 404, message = "Pokemon not found!")
     })
     @GetMapping(value = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PokemonDto> searchPokemonByName(@Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .']*$",
-            message = NAME_IS_INVALID)
+    public ResponseEntity<PokemonDto> searchPokemonByName(@Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .']*$", message = NAME_IS_INVALID)
                                                           @Length(min = 3, max = 50,
                                                                   message = NAME_INVALID_SIZE)
                                                           @PathVariable String name) {

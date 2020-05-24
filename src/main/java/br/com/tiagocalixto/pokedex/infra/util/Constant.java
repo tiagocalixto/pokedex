@@ -2,6 +2,8 @@ package br.com.tiagocalixto.pokedex.infra.util;
 
 public final class Constant {
 
+    private Constant(){}
+
 
     public static final String INVALID_ABBREVIATED_GENERIC = "Invalid pokemon abbreviated!";
     public static final String INVALID_NAME_OR_NUMBER = "Number between 1 and 151 and/or pokemon name is required!";
@@ -9,7 +11,6 @@ public final class Constant {
     public static final String NAME_IS_REQUIRED = "Name is required!";
     public static final String NAME_IS_INVALID = "Name is invalid. Field accept's only Letters!";
     public static final String NUMBER_IS_REQUIRED = "Number can't be null or empty!";
-    public static final String NUMBER_INVALID_CHAR = "Number must be a numeric value!";
     public static final String NUMBER_INVALID_RANGE = "Number must be between 1 and 151!";
     public static final String WEIGHT_IS_REQUIRED = "Weight is required!";
     public static final String WEIGHT_INVALID_RANGE = "Weight must be between 1 and 1000 kg!";

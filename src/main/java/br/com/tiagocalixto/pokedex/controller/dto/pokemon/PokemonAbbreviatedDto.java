@@ -26,7 +26,7 @@ import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@ApiModel(value = "PokemonAbbreviated", subTypes = {Object.class})
+@ApiModel(value = "Pokemon Evolution", subTypes = {Object.class})
 @PokemonAbbreviatedRule(groups = FirstStepValidation.class)
 public class PokemonAbbreviatedDto implements Serializable {
 
@@ -35,7 +35,7 @@ public class PokemonAbbreviatedDto implements Serializable {
     @Builder.Default
     @Min(value = 1, message = NUMBER_INVALID_RANGE, groups = SecondStepValidation.class)
     @Max(value = 151, message = NUMBER_INVALID_RANGE, groups = SecondStepValidation.class)
-    @ApiModelProperty(notes = "PokemonDto number", dataType = "string", example = "8", position = 1, hidden = true)
+    @ApiModelProperty(notes = "PokemonDto number", dataType = "string", example = "8", position = 1)
     private Long number = 0L;
 
     @JsonSetter(nulls = Nulls.SKIP)
