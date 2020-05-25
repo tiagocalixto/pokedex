@@ -10,7 +10,7 @@ import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.na
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl.EvolutionChainApiRepositoryImpl;
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl.PokemonApiRepositoryImpl;
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl.PokemonSpecieApiRepositoryImpl;
-import br.com.tiagocalixto.pokedex.data_source_ports.FindByNumericFieldPort;
+import br.com.tiagocalixto.pokedex.data_source_ports.FindEntityByRepositoryPort;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import lombok.SneakyThrows;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component("pokemonNationalDb")
-public class PokemonNationalDbRepositoryAdapter implements FindByNumericFieldPort<Pokemon> {
+public class PokemonNationalDbRepositoryAdapter implements FindEntityByRepositoryPort<Pokemon, Long> {
 
     private PokeApi pokeApi;
     private PokemonCache cache;

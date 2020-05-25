@@ -24,6 +24,10 @@
             <name>bintray</name>
             <url>https://jcenter.bintray.com</url>
         </repository>
+        <repository>
+            <id>maven2</id>
+            <url>https://www.dcm4che.org/maven2/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -61,6 +65,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-soundex</artifactId>
+            <version>5.22.1</version>
         </dependency>
 
         <!--POKEDEX API-->

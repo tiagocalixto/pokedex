@@ -2,7 +2,7 @@ package br.com.tiagocalixto.pokedex.data_source_ports;
 
 import java.util.Optional;
 
-public interface FindByStringFieldPort<T> {
+public interface FindEntityByRepositoryPort<T, B> {
 
-    Optional<T> findBy(String value);
+    Optional<T> findBy(B value);
 }

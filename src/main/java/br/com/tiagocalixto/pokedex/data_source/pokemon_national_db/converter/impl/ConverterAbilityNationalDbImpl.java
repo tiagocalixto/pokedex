@@ -20,9 +20,9 @@ public class ConverterAbilityNationalDbImpl implements ConverterNationalDb<Abili
 
         Ability ability = Ability.builder().build();
 
-        nationalDbEntity.ifPresent(item -> {
-            ability.setDescription(item.getDescription());
-        });
+        nationalDbEntity.ifPresent(item ->
+            ability.setDescription(item.getDescription())
+        );
 
         return Optional.of(ability);
     }

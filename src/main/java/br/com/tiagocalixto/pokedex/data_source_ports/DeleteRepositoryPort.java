@@ -1,6 +1,6 @@
 package br.com.tiagocalixto.pokedex.data_source_ports;
 
-public interface DeletePort<T> {
+public interface DeleteRepositoryPort<T> {
 
     void delete(T domain);
 }

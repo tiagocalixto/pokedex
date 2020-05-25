@@ -11,7 +11,7 @@ public class PokemonControllerAdapterImpl implements PokemonControllerAdapter {
 
 
     @Override
-    public PokemonDto findByName(String name) {
+    public List<PokemonDto> findByName(String name) {
         return null;
     }
 

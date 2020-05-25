@@ -40,8 +40,7 @@ public class PokemonController {
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "", response = PokemonDto.class),
-            @ApiResponse(code = 404, message = "Pokemon not found!")
-    })
+            @ApiResponse(code = 404, message = "Pokemon not found!")})
     @GetMapping(value = "/number/{number}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PokemonDto> searchPokemonByNumber(@Min(value = 1, message = NUMBER_INVALID_RANGE)
                                                             @Max(value = 151, message = NUMBER_INVALID_RANGE)
@@ -52,21 +51,19 @@ public class PokemonController {
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "", response = PokemonDto.class),
-            @ApiResponse(code = 404, message = "Pokemon not found!")
-    })
+            @ApiResponse(code = 404, message = "Pokemon not found!")})
     @GetMapping(value = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PokemonDto> searchPokemonByName(@Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .']*$", message = NAME_IS_INVALID)
-                                                          @Length(min = 3, max = 50,
-                                                                  message = NAME_INVALID_SIZE)
-                                                          @PathVariable String name) {
+    public ResponseEntity<List<PokemonDto>> searchPokemonByName(@Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .']*$", message = NAME_IS_INVALID)
+                                                                @Length(min = 3, max = 50,
+                                                                        message = NAME_INVALID_SIZE)
+                                                                @PathVariable String name) {
 
         return new ResponseEntity<>(useCaseAdapter.findByName(name), HttpStatus.OK);
     }
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "", response = PokemonDto.class),
-            @ApiResponse(code = 404, message = "Any Pokemon founded!")
-    })
+            @ApiResponse(code = 404, message = "Any Pokemon founded!")})
     @GetMapping(value = "/pageable/{pageNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PokemonDto>> searchPokemonPageable(@PathVariable Integer pageNumber) {
 
@@ -89,7 +86,7 @@ public class PokemonController {
             @ApiResponse(code = 404, message = "Pokemon not found!"),
             @ApiResponse(code = 500, message = "Failure", response = Exception.class)})
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PokemonDto> UpdatePokemon(@Validated(ValidationOrder.class) @RequestBody PokemonDto payload) {
+    public ResponseEntity<PokemonDto> updatePokemon(@Validated(ValidationOrder.class) @RequestBody PokemonDto payload) {
 
         return new ResponseEntity<>(useCaseAdapter.update(payload), HttpStatus.OK);
     }
@@ -97,8 +94,7 @@ public class PokemonController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = ""),
             @ApiResponse(code = 400, message = "Bad request"),
-            @ApiResponse(code = 404, message = "Pokemon not found")
-    })
+            @ApiResponse(code = 404, message = "Pokemon not found")})
     @DeleteMapping(value = "/{number}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HttpStatus> deletePokemon(@Min(value = 1, message = NUMBER_INVALID_RANGE)
                                                     @Max(value = 151, message = NUMBER_INVALID_RANGE)

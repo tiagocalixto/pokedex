@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+@Component("pokemonConverterEntity")
 public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEntity, Pokemon> {
 
     private ConverterEntitySql<TypeEntity, Type> convertType;

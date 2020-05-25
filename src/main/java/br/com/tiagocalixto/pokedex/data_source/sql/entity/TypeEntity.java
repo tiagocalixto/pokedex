@@ -1,7 +1,6 @@
 package br.com.tiagocalixto.pokedex.data_source.sql.entity;
 
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.pokemon.PokemonTypeEntity;
-import br.com.tiagocalixto.pokedex.data_source.sql.entity.pokemon.PokemonWeaknessesEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

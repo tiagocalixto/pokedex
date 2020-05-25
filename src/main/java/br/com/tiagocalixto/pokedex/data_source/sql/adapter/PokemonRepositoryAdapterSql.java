@@ -10,12 +10,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component("PokemonRepositorySql")
-public class PokemonRepositoryAdapterSql implements InsertPort<Pokemon>, UpdatePort<Pokemon>, DeletePort<Long>,
-        FindAllPageablePort<Pokemon>, FindByNumericFieldPort<Pokemon>, FindByStringFieldPort<Pokemon>, ExistsPort<Long> {
+public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon>, UpdateRepositoryPort<Pokemon>, DeleteRepositoryPort<Long>,
+        FindAllPageableRepositoryPort<Pokemon>, FindEntityByRepositoryPort<Pokemon, Long>, FindListByRepositoryPort<Pokemon, String>, ExistsRepositoryPort<Long> {
 
     private PokemonRepository repository;
     private ConverterEntitySql<PokemonEntity, Pokemon> converter;
@@ -49,9 +49,14 @@ public class PokemonRepositoryAdapterSql implements InsertPort<Pokemon>, UpdateP
     }
 
     @Override
-    public Optional<Pokemon> findBy(String name) {
+    public List<Pokemon> findListBy(String name) {
 
-        return converter.convertToDomain(repository.findFirstByNameIgnoreCase(name));
+        Set<PokemonEntity> pokemon = repository.findAllByPhoneticName(name);
+
+        return pokemon.stream()
+                .map(item -> converter.convertToDomain(repository.findById(item.getId())).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -72,30 +77,4 @@ public class PokemonRepositoryAdapterSql implements InsertPort<Pokemon>, UpdateP
 
         return repository.existsById(id);
     }
-
-    /*
-    @Override
-    public void saveHistoric(Pokemon pokemon, String action) {
-
-        long version = 1L;
-
-        if (!action.equalsIgnoreCase(INSERT)) {
-
-            List<HistoricEntity> historicList = findHistoricByIdEntity(pokemon.getId());
-            HistoricEntity lastHistoric = historicList.stream().max(Comparator.comparing(HistoricEntity::getVersion))
-                    .orElse(HistoricEntity.builder().version(0L).build());
-            version = lastHistoric.getVersion() + 1;
-        }
-
-        HistoricEntity historic = HistoricEntity.builder()
-                .id(0L)
-                .action(action)
-                .idEntity(pokemon.getId())
-                .entity(Util.convertObjectToJson(pokemon))
-                .version(version)
-                .build();
-
-        saveHistoric(historic);
-    }
-    */
 }

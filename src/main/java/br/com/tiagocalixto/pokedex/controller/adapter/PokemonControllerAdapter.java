@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PokemonControllerAdapter {
 
-    PokemonDto findByName(String name);
+    List<PokemonDto> findByName(String name);
     PokemonDto findByNumber(Long number);
     List<PokemonDto> pageableListPokemon(Integer pageNumber);
     PokemonDto save(PokemonDto pokemon);

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
+@Component("moveConverterEntity")
 public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, Move> {
 
     private ConverterEntitySql<TypeEntity, Type> convertType;

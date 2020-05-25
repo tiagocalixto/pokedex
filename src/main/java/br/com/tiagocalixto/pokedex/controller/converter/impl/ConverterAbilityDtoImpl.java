@@ -20,9 +20,9 @@ public class ConverterAbilityDtoImpl implements ConverterDto<AbilityDto, Ability
 
         AbilityDto abilityDto = AbilityDto.builder().build();
 
-        domain.ifPresent(item -> {
-            abilityDto.setDescription(item.getDescription());
-        });
+        domain.ifPresent(item ->
+            abilityDto.setDescription(item.getDescription())
+        );
 
         return Optional.of(abilityDto);
     }
@@ -36,9 +36,9 @@ public class ConverterAbilityDtoImpl implements ConverterDto<AbilityDto, Ability
 
         Ability ability = Ability.builder().build();
 
-        dto.ifPresent(item -> {
-            ability.setDescription(item.getDescription());
-        });
+        dto.ifPresent(item ->
+            ability.setDescription(item.getDescription())
+        );
 
         return Optional.of(ability);
     }

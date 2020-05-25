@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
+@Component("typeConverterEntity")
 public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity, Type> {
 
     private TypeRepository repository;
