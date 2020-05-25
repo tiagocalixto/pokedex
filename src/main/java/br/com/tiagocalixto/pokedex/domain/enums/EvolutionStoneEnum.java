@@ -6,7 +6,8 @@ public enum EvolutionStoneEnum {
     WATER_STONE("WATER_STONE"),
     THUNDER_STONE("THUNDER_STONE"),
     LEAF_STONE("LEAF_STONE"),
-    MOON_STONE("MOON_STONE");
+    MOON_STONE("MOON_STONE"),
+    NOT_INFORMED("NOT_INFORMED");
 
 
     private String description;
