@@ -4,6 +4,7 @@ import br.com.tiagocalixto.pokedex.data_source.sql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.TypeEntity;
 import br.com.tiagocalixto.pokedex.data_source.sql.repository.TypeRepository;
 import br.com.tiagocalixto.pokedex.domain.Type;
+import br.com.tiagocalixto.pokedex.domain.enums.TypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity
     private TypeRepository repository;
 
     @Autowired
-    public ConverterTypeEntitySqlImpl(TypeRepository repository){
+    public ConverterTypeEntitySqlImpl(TypeRepository repository) {
         this.repository = repository;
     }
 
@@ -29,10 +30,11 @@ public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity
 
         Type type = domain.orElseGet(Type::new);
 
-        TypeEntity typeEntity = repository.findFirstByDescriptionIgnoreCaseAndIgnoreAccents(type.getDescription())
+        TypeEntity typeEntity = repository
+                .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(type.getDescription().toString())
                 .orElse(TypeEntity.builder()
                         .id(0L)
-                        .description(type.getDescription())
+                        .description(type.getDescription().toString())
                         .build()
                 );
 
@@ -49,7 +51,7 @@ public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity
         Type type = Type.builder().build();
 
         entity.ifPresent(item ->
-                type.setDescription(item.getDescription())
+                type.setDescription(TypeEnum.valueOf(item.getDescription().trim().toUpperCase()))
         );
 
         return Optional.of(type);

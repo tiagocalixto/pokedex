@@ -3,6 +3,7 @@ package br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.converter.im
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.converter.ConverterNationalDb;
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.entity.TypeNationalDb;
 import br.com.tiagocalixto.pokedex.domain.Type;
+import br.com.tiagocalixto.pokedex.domain.enums.TypeEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -21,7 +22,7 @@ public class ConverterTypeNationalDbImpl implements ConverterNationalDb<TypeNati
         Type type = Type.builder().build();
 
         nationalDbEntity.ifPresent(item ->
-            type.setDescription(item.getDescription())
+            type.setDescription(TypeEnum.valueOf(item.getDescription().toUpperCase().trim()))
         );
 
         return Optional.of(type);

@@ -1,5 +1,6 @@
 package br.com.tiagocalixto.pokedex.domain;
 
+import br.com.tiagocalixto.pokedex.domain.enums.TypeEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,5 +16,5 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Type implements Serializable {
 
-    private String description;
+    private TypeEnum description;
 }

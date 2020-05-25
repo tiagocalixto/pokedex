@@ -4,6 +4,7 @@ import br.com.tiagocalixto.pokedex.controller.dto.TypeDto;
 import br.com.tiagocalixto.pokedex.controller.converter.ConverterDto;
 import br.com.tiagocalixto.pokedex.controller.dto.enums.TypeDtoEnum;
 import br.com.tiagocalixto.pokedex.domain.Type;
+import br.com.tiagocalixto.pokedex.domain.enums.TypeEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class ConverterTypeDtoImpl implements ConverterDto<TypeDto, Type> {
         TypeDto typeDto = TypeDto.builder().build();
 
         domain.ifPresent(item ->
-            typeDto.setDescription(TypeDtoEnum.valueOf(item.getDescription().toUpperCase().trim()))
+            typeDto.setDescription(TypeDtoEnum.valueOf(item.getDescription().toString()))
         );
 
         return Optional.of(typeDto);
@@ -38,7 +39,7 @@ public class ConverterTypeDtoImpl implements ConverterDto<TypeDto, Type> {
         Type type = Type.builder().build();
 
         dto.ifPresent(item ->
-            type.setDescription(item.getDescription().toString())
+            type.setDescription(TypeEnum.valueOf(item.getDescription().toString()))
         );
 
         return Optional.of(type);
