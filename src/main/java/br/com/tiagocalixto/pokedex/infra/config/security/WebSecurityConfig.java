@@ -14,8 +14,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableConfigurationProperties(UserConfiguration.class)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+
     private UserConfiguration configuration;
+
+    @Autowired
+    public WebSecurityConfig(UserConfiguration configuration) {
+
+        this.configuration = configuration;
+    }
 
 
     @Override

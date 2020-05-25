@@ -24,7 +24,7 @@ public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity
     @Override
     public Optional<TypeEntity> convertToEntity(Optional<Type> domain) {
 
-        if (domain.isEmpty())
+        if (domain.isEmpty()) //TODO - CREATE EXTENSION unaccent; on postgres - put in script deploy
             return Optional.empty();
 
         Type type = domain.orElseGet(Type::new);

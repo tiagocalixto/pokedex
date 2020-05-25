@@ -1,8 +1,8 @@
 package br.com.tiagocalixto.pokedex.controller.dto;
 
+import br.com.tiagocalixto.pokedex.controller.dto.enums.TypeDtoEnum;
 import br.com.tiagocalixto.pokedex.controller.input_rules.groups.FirstStepValidation;
-import br.com.tiagocalixto.pokedex.controller.input_rules.groups.SecondStepValidation;
-import br.com.tiagocalixto.pokedex.controller.input_rules.groups.ThirdStepValidation;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,12 +11,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.util.Constant.DESCRIPTION_FIELD_IS_REQUIRED;
 
 
 @Data
@@ -28,10 +26,11 @@ import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
 public class TypeDto implements Serializable {
 
 
-    @NotBlank(message = DESCRIPTION_FIELD_IS_REQUIRED, groups = FirstStepValidation.class)
-    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú ']*$", message = DESCRIPTION_FIELD_IS_INVALID, groups = SecondStepValidation.class)
-    @Size(min = 3, max = 50, message = DESCRIPTION_LENGTH_INVALID, groups = ThirdStepValidation.class)
-    @ApiModelProperty(notes = "Type description", dataType = "string", example = "Water", position = 1)
-    private String description;
+    @NotNull(message = DESCRIPTION_FIELD_IS_REQUIRED, groups = FirstStepValidation.class)
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+    @ApiModelProperty(notes = "Type description", dataType = "string",
+            example = "GRASS, POISON, FIRE, FLYING, WATER, BUG, NORMAL, ELECTRIC, GROUND, FAIRY, " +
+                    "FIGHTING, PSYCHIC, ROCK, STEEL, ICE, GHOST, DRAGON ", position = 1)
+    private TypeDtoEnum description;
 
 }

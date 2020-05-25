@@ -16,5 +16,4 @@ import java.io.Serializable;
 public class AbilityNationalDb implements Serializable {
 
     private String description;
-    private String about;
 }

@@ -49,9 +49,9 @@ public final class Constant {
     public static final String DUPLICATED_ITEM_ABILITY = "Detected duplicated item in ability list!";
     public static final String DUPLICATED_ITEM_WEAKNESS = "Detected duplicated item in weakness list!";
     public static final String DUPLICATED_ITEM_GENERIC = "Has a duplicated item in this list!";
-    public static final String INSERT = "Insert";
-    public static final String UPDATE = "Update";
-    public static final String DELETE = "Delete";
+    public static final String INSERT = "INSERT";
+    public static final String UPDATE = "UPDATE";
+    public static final String DELETE = "DELETE";
     public static final String ATTACK = "attack";
     public static final String DEFENSE = "defense";
     public static final String SPEED = "speed";
@@ -59,8 +59,8 @@ public final class Constant {
     public static final String SPECIAL_DEFENSE = "special-defense";
     public static final String SPECIAL_ATTACK = "special-attack";
     public static final String EMPTY = "";
-    public static final Long FIRST_NUMBER = 1L;
-    public static final Long LAST_NUMBER = 151L;
+    public static final Long FIRST_POKEMON_NUMBER = 1L;
+    public static final Long LAST_POKEMON_NUMBER = 151L;
 
 }
 

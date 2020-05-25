@@ -110,6 +110,6 @@ public class PokemonDto implements Serializable {
 
     @HasDuplicatedItemInList(message = DUPLICATED_ITEM_WEAKNESS)
     @Valid
-    @ApiModelProperty(notes = "Ability", dataType = "array", position = 13)
+    @ApiModelProperty(notes = "weakness", dataType = "array", position = 13)
     private List<TypeDto> weakness;
 }

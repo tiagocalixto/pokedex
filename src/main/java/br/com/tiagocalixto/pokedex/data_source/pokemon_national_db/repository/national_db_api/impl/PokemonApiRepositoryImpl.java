@@ -87,7 +87,6 @@ public class PokemonApiRepositoryImpl implements PokemonApiRepository {
 
         return abilities.stream()
                 .map(item -> AbilityNationalDb.builder()
-                        .about(EMPTY)
                         .description(item.getAbility().getName())
                         .build())
                 .collect(Collectors.toList());

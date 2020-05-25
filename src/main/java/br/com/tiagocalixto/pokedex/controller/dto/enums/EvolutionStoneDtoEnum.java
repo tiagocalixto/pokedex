@@ -2,11 +2,11 @@ package br.com.tiagocalixto.pokedex.controller.dto.enums;
 
 public enum EvolutionStoneDtoEnum {
 
-    FIRE_STONE("Fire stone"),
-    WATER_STONE("Water stone"),
-    THUNDER_STONE("Thunder stone"),
-    LEAF_STONE("Leaf stone"),
-    MOON_STONE("Moon stone");
+    FIRE_STONE("FIRE_STONE"),
+    WATER_STONE("WATER_STONE"),
+    THUNDER_STONE("THUNDER_STONE"),
+    LEAF_STONE("LEAF_STONE"),
+    MOON_STONE("MOON_STONE");
 
 
     private String description;

@@ -33,6 +33,7 @@ public class PokemonController {
 
     @Autowired
     public PokemonController(PokemonControllerAdapter useCaseAdapter) {
+
         this.useCaseAdapter = useCaseAdapter;
     }
 

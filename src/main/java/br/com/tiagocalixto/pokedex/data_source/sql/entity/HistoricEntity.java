@@ -29,7 +29,7 @@ public class HistoricEntity implements Serializable {
 
     @SuppressWarnings("squid:S1948")
     @Type(type = "jsonb")
-    @Column(name = "converter", nullable = false)
+    @Column(name = "entity", nullable = false, columnDefinition = "jsonb")
     private JsonNode entity;
 
     @Column(name = "version")

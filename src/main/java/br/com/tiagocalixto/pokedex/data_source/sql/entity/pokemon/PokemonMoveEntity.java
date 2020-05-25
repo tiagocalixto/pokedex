@@ -19,8 +19,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "pokemon_move")
-@SQLDelete(sql = "UPDATE pokemon_move SET deleted = true, audit_logical_delete_date = current_timestamp WHERE id = ?")
+@Table(name = "pokemon_moves")
+@SQLDelete(sql = "UPDATE pokemon_moves SET deleted = true, audit_logical_delete_date = current_timestamp WHERE id = ?")
 @Where(clause = "deleted != true")
 public class PokemonMoveEntity extends GenericEntity {
 

@@ -10,7 +10,7 @@ import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.na
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl.EvolutionChainApiRepositoryImpl;
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl.PokemonApiRepositoryImpl;
 import br.com.tiagocalixto.pokedex.data_source.pokemon_national_db.repository.national_db_api.impl.PokemonSpecieApiRepositoryImpl;
-import br.com.tiagocalixto.pokedex.data_source_ports.FindGenericRepositoryPort;
+import br.com.tiagocalixto.pokedex.data_source_ports.FindByNumericFieldPort;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import lombok.SneakyThrows;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component("pokemonNationalDb")
-public class PokemonNationalDbRepositoryAdapter implements FindGenericRepositoryPort<Pokemon> {
+public class PokemonNationalDbRepositoryAdapter implements FindByNumericFieldPort<Pokemon> {
 
     private PokeApi pokeApi;
     private PokemonCache cache;
@@ -37,24 +37,18 @@ public class PokemonNationalDbRepositoryAdapter implements FindGenericRepository
 
 
     @Override
-    public Optional<Pokemon> findById(Long id) {
+    public Optional<Pokemon> findBy(Long id) {
 
         Optional<PokemonNationalDb> entity = cache.findById(id);
 
         if (entity.isEmpty()) {
             entity = getPokemonFromNationalDataBase(id);
-            entity.ifPresent(item -> cache.save(item));
+            entity.ifPresent(cache::save);
         }
 
         return converter.convertToDomain(entity);
     }
 
-    @Override
-    public boolean isExistsById(Long id) {
-
-        PokemonSpecieApiRepository specieRepository = new PokemonSpecieApiRepositoryImpl(this.pokeApi);
-        return specieRepository.getPokemonSpecie().isPresent();
-    }
 
     @SneakyThrows
     private Optional<PokemonNationalDb> getPokemonFromNationalDataBase(Long id) {

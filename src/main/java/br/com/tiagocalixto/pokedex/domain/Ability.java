@@ -16,5 +16,4 @@ import java.io.Serializable;
 public class Ability implements Serializable {
 
     private String description;
-    private String about;
 }

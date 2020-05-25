@@ -1,36 +1,28 @@
 package br.com.tiagocalixto.pokedex.data_source.sql.adapter;
 
 import br.com.tiagocalixto.pokedex.data_source.sql.converter.ConverterEntitySql;
-import br.com.tiagocalixto.pokedex.data_source.sql.entity.HistoricEntity;
 import br.com.tiagocalixto.pokedex.data_source.sql.entity.pokemon.PokemonEntity;
-import br.com.tiagocalixto.pokedex.data_source.sql.repository.HistoricRepository;
 import br.com.tiagocalixto.pokedex.data_source.sql.repository.PokemonRepository;
+import br.com.tiagocalixto.pokedex.data_source_ports.*;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
-import br.com.tiagocalixto.pokedex.infra.util.Util;
-import br.com.tiagocalixto.pokedex.data_source_ports.PokemonFindRepositoryPort;
-import br.com.tiagocalixto.pokedex.data_source_ports.PokemonMaintenanceRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.INSERT;
-
 @Component("PokemonRepositorySql")
-public class PokemonRepositoryAdapterSql extends GenericAdapterSql implements PokemonFindRepositoryPort,
-                                                                              PokemonMaintenanceRepositoryPort {
+public class PokemonRepositoryAdapterSql implements InsertPort<Pokemon>, UpdatePort<Pokemon>, DeletePort<Long>,
+        FindAllPageablePort<Pokemon>, FindByNumericFieldPort<Pokemon>, FindByStringFieldPort<Pokemon>, ExistsPort<Long> {
 
     private PokemonRepository repository;
     private ConverterEntitySql<PokemonEntity, Pokemon> converter;
 
     @Autowired
-    public PokemonRepositoryAdapterSql(HistoricRepository historicRepository, PokemonRepository repository,
-                                       ConverterEntitySql<PokemonEntity, Pokemon> converter){
-        super(historicRepository);
+    public PokemonRepositoryAdapterSql(PokemonRepository repository,
+                                       ConverterEntitySql<PokemonEntity, Pokemon> converter) {
         this.repository = repository;
         this.converter = converter;
     }
@@ -57,13 +49,13 @@ public class PokemonRepositoryAdapterSql extends GenericAdapterSql implements Po
     }
 
     @Override
-    public Optional<Pokemon> findByName(String name) {
+    public Optional<Pokemon> findBy(String name) {
 
         return converter.convertToDomain(repository.findFirstByNameIgnoreCase(name));
     }
 
     @Override
-    public Optional<Pokemon> findByNumber(Long number) {
+    public Optional<Pokemon> findBy(Long number) {
 
         return converter.convertToDomain(repository.findFirstByNumber(number));
     }
@@ -76,17 +68,12 @@ public class PokemonRepositoryAdapterSql extends GenericAdapterSql implements Po
     }
 
     @Override
-    public Optional<Pokemon> findById(Long id) {
-
-        return converter.convertToDomain(repository.findById(id));
-    }
-
-    @Override
-    public boolean isExistsById(Long id) {
+    public boolean isExists(Long id) {
 
         return repository.existsById(id);
     }
 
+    /*
     @Override
     public void saveHistoric(Pokemon pokemon, String action) {
 
@@ -110,4 +97,5 @@ public class PokemonRepositoryAdapterSql extends GenericAdapterSql implements Po
 
         saveHistoric(historic);
     }
+    */
 }
