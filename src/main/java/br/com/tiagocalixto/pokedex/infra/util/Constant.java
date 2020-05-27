@@ -50,6 +50,7 @@ public final class Constant {
     public static final String DUPLICATED_ITEM_WEAKNESS = "Detected duplicated item in weakness list!";
     public static final String DUPLICATED_ITEM_GENERIC = "Has a duplicated item in this list!";
     public static final String INSERT = "INSERT";
+    public static final String BEFORE_UPDATE = "BEFORE_UPDATE";
     public static final String UPDATE = "UPDATE";
     public static final String DELETE = "DELETE";
     public static final String ATTACK = "attack";

@@ -2,11 +2,14 @@ package br.com.tiagocalixto.pokedex.use_case.impl;
 
 import br.com.tiagocalixto.pokedex.domain.Historic;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
-import br.com.tiagocalixto.pokedex.ports.data_base_ports.*;
+import br.com.tiagocalixto.pokedex.infra.util.Util;
+import br.com.tiagocalixto.pokedex.ports.data_source_ports.*;
 import br.com.tiagocalixto.pokedex.use_case.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -84,19 +87,44 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
         return isExistsRepository.isExistsById(number);
     }
 
+    @Transactional
     @Override
-    public Pokemon save(Pokemon domain) {
+    public Pokemon save(Pokemon pokemon) {
+
+        Pokemon pokemonSaved = null;
+        saveHistoric(pokemonSaved, INSERT);
         return null;
     }
 
+    @Transactional
     @Override
-    public Pokemon update(Pokemon domain) {
+    public Pokemon update(Pokemon pokemon) {
+
+        saveHistoric(pokemon, BEFORE_UPDATE);
+        Pokemon pokemonUpdated = null;
+        saveHistoric(pokemonUpdated, UPDATE);
         return null;
     }
 
+    @Transactional
     @Override
     public void delete(Long number) {
 
-        deleteRepository.delete(this.findById(number));
+        Pokemon pokemon = this.findById(number);
+        deleteRepository.delete(pokemon);
+        saveHistoric(pokemon, DELETE);
+    }
+
+    @Async
+    protected void saveHistoric(Pokemon pokemon, String action){
+
+        Historic historic = Historic.builder()
+                .id(0L)
+                .idEntity(pokemon.getId())
+                .action(action)
+                .entity(Util.convertObjectToJson(pokemon))
+                .build();
+
+        historicSaveUseCase.save(historic);
     }
 }
