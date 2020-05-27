@@ -61,6 +61,8 @@ public final class Constant {
     public static final String EMPTY = "";
     public static final Long FIRST_POKEMON_NUMBER = 1L;
     public static final Long LAST_POKEMON_NUMBER = 151L;
-
+    public static final String POKEMON_NOT_FOUND_BY_NUMBER = "No Pokemon found by number, number = ";
+    public static final String POKEMON_NOT_FOUND_BY_NAME = "No pokemon found by name, Name = ";
+    public static final String NAME = "name";
 }
 

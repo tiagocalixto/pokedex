@@ -1,6 +1,6 @@
 package br.com.tiagocalixto.pokedex.use_case.impl;
 
-import br.com.tiagocalixto.pokedex.ports.data_base_port.InsertRepositoryPort;
+import br.com.tiagocalixto.pokedex.ports.data_base_ports.InsertRepositoryPort;
 import br.com.tiagocalixto.pokedex.domain.Historic;
 import br.com.tiagocalixto.pokedex.use_case.SaveUseCase;
 import org.springframework.beans.factory.annotation.Autowired;

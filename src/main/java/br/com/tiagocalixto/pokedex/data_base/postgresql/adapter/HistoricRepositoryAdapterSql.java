@@ -3,7 +3,7 @@ package br.com.tiagocalixto.pokedex.data_base.postgresql.adapter;
 import br.com.tiagocalixto.pokedex.data_base.postgresql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_base.postgresql.entity.HistoricEntity;
 import br.com.tiagocalixto.pokedex.data_base.postgresql.repository.HistoricRepository;
-import br.com.tiagocalixto.pokedex.ports.data_base_port.InsertRepositoryPort;
+import br.com.tiagocalixto.pokedex.ports.data_base_ports.InsertRepositoryPort;
 import br.com.tiagocalixto.pokedex.domain.Historic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
