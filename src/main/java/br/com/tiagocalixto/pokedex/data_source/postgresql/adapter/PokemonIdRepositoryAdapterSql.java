@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Component("PokemonRepositorySql")
 public class PokemonIdRepositoryAdapterSql implements InsertRepositoryPort<Pokemon>, UpdateRepositoryPort<Pokemon>,
         DeleteRepositoryPort<Pokemon>, FindAllPageableRepositoryPort<Pokemon>, FindOneByIdRepositoryPort<Pokemon>,
-        FindAllByTextRepositoryPort<Pokemon>, ExistsByIdRepositoryPort {
+        FindAllByStringValueRepositoryPort<Pokemon>, ExistsByIdRepositoryPort {
 
     private PokemonRepository repository;
     private ConverterEntitySql<PokemonEntity, Pokemon> converter;

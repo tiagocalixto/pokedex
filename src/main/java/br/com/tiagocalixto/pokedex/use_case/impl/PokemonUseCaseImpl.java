@@ -22,7 +22,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
 
     //<editor-fold: properties>
     private FindOneByIdRepositoryPort<Pokemon> findByIdRepository;
-    private FindAllByTextRepositoryPort<Pokemon> findByNameRepository;
+    private FindAllByStringValueRepositoryPort<Pokemon> findByNameRepository;
     private FindAllPageableRepositoryPort<Pokemon> findPageableRepository;
     private ExistsByIdRepositoryPort isExistsRepository;
     private InsertRepositoryPort<Pokemon> insertRepository;
@@ -35,7 +35,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     //<editor-fold: constructor>
     @Autowired
     public PokemonUseCaseImpl (@Qualifier("PokemonRepositorySql") FindOneByIdRepositoryPort<Pokemon> findByIdRepository,
-                               @Qualifier("PokemonRepositorySql") FindAllByTextRepositoryPort<Pokemon> findByNameRepository,
+                               @Qualifier("PokemonRepositorySql") FindAllByStringValueRepositoryPort<Pokemon> findByNameRepository,
                                @Qualifier("PokemonRepositorySql") FindAllPageableRepositoryPort<Pokemon> findPageableRepository,
                                @Qualifier("PokemonRepositorySql") ExistsByIdRepositoryPort isExistsRepository,
                                @Qualifier("PokemonRepositorySql") InsertRepositoryPort<Pokemon> insertRepository,
