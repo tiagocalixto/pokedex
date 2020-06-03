@@ -6,6 +6,7 @@ public final class Constant {
 
 
     public static final String INVALID_ABBREVIATED_GENERIC = "Invalid pokemon abbreviated!";
+    public static final String INVALID_POKEMON_GENERIC = "Invalid pokemon!";
     public static final String INVALID_NAME_OR_NUMBER = "Number between 1 and 151 and/or pokemon name is required!";
     public static final String NAME_INVALID_SIZE = "Name Length must be between 3 and 50 chars!";
     public static final String NAME_IS_REQUIRED = "Name is required!";
@@ -45,6 +46,7 @@ public final class Constant {
     public static final String EVOLUTION_TRIGGER_REQUIRED = "Evolution trigger is required!";
     public static final String EVOLUTION_GENERIC= "Pokemon Evolution contains incorrect info!";
     public static final String MOVE_IS_REQUIRED = "Move is required!";
+    public static final String MOVE_IS_DUPLICATE = "Duplicated item detected on move list!";
     public static final String DUPLICATED_ITEM_MOVE = "Detected duplicated item in move list!";
     public static final String DUPLICATED_ITEM_ABILITY = "Detected duplicated item in ability list!";
     public static final String DUPLICATED_ITEM_WEAKNESS = "Detected duplicated item in weakness list!";
@@ -60,10 +62,10 @@ public final class Constant {
     public static final String SPECIAL_DEFENSE = "special-defense";
     public static final String SPECIAL_ATTACK = "special-attack";
     public static final String EMPTY = "";
-    public static final Long FIRST_POKEMON_NUMBER = 1L;
-    public static final Long LAST_POKEMON_NUMBER = 151L;
     public static final String POKEMON_NOT_FOUND_BY_NUMBER = "No Pokemon found by number, number = ";
     public static final String POKEMON_NOT_FOUND_BY_NAME = "No pokemon found by name, Name = ";
     public static final String NAME = "name";
+    public static final String WEAKNESS_CANT_BE_TYPE = "Weakness can't be equal type!";
+    public static final String EVOLVE_TO_DUPLICATED = "Duplicated item detected on evolve to list!";
 }
 

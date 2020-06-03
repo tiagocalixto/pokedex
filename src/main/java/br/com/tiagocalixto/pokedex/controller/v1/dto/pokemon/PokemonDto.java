@@ -4,7 +4,9 @@ package br.com.tiagocalixto.pokedex.controller.v1.dto.pokemon;
 import br.com.tiagocalixto.pokedex.controller.v1.dto.AbilityDto;
 import br.com.tiagocalixto.pokedex.controller.v1.dto.TypeDto;
 import br.com.tiagocalixto.pokedex.controller.v1.input_rules.annotation.HasDuplicatedItemInList;
+import br.com.tiagocalixto.pokedex.controller.v1.input_rules.annotation.PokemonRule;
 import br.com.tiagocalixto.pokedex.controller.v1.input_rules.groups.FirstStepValidation;
+import br.com.tiagocalixto.pokedex.controller.v1.input_rules.groups.ForthStepValidation;
 import br.com.tiagocalixto.pokedex.controller.v1.input_rules.groups.SecondStepValidation;
 import br.com.tiagocalixto.pokedex.controller.v1.input_rules.groups.ThirdStepValidation;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -34,6 +36,7 @@ import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @ApiModel(value = "Pokemon", subTypes = {Object.class})
+@PokemonRule(groups = ForthStepValidation.class)
 public class PokemonDto implements Serializable {
 
     @NotNull(message = NUMBER_IS_REQUIRED)
@@ -80,35 +83,34 @@ public class PokemonDto implements Serializable {
     @ApiModelProperty(notes = "Stats", dataType = "object", position = 7)
     private PokemonStatsDto stats;
 
-    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_TYPE)
+    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_TYPE, groups = SecondStepValidation.class)
     @NotEmpty(message = TYPE_IS_REQUIRED, groups = FirstStepValidation.class)
     @Valid
     @ApiModelProperty(notes = "Type", dataType = "array", position = 8)
     private List<TypeDto> type;
 
     @Valid
-    @ApiModelProperty(notes = "Pokemon", dataType = "object", position = 9)
-    private List<PokemonEvolutionDto> evolveTo;
-
-    @Valid
     @ApiModelProperty(notes = "Pokemon", dataType = "object", position = 10)
     private PokemonEvolutionDto evolvedFrom;
 
-    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_MOVE)
+    @Valid
+    @ApiModelProperty(notes = "Pokemon", dataType = "object", position = 9)
+    private List<PokemonEvolutionDto> evolveTo;
+
     @JsonSetter(nulls = Nulls.SKIP)
     @Builder.Default
     @Valid
     @ApiModelProperty(notes = "Pokemon Moves", dataType = "array", position = 11)
     private List<PokemonMoveDto> move = Collections.emptyList();
 
-    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_ABILITY)
+    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_ABILITY, groups = SecondStepValidation.class)
     @JsonSetter(nulls = Nulls.SKIP)
     @Builder.Default
     @Valid
     @ApiModelProperty(notes = "Ability", dataType = "array", position = 12)
     private List<AbilityDto> ability = Collections.emptyList();
 
-    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_WEAKNESS)
+    @HasDuplicatedItemInList(message = DUPLICATED_ITEM_WEAKNESS, groups = SecondStepValidation.class)
     @Valid
     @ApiModelProperty(notes = "weakness", dataType = "array", position = 13)
     private List<TypeDto> weakness;

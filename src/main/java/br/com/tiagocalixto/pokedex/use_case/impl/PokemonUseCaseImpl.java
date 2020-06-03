@@ -87,6 +87,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     @Override
     public Pokemon save(Pokemon pokemon) {
 
+
         Pokemon pokemonSaved = null;
         return null;
     }
@@ -106,4 +107,6 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
         Pokemon pokemon = this.findById(number);
         deleteRepository.delete(pokemon);
     }
+
+
 }
