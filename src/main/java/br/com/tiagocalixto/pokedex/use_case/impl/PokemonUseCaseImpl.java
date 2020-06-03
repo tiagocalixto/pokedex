@@ -1,6 +1,5 @@
 package br.com.tiagocalixto.pokedex.use_case.impl;
 
-import br.com.tiagocalixto.pokedex.domain.Historic;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.infra.util.Util;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.*;
@@ -29,7 +28,6 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     private UpdateRepositoryPort<Pokemon> updateRepository;
     private DeleteRepositoryPort<Pokemon> deleteRepository;
     private EvolutionUseCase evolutionUseCase;
-    private SaveUseCase<Historic> historicSaveUseCase;
     //</editor-fold>
 
     //<editor-fold: constructor>
@@ -41,8 +39,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
                                @Qualifier("PokemonRepositorySql") InsertRepositoryPort<Pokemon> insertRepository,
                                @Qualifier("PokemonRepositorySql") UpdateRepositoryPort<Pokemon> updateRepository,
                                @Qualifier("PokemonRepositorySql") DeleteRepositoryPort<Pokemon> deleteRepository,
-                               @Qualifier("EvolutionUseCaseImpl") EvolutionUseCase evolutionUseCase,
-                               @Qualifier("HistoricUseCaseImpl") SaveUseCase<Historic> historicSaveUseCase){
+                               @Qualifier("EvolutionUseCaseImpl") EvolutionUseCase evolutionUseCase){
 
         this.findByIdRepository = findByIdRepository;
         this.findByNameRepository = findByNameRepository;
@@ -52,7 +49,6 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
         this.updateRepository = updateRepository;
         this.deleteRepository = deleteRepository;
         this.evolutionUseCase = evolutionUseCase;
-        this.historicSaveUseCase = historicSaveUseCase;
     }
     //</editor-fold>
 
@@ -92,7 +88,6 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     public Pokemon save(Pokemon pokemon) {
 
         Pokemon pokemonSaved = null;
-        saveHistoric(pokemonSaved, INSERT);
         return null;
     }
 
@@ -100,9 +95,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     @Override
     public Pokemon update(Pokemon pokemon) {
 
-        saveHistoric(pokemon, BEFORE_UPDATE);
         Pokemon pokemonUpdated = null;
-        saveHistoric(pokemonUpdated, UPDATE);
         return null;
     }
 
@@ -112,19 +105,5 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
 
         Pokemon pokemon = this.findById(number);
         deleteRepository.delete(pokemon);
-        saveHistoric(pokemon, DELETE);
-    }
-
-    @Async
-    protected void saveHistoric(Pokemon pokemon, String action){
-
-        Historic historic = Historic.builder()
-                .id(0L)
-                .idEntity(pokemon.getId())
-                .action(action)
-                .entity(Util.convertObjectToJson(pokemon))
-                .build();
-
-        historicSaveUseCase.save(historic);
     }
 }

@@ -32,10 +32,11 @@ public class ConverterEvolutionStoneSqlImpl implements ConverterEntitySql<Evolut
 
         EvolutionStoneEntity entity = repository
                 .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(evolutionStoneEnum.toString())
-                .orElse(EvolutionStoneEntity.builder()
-                        .id(0L)
-                        .description(evolutionStoneEnum.toString())
-                        .build());
+                .orElse(repository.save(
+                        EvolutionStoneEntity.builder()
+                                .id(0L)
+                                .description(evolutionStoneEnum.toString())
+                                .build()));
 
         return Optional.of(entity);
     }
@@ -44,7 +45,7 @@ public class ConverterEvolutionStoneSqlImpl implements ConverterEntitySql<Evolut
     @Override
     public Optional<EvolutionStoneEnum> convertToDomain(Optional<EvolutionStoneEntity> entity) {
 
-        if(entity.isEmpty())
+        if (entity.isEmpty())
             return Optional.empty();
 
         EvolutionStoneEntity stoneEntity = EvolutionStoneEntity.builder().build();

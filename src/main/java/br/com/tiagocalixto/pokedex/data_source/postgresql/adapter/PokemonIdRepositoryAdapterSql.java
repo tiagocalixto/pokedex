@@ -6,6 +6,7 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.PokemonRepo
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -21,29 +22,49 @@ public class PokemonIdRepositoryAdapterSql implements InsertRepositoryPort<Pokem
         DeleteRepositoryPort<Pokemon>, FindAllPageableRepositoryPort<Pokemon>, FindOneByIdRepositoryPort<Pokemon>,
         FindAllByNameRepositoryPort<Pokemon>, ExistsByIdRepositoryPort {
 
+    //<editor-fold: properties>
     private PokemonRepository repository;
     private ConverterEntitySql<PokemonEntity, Pokemon> converter;
+    private FindOneByIdRepositoryPort<Pokemon> cacheFind;
+    private InsertRepositoryPort<Pokemon> saveCache;
+    private InsertRepositoryPort<Pokemon> mongoHistoricRepository;
+    //</editor-fold>
 
+    //<editor-fold: constructor>
     @Autowired
     public PokemonIdRepositoryAdapterSql(PokemonRepository repository,
-                                         ConverterEntitySql<PokemonEntity, Pokemon> converter) {
+                                         ConverterEntitySql<PokemonEntity, Pokemon> converter,
+                                         @Qualifier("HistoricRepositoryMongo")
+                                                 InsertRepositoryPort<Pokemon> mongoHistoricRepository,
+                                         @Qualifier("PokemonCache") FindOneByIdRepositoryPort<Pokemon> cacheFind,
+                                         @Qualifier("PokemonCache") InsertRepositoryPort<Pokemon> saveCache) {
         this.repository = repository;
         this.converter = converter;
+        this.cacheFind = cacheFind;
+        this.saveCache = saveCache;
+        this.mongoHistoricRepository = mongoHistoricRepository;
     }
+    //</editor-fold>
 
 
     @Override
     public Pokemon insert(Pokemon pokemon) {
 
-        return converter.convertToDomainNotOptional(
+        Pokemon saved = converter.convertToDomainNotOptional(
                 repository.save(converter.convertToEntityNotOptional(pokemon)));
+
+        saveCache.insertVoid(saved);
+        return saved;
     }
 
     @Override
     public Pokemon update(Pokemon pokemon) {
 
-        return converter.convertToDomainNotOptional(
+        Pokemon updated = converter.convertToDomainNotOptional(
                 repository.save(converter.convertToEntityNotOptional(pokemon)));
+
+        saveCache.insertVoid(updated);
+        return updated;
     }
 
     @Override
@@ -66,7 +87,14 @@ public class PokemonIdRepositoryAdapterSql implements InsertRepositoryPort<Pokem
     @Override
     public Optional<Pokemon> findById(Long number) {
 
-        return converter.convertToDomain(repository.findFirstByNumber(number));
+        Optional<Pokemon> founded = cacheFind.findById(number);
+
+        if(founded.isEmpty()){
+            founded = converter.convertToDomain(repository.findFirstByNumber(number));
+            founded.ifPresent(saveCache::insertVoid);
+        }
+
+        return founded;
     }
 
     @Override

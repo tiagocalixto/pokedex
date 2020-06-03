@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("cacheNationalDexConverter")
+@Component("NationalDexCacheConverter")
 public class ConverterCacheNationalDexImpl implements ConverterCache<PokemonNationalDexCache, PokemonNationalDexDto> {
 
     private Gson gson;
@@ -20,6 +20,7 @@ public class ConverterCacheNationalDexImpl implements ConverterCache<PokemonNati
         this.gson = gson;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public Optional<PokemonNationalDexCache> convertToCache(Optional<PokemonNationalDexDto> dto) {
 
@@ -36,6 +37,7 @@ public class ConverterCacheNationalDexImpl implements ConverterCache<PokemonNati
         return Optional.of(cache);
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public Optional<PokemonNationalDexDto> convertToDomain(Optional<PokemonNationalDexCache> cache) {
 

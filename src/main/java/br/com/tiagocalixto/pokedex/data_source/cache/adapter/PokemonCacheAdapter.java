@@ -1,8 +1,11 @@
 package br.com.tiagocalixto.pokedex.data_source.cache.adapter;
 
 import br.com.tiagocalixto.pokedex.data_source.cache.converter.ConverterCache;
+import br.com.tiagocalixto.pokedex.data_source.cache.entity.PokemonCache;
 import br.com.tiagocalixto.pokedex.data_source.cache.entity.PokemonNationalDexCache;
 import br.com.tiagocalixto.pokedex.data_source.cache.repository.PokemonNationalDexRepositoryCache;
+import br.com.tiagocalixto.pokedex.data_source.cache.repository.PokemonRepositoryCache;
+import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.external_api.national_dex.dto.pokemon.PokemonNationalDexDto;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.FindOneByIdRepositoryPort;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.InsertRepositoryPort;
@@ -11,19 +14,19 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("NationalDexCache")
-public class PokemonNationalDexAdapter implements FindOneByIdRepositoryPort<PokemonNationalDexDto>,
-                                                  InsertRepositoryPort<PokemonNationalDexDto> {
+@Component("PokemonCache")
+public class PokemonCacheAdapter implements FindOneByIdRepositoryPort<Pokemon>,
+                                                  InsertRepositoryPort<Pokemon> {
 
     //<editor-fold: properties>
-    private ConverterCache<PokemonNationalDexCache, PokemonNationalDexDto> converter;
-    private PokemonNationalDexRepositoryCache cacheRepository;
+    private ConverterCache<PokemonCache, Pokemon> converter;
+    private PokemonRepositoryCache cacheRepository;
     //</editor-fold>
 
     //<editor-fold: constructor>
     @Autowired
-    public PokemonNationalDexAdapter(ConverterCache<PokemonNationalDexCache, PokemonNationalDexDto> converter,
-                                     PokemonNationalDexRepositoryCache cacheRepository) {
+    public PokemonCacheAdapter(ConverterCache<PokemonCache, Pokemon> converter,
+                               PokemonRepositoryCache cacheRepository) {
         this.converter = converter;
         this.cacheRepository = cacheRepository;
     }
@@ -31,13 +34,13 @@ public class PokemonNationalDexAdapter implements FindOneByIdRepositoryPort<Poke
 
 
     @Override
-    public Optional<PokemonNationalDexDto> findById(Long id) {
+    public Optional<Pokemon> findById(Long id) {
 
         return converter.convertToDomain(cacheRepository.findById(id));
     }
 
     @Override
-    public PokemonNationalDexDto insert(PokemonNationalDexDto pokemon) {
+    public Pokemon insert(Pokemon pokemon) {
 
         return converter.convertToDomainNotOptional(cacheRepository.save(
                 converter.convertToCacheNotOptional(pokemon)));

@@ -18,7 +18,7 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
     private MoveRepository repository;
 
     @Autowired
-    public ConverterMoveEntityImpl (MoveRepository repository, ConverterEntitySql<TypeEntity, Type> convertType){
+    public ConverterMoveEntityImpl(MoveRepository repository, ConverterEntitySql<TypeEntity, Type> convertType) {
         this.convertType = convertType;
         this.repository = repository;
     }
@@ -34,10 +34,11 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
 
         MoveEntity moveEntity = repository
                 .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(move.getDescription())
-                .orElse(MoveEntity.builder()
-                        .id(0L)
-                        .description(move.getDescription())
-                        .build()
+                .orElse(repository.save(
+                        MoveEntity.builder()
+                                .id(0L)
+                                .description(move.getDescription())
+                                .build())
                 );
 
         moveEntity.setPower(move.getPower());

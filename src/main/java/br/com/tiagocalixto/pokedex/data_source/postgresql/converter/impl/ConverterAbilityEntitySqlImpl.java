@@ -16,7 +16,7 @@ public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<Ability
     private AbilityRepository repository;
 
     @Autowired
-    public ConverterAbilityEntitySqlImpl (AbilityRepository repository){
+    public ConverterAbilityEntitySqlImpl(AbilityRepository repository) {
         this.repository = repository;
     }
 
@@ -31,11 +31,12 @@ public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<Ability
         Ability ability = domain.orElseGet(Ability::new);
 
         AbilityEntity abilityEntity = repository
-                .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(ability.getDescription()).orElse(
+                .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(ability.getDescription())
+                .orElse(repository.save(
                         AbilityEntity.builder()
                                 .id(0L)
                                 .description(ability.getDescription())
-                                .build()
+                                .build())
                 );
 
         return Optional.of(abilityEntity);

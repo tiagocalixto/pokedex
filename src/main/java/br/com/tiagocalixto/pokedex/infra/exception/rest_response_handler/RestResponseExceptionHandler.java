@@ -1,6 +1,7 @@
 package br.com.tiagocalixto.pokedex.infra.exception.rest_response_handler;
 
 
+import br.com.tiagocalixto.pokedex.infra.exception.CustomAsyncException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,6 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException ex,
                                                                   final HttpHeaders headers, final HttpStatus status,
                                                                   final WebRequest request) {
-
         ApiError apiError = ApiError.builder()
                 .message(ex.getMessage())
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -51,7 +51,6 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex,
                                                                   final HttpHeaders headers, final HttpStatus status,
                                                                   final WebRequest request) {
-
         List<String> argumentErrors = new ArrayList<>();
 
         ex.getBindingResult().getFieldErrors()
@@ -70,20 +69,6 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
                 .build();
 
         return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler({EntityNotFoundException.class})
-    public ResponseEntity<Object> handleEntityNotFoundException(final EntityNotFoundException ex) {
-
-        log.error(ex.getMessage());
-
-        ApiError apiError = ApiError.builder()
-                .message(ex.getMessage())
-                .status(HttpStatus.NOT_FOUND.value())
-                .error(HttpStatus.NOT_FOUND)
-                .build();
-
-        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({ConstraintViolationException.class})
@@ -108,6 +93,34 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
                 .build();
 
         return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({EntityNotFoundException.class})
+    public ResponseEntity<Object> handleEntityNotFoundException(final EntityNotFoundException ex) {
+
+        log.error(ex.getMessage());
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(HttpStatus.NOT_FOUND)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({CustomAsyncException.class})
+    public ResponseEntity<Object> handleCustomAsyncException(final CustomAsyncException ex) {
+
+        log.error(ex.getMessage());
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error(HttpStatus.INTERNAL_SERVER_ERROR)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     //todo - include handler exception geral Exception

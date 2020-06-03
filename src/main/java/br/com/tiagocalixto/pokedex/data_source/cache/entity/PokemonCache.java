@@ -15,8 +15,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@RedisHash(value = "pokemonNationalDex", timeToLive = 86400) //ttl = 24 hours
-public class PokemonNationalDexCache implements Serializable {
+@RedisHash(value = "pokemon", timeToLive = 3600) //ttl = 1 hour
+public class PokemonCache implements Serializable {
 
     @Id
     Long id;

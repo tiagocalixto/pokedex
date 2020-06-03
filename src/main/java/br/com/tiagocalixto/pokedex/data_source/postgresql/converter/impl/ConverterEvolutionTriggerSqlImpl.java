@@ -31,10 +31,11 @@ public class ConverterEvolutionTriggerSqlImpl implements ConverterEntitySql<Evol
 
         EvolutionTriggerEntity entity = repository
                 .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(evolutionTriggerEnum.toString())
-                .orElse(EvolutionTriggerEntity.builder()
-                        .id(0L)
-                        .description(evolutionTriggerEnum.toString())
-                        .build());
+                .orElse(repository.save(
+                        EvolutionTriggerEntity.builder()
+                                .id(0L)
+                                .description(evolutionTriggerEnum.toString())
+                                .build()));
 
         return Optional.of(entity);
     }
@@ -43,7 +44,7 @@ public class ConverterEvolutionTriggerSqlImpl implements ConverterEntitySql<Evol
     @Override
     public Optional<EvolutionTriggerEnum> convertToDomain(Optional<EvolutionTriggerEntity> entity) {
 
-        if(entity.isEmpty())
+        if (entity.isEmpty())
             return Optional.empty();
 
         EvolutionTriggerEntity triggerEntity = EvolutionTriggerEntity.builder().build();

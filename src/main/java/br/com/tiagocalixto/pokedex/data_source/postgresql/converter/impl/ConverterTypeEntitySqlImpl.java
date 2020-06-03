@@ -32,10 +32,11 @@ public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity
 
         TypeEntity typeEntity = repository
                 .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(type.getDescription().toString())
-                .orElse(TypeEntity.builder()
-                        .id(0L)
-                        .description(type.getDescription().toString())
-                        .build()
+                .orElse(repository.save(
+                        TypeEntity.builder()
+                                .id(0L)
+                                .description(type.getDescription().toString())
+                                .build())
                 );
 
         return Optional.of(typeEntity);

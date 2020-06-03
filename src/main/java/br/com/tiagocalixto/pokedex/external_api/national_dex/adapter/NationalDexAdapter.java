@@ -45,7 +45,7 @@ public class NationalDexAdapter implements FindOneByIdExternalApiPort<Pokemon> {
 
         if (entity.isEmpty()) {
             entity = getFromNationalDex.getPokemon(id);
-            entity.ifPresent(item -> saveCache.insert(item));
+            entity.ifPresent(item -> saveCache.insertVoid(item));
         }
 
         return converter.convertToDomain(entity);
