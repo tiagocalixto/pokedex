@@ -22,7 +22,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
 
     //<editor-fold: properties>
     private FindOneByIdRepositoryPort<Pokemon> findByIdRepository;
-    private FindAllByStringValueRepositoryPort<Pokemon> findByNameRepository;
+    private FindAllByNameRepositoryPort<Pokemon> findByNameRepository;
     private FindAllPageableRepositoryPort<Pokemon> findPageableRepository;
     private ExistsByIdRepositoryPort isExistsRepository;
     private InsertRepositoryPort<Pokemon> insertRepository;
@@ -35,7 +35,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     //<editor-fold: constructor>
     @Autowired
     public PokemonUseCaseImpl (@Qualifier("PokemonRepositorySql") FindOneByIdRepositoryPort<Pokemon> findByIdRepository,
-                               @Qualifier("PokemonRepositorySql") FindAllByStringValueRepositoryPort<Pokemon> findByNameRepository,
+                               @Qualifier("PokemonRepositorySql") FindAllByNameRepositoryPort<Pokemon> findByNameRepository,
                                @Qualifier("PokemonRepositorySql") FindAllPageableRepositoryPort<Pokemon> findPageableRepository,
                                @Qualifier("PokemonRepositorySql") ExistsByIdRepositoryPort isExistsRepository,
                                @Qualifier("PokemonRepositorySql") InsertRepositoryPort<Pokemon> insertRepository,
@@ -67,7 +67,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     @Override
     public List<Pokemon> findByName(String name) {
 
-        List<Pokemon> pokemon = findByNameRepository.findAllByText(name);
+        List<Pokemon> pokemon = findByNameRepository.findAllByName(name);
 
         if(pokemon.isEmpty())
             throw new EntityNotFoundException(POKEMON_NOT_FOUND_BY_NAME + name);

@@ -23,6 +23,7 @@ public class GetPokemonFromApiFacadeImpl implements GetPokemonFromApiFacade {
 
     @Autowired
     public GetPokemonFromApiFacadeImpl(PokeApi pokeApi) {
+
         this.pokeApi = pokeApi;
     }
 

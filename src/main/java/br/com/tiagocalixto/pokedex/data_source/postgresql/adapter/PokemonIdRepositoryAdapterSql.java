@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Component("PokemonRepositorySql")
 public class PokemonIdRepositoryAdapterSql implements InsertRepositoryPort<Pokemon>, UpdateRepositoryPort<Pokemon>,
         DeleteRepositoryPort<Pokemon>, FindAllPageableRepositoryPort<Pokemon>, FindOneByIdRepositoryPort<Pokemon>,
-        FindAllByStringValueRepositoryPort<Pokemon>, ExistsByIdRepositoryPort {
+        FindAllByNameRepositoryPort<Pokemon>, ExistsByIdRepositoryPort {
 
     private PokemonRepository repository;
     private ConverterEntitySql<PokemonEntity, Pokemon> converter;
@@ -53,7 +53,7 @@ public class PokemonIdRepositoryAdapterSql implements InsertRepositoryPort<Pokem
     }
 
     @Override
-    public List<Pokemon> findAllByText(String name) {
+    public List<Pokemon> findAllByName(String name) {
 
         Set<PokemonEntity> pokemon = repository.findAllByPhoneticName(name);
 

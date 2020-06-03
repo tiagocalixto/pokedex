@@ -1,4 +1,4 @@
-package br.com.tiagocalixto.pokedex.external_api.through_cache.entity;
+package br.com.tiagocalixto.pokedex.data_source.cache.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @RedisHash(value = "pokemonNationalDex", timeToLive = 604800) //ttl = 7 days
-public class PokemonCache implements Serializable {
+public class PokemonNationalDexCache implements Serializable {
 
     @Id
     Long id;
