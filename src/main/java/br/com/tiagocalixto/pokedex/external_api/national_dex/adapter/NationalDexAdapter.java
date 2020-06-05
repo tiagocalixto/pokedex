@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("nationalDex")
+@Component("NationalDex")
 public class NationalDexAdapter implements FindOneByIdExternalApiPort<Pokemon> {
 
     //<editor-fold: properties>

@@ -1,7 +1,9 @@
 package br.com.tiagocalixto.pokedex.infra.exception.rest_response_handler;
 
 
-import br.com.tiagocalixto.pokedex.infra.exception.CustomAsyncException;
+import br.com.tiagocalixto.pokedex.infra.exception.NationalDexOutOfServiceException;
+import br.com.tiagocalixto.pokedex.infra.exception.PokemonIncorretTypeException;
+import br.com.tiagocalixto.pokedex.infra.exception.PokemonNameIncorrectException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+@SuppressWarnings("Duplicates")
 @ControllerAdvice
 @Slf4j
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
@@ -109,18 +112,46 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({CustomAsyncException.class})
-    public ResponseEntity<Object> handleCustomAsyncException(final CustomAsyncException ex) {
+    @ExceptionHandler({NationalDexOutOfServiceException.class})
+    public ResponseEntity<Object> handleNationalDexOutOfServiceException(final NationalDexOutOfServiceException ex) {
 
         log.error(ex.getMessage());
 
         ApiError apiError = ApiError.builder()
                 .message(ex.getMessage())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .error(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(HttpStatus.SERVICE_UNAVAILABLE.value())
+                .error(HttpStatus.SERVICE_UNAVAILABLE)
                 .build();
 
-        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler({PokemonNameIncorrectException.class})
+    public ResponseEntity<Object> handlePokemonNameIncorrectException(final PokemonNameIncorrectException ex) {
+
+        log.error(ex.getMessage());
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({PokemonIncorretTypeException.class})
+    public ResponseEntity<Object> handlePokemonIncorretTypeException(final PokemonIncorretTypeException ex) {
+
+        log.error(ex.getMessage());
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     //todo - include handler exception geral Exception

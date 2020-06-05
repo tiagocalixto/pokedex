@@ -67,5 +67,8 @@ public final class Constant {
     public static final String NAME = "name";
     public static final String WEAKNESS_CANT_BE_TYPE = "Weakness can't be equal type!";
     public static final String EVOLVE_TO_DUPLICATED = "Duplicated item detected on evolve to list!";
+    public static final String NATIONAL_DEX_UNAVAILABLE = "Pokemon National Dex is unavailable, try again in a few minutes!";
+    public static final String POKEMON_INCORRECT_NAME = "The pokemon name provided, don't belongs to pokemon number provided!";
+    public static final String POKEMON_INCORRECT_TYPE = "Follow types don't belongs to pokemon";
 }
 
