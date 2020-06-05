@@ -69,6 +69,8 @@ public final class Constant {
     public static final String EVOLVE_TO_DUPLICATED = "Duplicated item detected on evolve to list!";
     public static final String NATIONAL_DEX_UNAVAILABLE = "Pokemon National Dex is unavailable, try again in a few minutes!";
     public static final String POKEMON_INCORRECT_NAME = "The pokemon name provided, don't belongs to pokemon number provided!";
-    public static final String POKEMON_INCORRECT_TYPE = "Follow types don't belongs to pokemon";
+    public static final String POKEMON_INCORRECT_TYPE = "Follow type(s) don't belongs to pokemon";
+    public static final String POKEMON_INCORRECT_MOVE = "Follow move(s) don't belongs to pokemon";
+    public static final String POKEMON_INCORRECT_EVOLVED_FROM = "Pokemon evolved from is incorrect!";
 }
 

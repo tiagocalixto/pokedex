@@ -1,9 +1,7 @@
 package br.com.tiagocalixto.pokedex.infra.exception.rest_response_handler;
 
 
-import br.com.tiagocalixto.pokedex.infra.exception.NationalDexOutOfServiceException;
-import br.com.tiagocalixto.pokedex.infra.exception.PokemonIncorretTypeException;
-import br.com.tiagocalixto.pokedex.infra.exception.PokemonNameIncorrectException;
+import br.com.tiagocalixto.pokedex.infra.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.jetbrains.annotations.NotNull;
@@ -140,8 +138,8 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({PokemonIncorretTypeException.class})
-    public ResponseEntity<Object> handlePokemonIncorretTypeException(final PokemonIncorretTypeException ex) {
+    @ExceptionHandler({PokemonIncorrectTypeException.class})
+    public ResponseEntity<Object> handlePokemonIncorrectTypeException(final PokemonIncorrectTypeException ex) {
 
         log.error(ex.getMessage());
 
@@ -153,6 +151,36 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 
         return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler({PokemonMoveIncorrectException.class, })
+    public ResponseEntity<Object> handlePokemonMoveIncorrectException(final PokemonMoveIncorrectException ex) {
+
+        log.error(ex.getMessage());
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({PokemonEvolutionIncorrectException.class, })
+    public ResponseEntity<Object> handlePokemonEvolutionIncorrectException(final PokemonEvolutionIncorrectException ex) {
+
+        log.error(ex.getMessage());
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+
 
     //todo - include handler exception geral Exception
 }

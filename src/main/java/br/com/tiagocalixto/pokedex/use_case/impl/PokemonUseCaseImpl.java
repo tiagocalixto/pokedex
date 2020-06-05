@@ -2,9 +2,8 @@ package br.com.tiagocalixto.pokedex.use_case.impl;
 
 import br.com.tiagocalixto.pokedex.domain.Type;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
-import br.com.tiagocalixto.pokedex.infra.exception.NationalDexOutOfServiceException;
-import br.com.tiagocalixto.pokedex.infra.exception.PokemonIncorretTypeException;
-import br.com.tiagocalixto.pokedex.infra.exception.PokemonNameIncorrectException;
+import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonMove;
+import br.com.tiagocalixto.pokedex.infra.exception.*;
 import br.com.tiagocalixto.pokedex.infra.util.Util;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.*;
 import br.com.tiagocalixto.pokedex.ports.external_api.FindOneByIdExternalApiPort;
@@ -22,7 +21,7 @@ import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
 
 @Service("PokemonUseCaseImpl")
 public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<Pokemon>, DeleteUseCase<Long>,
-         IsExistsUseCase, FindAllPageableUseCase<Pokemon>, FindAlByNameUseCase<Pokemon>, FindOneByIdUseCase<Pokemon> {
+        IsExistsUseCase, FindAllPageableUseCase<Pokemon>, FindAlByNameUseCase<Pokemon>, FindOneByIdUseCase<Pokemon> {
 
     //<editor-fold: properties>
     private FindOneByIdRepositoryPort<Pokemon> findByIdRepository;
@@ -38,15 +37,15 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
 
     //<editor-fold: constructor>
     @Autowired
-    public PokemonUseCaseImpl (@Qualifier("PokemonRepositorySql") FindOneByIdRepositoryPort<Pokemon> findByIdRepository,
-                               @Qualifier("PokemonRepositorySql") FindAllByNameRepositoryPort<Pokemon> findByNameRepository,
-                               @Qualifier("PokemonRepositorySql") FindAllPageableRepositoryPort<Pokemon> findPageableRepository,
-                               @Qualifier("PokemonRepositorySql") ExistsByIdRepositoryPort isExistsRepository,
-                               @Qualifier("PokemonRepositorySql") InsertRepositoryPort<Pokemon> insertRepository,
-                               @Qualifier("PokemonRepositorySql") UpdateRepositoryPort<Pokemon> updateRepository,
-                               @Qualifier("PokemonRepositorySql") DeleteRepositoryPort<Pokemon> deleteRepository,
-                               @Qualifier("EvolutionUseCaseImpl") EvolutionUseCase evolutionUseCase,
-                               @Qualifier("NationalDex") FindOneByIdExternalApiPort<Pokemon> nationalDex){
+    public PokemonUseCaseImpl(@Qualifier("PokemonRepositorySql") FindOneByIdRepositoryPort<Pokemon> findByIdRepository,
+                              @Qualifier("PokemonRepositorySql") FindAllByNameRepositoryPort<Pokemon> findByNameRepository,
+                              @Qualifier("PokemonRepositorySql") FindAllPageableRepositoryPort<Pokemon> findPageableRepository,
+                              @Qualifier("PokemonRepositorySql") ExistsByIdRepositoryPort isExistsRepository,
+                              @Qualifier("PokemonRepositorySql") InsertRepositoryPort<Pokemon> insertRepository,
+                              @Qualifier("PokemonRepositorySql") UpdateRepositoryPort<Pokemon> updateRepository,
+                              @Qualifier("PokemonRepositorySql") DeleteRepositoryPort<Pokemon> deleteRepository,
+                              @Qualifier("EvolutionUseCaseImpl") EvolutionUseCase evolutionUseCase,
+                              @Qualifier("NationalDex") FindOneByIdExternalApiPort<Pokemon> nationalDex) {
 
         this.findByIdRepository = findByIdRepository;
         this.findByNameRepository = findByNameRepository;
@@ -73,7 +72,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
 
         List<Pokemon> pokemon = findByNameRepository.findAllByName(name);
 
-        if(pokemon.isEmpty())
+        if (pokemon.isEmpty())
             throw new EntityNotFoundException(POKEMON_NOT_FOUND_BY_NAME + name);
 
         return pokemon;
@@ -95,9 +94,8 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     @Override
     public Pokemon save(Pokemon pokemon) {
 
-
-        Pokemon pokemonSaved = null;
-        return null;
+        verifyPokemonInfo(pokemon);
+        return insertRepository.insert(pokemon);
     }
 
     @Transactional
@@ -116,39 +114,69 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
         deleteRepository.delete(pokemon);
     }
 
-    private void verifyPokemonInfo(Pokemon pokemon){
+    private void verifyPokemonInfo(Pokemon pokemon) {
 
         Pokemon pokemonNationalDex = nationalDex.findById(pokemon.getNumber())
                 .orElseThrow(() -> new NationalDexOutOfServiceException(NATIONAL_DEX_UNAVAILABLE));
 
         verifyName(pokemon, pokemonNationalDex);
         verifyType(pokemon, pokemonNationalDex);
-
+        verifyMove(pokemon, pokemonNationalDex);
+        verifyEvolvedFrom(pokemon, pokemonNationalDex);
     }
 
-    private void verifyName(Pokemon pokemon, Pokemon pokemonNationalDex){
+    private void verifyName(Pokemon pokemon, Pokemon pokemonNationalDex) {
 
-        if(!Util.phoneticStringsMatches(pokemon.getName(), pokemonNationalDex.getName())){
+        if (!Util.phoneticStringsMatches(pokemon.getName(), pokemonNationalDex.getName())) {
             throw new PokemonNameIncorrectException(POKEMON_INCORRECT_NAME);
         }
     }
 
-    private void verifyType(Pokemon pokemon, Pokemon pokemonNationalDex){
+    private void verifyType(Pokemon pokemon, Pokemon pokemonNationalDex) {
 
         List<Type> dontBelongs = pokemon.getType().stream()
                 .filter(item -> !pokemonNationalDex.getType().stream()
-                .map(Type::getDescription)
-                .collect(Collectors.toList()).contains(item.getDescription()))
+                        .map(Type::getDescription)
+                        .collect(Collectors.toList()).contains(item.getDescription()))
                 .collect(Collectors.toList());
 
-        if(!dontBelongs.isEmpty()){
-            throw new PokemonIncorretTypeException(POKEMON_INCORRECT_TYPE + " - (" +
-                    dontBelongs.stream().map(item -> item.getDescription() + ", ").toString() + ")");
+        if (!dontBelongs.isEmpty()) {
+            throw new PokemonIncorrectTypeException(POKEMON_INCORRECT_TYPE + " - (" +
+                    dontBelongs.stream().map(item -> item.getDescription() + " ").toString() + ")");
         }
     }
 
-    private void verifyMoves(Pokemon pokemon, Pokemon pokemonNationalDex){
+    private void verifyMove(Pokemon pokemon, Pokemon pokemonNationalDex) {
 
+        if (!pokemon.getMove().isEmpty()) {
 
+            List<PokemonMove> dontBelongs = pokemon.getMove().stream()
+                    .filter(item -> !pokemonNationalDex.getMove().stream()
+                            .map(i -> i.getMove().getDescription())
+                            .collect(Collectors.toList()).contains(item.getMove().getDescription()))
+                    .collect(Collectors.toList());
+
+            if (!dontBelongs.isEmpty()) {
+                throw new PokemonMoveIncorrectException(POKEMON_INCORRECT_MOVE + " - (" +
+                        dontBelongs.stream().map(item -> item.getMove().getDescription() + " ").toString() + ")");
+            }
+        }
+    }
+
+    private void verifyEvolvedFrom(Pokemon pokemon, Pokemon pokemonNationalDex) {
+
+        if (pokemon.getEvolvedFrom() != null) {
+
+            if (pokemonNationalDex.getEvolvedFrom() == null ||
+                    (!pokemon.getEvolvedFrom().getPokemon().getNumber()
+                            .equals(pokemonNationalDex.getEvolvedFrom().getPokemon().getNumber()) &&
+                            !Util.phoneticStringsMatches(pokemon.getEvolvedFrom().getPokemon().getName(),
+                                    pokemonNationalDex.getEvolvedFrom().getPokemon().getName()))) {
+
+                throw new PokemonEvolutionIncorrectException(POKEMON_INCORRECT_EVOLVED_FROM);
+            }
+
+            pokemon.setEvolvedFrom(evolutionUseCase.associateOrInsert(pokemon.getEvolvedFrom()));
+        }
     }
 }
