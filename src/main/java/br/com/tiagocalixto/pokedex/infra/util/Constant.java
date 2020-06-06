@@ -72,5 +72,9 @@ public final class Constant {
     public static final String POKEMON_INCORRECT_TYPE = "Follow type(s) don't belongs to pokemon";
     public static final String POKEMON_INCORRECT_MOVE = "Follow move(s) don't belongs to pokemon";
     public static final String POKEMON_INCORRECT_EVOLVED_FROM = "Pokemon evolved from is incorrect!";
+    public static final String POKEMON_DONT_EVOLVED_FROM = "This pokemon dont evolves from any other!";
+    public static final String POKEMON_CONSIDER = "This api is old school, considers only first generation pokemon (1-151)";
+    public static final String POKEMON_DONT_EVOLVES_TO = "This pokemon don't evolves to any other!";
+    public static final String POKEMON_INCORRECT_EVOLVE_TO = "Pokemon evolve to is incorrect!";
 }
 

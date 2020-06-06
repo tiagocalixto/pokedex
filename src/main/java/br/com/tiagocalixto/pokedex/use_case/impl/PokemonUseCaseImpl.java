@@ -102,8 +102,12 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     @Override
     public Pokemon update(Pokemon pokemon) {
 
-        Pokemon pokemonUpdated = null;
-        return null;
+        if(!this.isExistsById(pokemon.getNumber())){
+            throw new EntityNotFoundException(POKEMON_NOT_FOUND_BY_NAME + pokemon.getNumber());
+        }
+
+        verifyPokemonInfo(pokemon);
+        return updateRepository.update(pokemon);
     }
 
     @Transactional
@@ -122,7 +126,8 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
         verifyName(pokemon, pokemonNationalDex);
         verifyType(pokemon, pokemonNationalDex);
         verifyMove(pokemon, pokemonNationalDex);
-        verifyEvolvedFrom(pokemon, pokemonNationalDex);
+        pokemon.setEvolvedFrom(evolutionUseCase.verifyEvolvedFrom(pokemon));
+        pokemon.setEvolveTo(evolutionUseCase.verifyEvolveTo(pokemon));
     }
 
     private void verifyName(Pokemon pokemon, Pokemon pokemonNationalDex) {
@@ -160,23 +165,6 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
                 throw new PokemonMoveIncorrectException(POKEMON_INCORRECT_MOVE + " - (" +
                         dontBelongs.stream().map(item -> item.getMove().getDescription() + " ").toString() + ")");
             }
-        }
-    }
-
-    private void verifyEvolvedFrom(Pokemon pokemon, Pokemon pokemonNationalDex) {
-
-        if (pokemon.getEvolvedFrom() != null) {
-
-            if (pokemonNationalDex.getEvolvedFrom() == null ||
-                    (!pokemon.getEvolvedFrom().getPokemon().getNumber()
-                            .equals(pokemonNationalDex.getEvolvedFrom().getPokemon().getNumber()) &&
-                            !Util.phoneticStringsMatches(pokemon.getEvolvedFrom().getPokemon().getName(),
-                                    pokemonNationalDex.getEvolvedFrom().getPokemon().getName()))) {
-
-                throw new PokemonEvolutionIncorrectException(POKEMON_INCORRECT_EVOLVED_FROM);
-            }
-
-            pokemon.setEvolvedFrom(evolutionUseCase.associateOrInsert(pokemon.getEvolvedFrom()));
         }
     }
 }
