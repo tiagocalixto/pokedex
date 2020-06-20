@@ -2,23 +2,14 @@ package br.com.tiagocalixto.pokedex.data_source.postgresql.converter.impl;
 
 import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.TypeEntity;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.TypeRepository;
 import br.com.tiagocalixto.pokedex.domain.Type;
 import br.com.tiagocalixto.pokedex.domain.enums.TypeEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component("typeConverterEntity")
 public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity, Type> {
-
-    private TypeRepository repository;
-
-    @Autowired
-    public ConverterTypeEntitySqlImpl(TypeRepository repository) {
-        this.repository = repository;
-    }
 
 
     @SuppressWarnings("Duplicates")
@@ -28,16 +19,12 @@ public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity
         if (domain.isEmpty()) //TODO - CREATE EXTENSION unaccent; on postgres - put in script deploy
             return Optional.empty();
 
-        Type type = domain.orElseGet(Type::new);
+        TypeEntity typeEntity = TypeEntity.builder().build();
 
-        TypeEntity typeEntity = repository
-                .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(type.getDescription().toString())
-                .orElse(repository.save(
-                        TypeEntity.builder()
-                                .id(0L)
-                                .description(type.getDescription().toString())
-                                .build())
-                );
+        domain.ifPresent(item -> {
+            typeEntity.setId(0L);
+            typeEntity.setDescription(item.getDescription().toString());
+        });
 
         return Optional.of(typeEntity);
     }

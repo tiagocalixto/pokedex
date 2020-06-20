@@ -55,7 +55,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
 
         PokemonEntity pokemonEntity = PokemonEntity.builder().build();
 
-        domain.ifPresent(item -> { //todo 4 - convert object managed by hibernate - using find by
+        domain.ifPresent(item -> {
             pokemonEntity.setId(item.getId());
             pokemonEntity.setName(item.getName());
             pokemonEntity.setNumber(item.getNumber());

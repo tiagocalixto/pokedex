@@ -3,7 +3,6 @@ package br.com.tiagocalixto.pokedex.data_source.postgresql.converter.impl;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.MoveEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.TypeEntity;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.MoveRepository;
 import br.com.tiagocalixto.pokedex.domain.Move;
 import br.com.tiagocalixto.pokedex.domain.Type;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,10 @@ import java.util.Optional;
 public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, Move> {
 
     private ConverterEntitySql<TypeEntity, Type> convertType;
-    private MoveRepository repository;
 
     @Autowired
-    public ConverterMoveEntityImpl(MoveRepository repository, ConverterEntitySql<TypeEntity, Type> convertType) {
+    public ConverterMoveEntityImpl(ConverterEntitySql<TypeEntity, Type> convertType) {
         this.convertType = convertType;
-        this.repository = repository;
     }
 
     @SuppressWarnings("Duplicates")
@@ -30,22 +27,17 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
         if (domain.isEmpty())
             return Optional.empty();
 
-        Move move = domain.orElseGet(Move::new);
+        MoveEntity moveEntity = MoveEntity.builder().build();
 
-        MoveEntity moveEntity = repository
-                .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(move.getDescription())
-                .orElse(repository.save(
-                        MoveEntity.builder()
-                                .id(0L)
-                                .description(move.getDescription())
-                                .build())
-                );
-
-        moveEntity.setPower(move.getPower());
-        moveEntity.setPp(move.getPp());
-        moveEntity.setAbout(move.getAbout());
-        moveEntity.setAccuracy(move.getAccuracy());
-        convertType.convertToEntity(Optional.ofNullable(move.getType())).ifPresent(moveEntity::setType);
+        domain.ifPresent(item -> {
+            moveEntity.setId(0L);
+            moveEntity.setDescription(item.getDescription());
+            moveEntity.setPower(item.getPower());
+            moveEntity.setPp(item.getPp());
+            moveEntity.setAbout(item.getAbout());
+            moveEntity.setAccuracy(item.getAccuracy());
+            convertType.convertToEntity(Optional.ofNullable(item.getType())).ifPresent(moveEntity::setType);
+        });
 
         return Optional.of(moveEntity);
     }

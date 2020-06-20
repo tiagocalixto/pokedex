@@ -2,23 +2,15 @@ package br.com.tiagocalixto.pokedex.data_source.postgresql.converter.impl;
 
 import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.EvolutionStoneEntity;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.EvolutionStoneRepository;
 import br.com.tiagocalixto.pokedex.domain.enums.EvolutionStoneEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+import static br.com.tiagocalixto.pokedex.infra.util.Constant.EMPTY;
+
 @Component("ConverterEvolutionStone")
 public class ConverterEvolutionStoneSqlImpl implements ConverterEntitySql<EvolutionStoneEntity, EvolutionStoneEnum> {
-
-    private EvolutionStoneRepository repository;
-
-    @Autowired
-    public ConverterEvolutionStoneSqlImpl(EvolutionStoneRepository repository) {
-
-        this.repository = repository;
-    }
 
 
     @SuppressWarnings("Duplicates")
@@ -28,15 +20,12 @@ public class ConverterEvolutionStoneSqlImpl implements ConverterEntitySql<Evolut
         if (domain.isEmpty())
             return Optional.empty();
 
-        EvolutionStoneEnum evolutionStoneEnum = domain.orElse(EvolutionStoneEnum.NOT_INFORMED);
+        EvolutionStoneEntity entity = EvolutionStoneEntity.builder().build();
 
-        EvolutionStoneEntity entity = repository
-                .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(evolutionStoneEnum.toString())
-                .orElse(repository.save(
-                        EvolutionStoneEntity.builder()
-                                .id(0L)
-                                .description(evolutionStoneEnum.toString())
-                                .build()));
+        domain.ifPresent(item -> {
+            entity.setId(0L);
+            entity.setDescription(item.toString());
+        });
 
         return Optional.of(entity);
     }

@@ -2,9 +2,7 @@ package br.com.tiagocalixto.pokedex.data_source.postgresql.converter.impl;
 
 import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.EvolutionTriggerEntity;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.EvolutionTriggerRepository;
 import br.com.tiagocalixto.pokedex.domain.enums.EvolutionTriggerEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -12,13 +10,6 @@ import java.util.Optional;
 @Component("ConverterEvolutionTrigger")
 public class ConverterEvolutionTriggerSqlImpl implements ConverterEntitySql<EvolutionTriggerEntity, EvolutionTriggerEnum> {
 
-    private EvolutionTriggerRepository repository;
-
-    @Autowired
-    public ConverterEvolutionTriggerSqlImpl(EvolutionTriggerRepository repository) {
-
-        this.repository = repository;
-    }
 
     @SuppressWarnings("Duplicates")
     @Override
@@ -27,15 +18,17 @@ public class ConverterEvolutionTriggerSqlImpl implements ConverterEntitySql<Evol
         if (domain.isEmpty())
             return Optional.empty();
 
-        EvolutionTriggerEnum evolutionTriggerEnum = domain.orElse(EvolutionTriggerEnum.LEVEL_UP);
+        EvolutionTriggerEntity entity = EvolutionTriggerEntity.builder().build();
 
-        EvolutionTriggerEntity entity = repository
-                .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(evolutionTriggerEnum.toString())
-                .orElse(repository.save(
-                        EvolutionTriggerEntity.builder()
-                                .id(0L)
-                                .description(evolutionTriggerEnum.toString())
-                                .build()));
+        domain.ifPresentOrElse(item -> {
+                    entity.setId(0L);
+                    entity.setDescription(item.toString());
+                }
+                , () -> {
+                    entity.setId(0L);
+                    entity.setDescription(EvolutionTriggerEnum.LEVEL_UP.toString());
+                }
+        );
 
         return Optional.of(entity);
     }

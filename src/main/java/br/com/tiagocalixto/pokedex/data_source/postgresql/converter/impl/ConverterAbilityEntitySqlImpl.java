@@ -3,22 +3,13 @@ package br.com.tiagocalixto.pokedex.data_source.postgresql.converter.impl;
 
 import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.AbilityEntity;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.AbilityRepository;
 import br.com.tiagocalixto.pokedex.domain.Ability;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component("abilityConverterEntity")
 public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<AbilityEntity, Ability> {
-
-    private AbilityRepository repository;
-
-    @Autowired
-    public ConverterAbilityEntitySqlImpl(AbilityRepository repository) {
-        this.repository = repository;
-    }
 
 
     @SuppressWarnings("Duplicates")
@@ -28,16 +19,12 @@ public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<Ability
         if (domain.isEmpty())
             return Optional.empty();
 
-        Ability ability = domain.orElseGet(Ability::new);
+        AbilityEntity abilityEntity = AbilityEntity.builder().build();
 
-        AbilityEntity abilityEntity = repository
-                .findFirstByDescriptionIgnoreCaseAndIgnoreAccents(ability.getDescription())
-                .orElse(repository.save(
-                        AbilityEntity.builder()
-                                .id(0L)
-                                .description(ability.getDescription())
-                                .build())
-                );
+        domain.ifPresent(item -> {
+            abilityEntity.setId(0L);
+            abilityEntity.setDescription(item.getDescription());
+        });
 
         return Optional.of(abilityEntity);
     }

@@ -103,7 +103,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     public Pokemon update(Pokemon pokemon) {
 
         if(!this.isExistsById(pokemon.getNumber())){
-            throw new EntityNotFoundException(POKEMON_NOT_FOUND_BY_NAME + pokemon.getNumber());
+            throw new EntityNotFoundException(POKEMON_NOT_FOUND + pokemon.getNumber());
         }
 
         verifyPokemonInfo(pokemon);

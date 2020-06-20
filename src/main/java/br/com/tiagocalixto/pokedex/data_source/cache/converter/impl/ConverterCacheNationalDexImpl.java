@@ -1,7 +1,7 @@
 package br.com.tiagocalixto.pokedex.data_source.cache.converter.impl;
 
 import br.com.tiagocalixto.pokedex.data_source.cache.converter.ConverterCache;
-import br.com.tiagocalixto.pokedex.external_api.national_dex.dto.pokemon.PokemonNationalDexDto;
+import br.com.tiagocalixto.pokedex.integration.national_dex.dto.pokemon.PokemonNationalDexDto;
 import br.com.tiagocalixto.pokedex.data_source.cache.entity.PokemonNationalDexCache;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,7 +7,7 @@ public interface InsertRepositoryPort<T> {
     T insert(T domain);
 
     @Async
-    default void insertVoid(T domain){
+    default void insertAsync(T domain){
         insert(domain);
     }
 }

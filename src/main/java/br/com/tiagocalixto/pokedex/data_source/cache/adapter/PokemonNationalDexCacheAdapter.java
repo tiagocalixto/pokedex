@@ -3,7 +3,7 @@ package br.com.tiagocalixto.pokedex.data_source.cache.adapter;
 import br.com.tiagocalixto.pokedex.data_source.cache.converter.ConverterCache;
 import br.com.tiagocalixto.pokedex.data_source.cache.entity.PokemonNationalDexCache;
 import br.com.tiagocalixto.pokedex.data_source.cache.repository.PokemonNationalDexRepositoryCache;
-import br.com.tiagocalixto.pokedex.external_api.national_dex.dto.pokemon.PokemonNationalDexDto;
+import br.com.tiagocalixto.pokedex.integration.national_dex.dto.pokemon.PokemonNationalDexDto;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.FindOneByIdRepositoryPort;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.InsertRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;

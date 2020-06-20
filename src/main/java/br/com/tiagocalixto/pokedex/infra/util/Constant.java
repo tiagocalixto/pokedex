@@ -47,14 +47,11 @@ public final class Constant {
     public static final String EVOLUTION_GENERIC= "Pokemon Evolution contains incorrect info!";
     public static final String MOVE_IS_REQUIRED = "Move is required!";
     public static final String MOVE_IS_DUPLICATE = "Duplicated item detected on move list!";
-    public static final String DUPLICATED_ITEM_MOVE = "Detected duplicated item in move list!";
     public static final String DUPLICATED_ITEM_ABILITY = "Detected duplicated item in ability list!";
     public static final String DUPLICATED_ITEM_WEAKNESS = "Detected duplicated item in weakness list!";
     public static final String DUPLICATED_ITEM_GENERIC = "Has a duplicated item in this list!";
     public static final String INSERT = "INSERT";
-    public static final String BEFORE_UPDATE = "BEFORE_UPDATE";
     public static final String UPDATE = "UPDATE";
-    public static final String DELETE = "DELETE";
     public static final String ATTACK = "attack";
     public static final String DEFENSE = "defense";
     public static final String SPEED = "speed";
@@ -76,5 +73,6 @@ public final class Constant {
     public static final String POKEMON_CONSIDER = "This api is old school, considers only first generation pokemon (1-151)";
     public static final String POKEMON_DONT_EVOLVES_TO = "This pokemon don't evolves to any other!";
     public static final String POKEMON_INCORRECT_EVOLVE_TO = "Pokemon evolve to is incorrect!";
+    public static final String POKEMON_NOT_FOUND = "Pokemon not found!";
 }
 
