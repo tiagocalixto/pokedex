@@ -6,16 +6,13 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
-
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_NOT_FOUND;
+import java.util.Objects;
 
 @Component("PreparePokemonToPersistSql")
 public class PreparePokemonToPersistSql {
 
     //<editor-fold: properties>
     private TypeRepository repositoryType;
-    private PokemonRepository repositoryPokemon;
     private MoveRepository repositoryMove;
     private EvolutionStoneRepository repositoryEvolutionStone;
     private EvolutionTriggerRepository repositoryEvolutionTrigger;
@@ -28,43 +25,45 @@ public class PreparePokemonToPersistSql {
                                       MoveRepository repositoryMove,
                                       EvolutionStoneRepository repositoryEvolutionStone,
                                       EvolutionTriggerRepository repositoryEvolutionTrigger,
-                                      AbilityRepository repositoryAbility,
-                                      PokemonRepository repositoryPokemon) {
+                                      AbilityRepository repositoryAbility) {
 
         this.repositoryType = repositoryType;
         this.repositoryMove = repositoryMove;
         this.repositoryEvolutionStone = repositoryEvolutionStone;
         this.repositoryEvolutionTrigger = repositoryEvolutionTrigger;
         this.repositoryAbility = repositoryAbility;
-        this.repositoryPokemon = repositoryPokemon;
     }
     //</editor-fold>
 
 
     public PokemonEntity prepareToInsert(PokemonEntity insert) {
 
-            insert.setId(0L);
-            preparePokemon(insert);
+        insert.setId(null);
+        preparePokemon(insert);
 
-            return insert;
+        return insert;
     }
 
-    public PokemonEntity prepareToUpdate(PokemonEntity update){
-
-        PokemonEntity pokemonDb = repositoryPokemon.findById(update.getId())
-                .orElseThrow(() ->  new EntityNotFoundException(POKEMON_NOT_FOUND));
+    @SuppressWarnings("Duplicates")
+    public PokemonEntity prepareToUpdate(PokemonEntity update) {
 
         preparePokemon(update);
+        setEmbeddedId(update);
 
-        //de para maravilhoso
-
+        return update;
     }
 
-    private void preparePokemon(PokemonEntity pokemon){
+    private void preparePokemon(PokemonEntity pokemon) {
 
         pokemon.getType().forEach(item -> item.setType(prepareTypeEntity(item.getType())));
-        pokemon.getEvolvedFrom().setEvolutionTrigger(prepareEvolutionTriggerEntity(pokemon.getEvolvedFrom().getEvolutionTrigger()));
-        pokemon.getEvolvedFrom().setEvolutionItem(prepareEvolutionStoneEntity(pokemon.getEvolvedFrom().getEvolutionItem()));
+
+        if (pokemon.getEvolvedFrom() != null) {
+            pokemon.getEvolvedFrom().setEvolutionTrigger(
+                    prepareEvolutionTriggerEntity(pokemon.getEvolvedFrom().getEvolutionTrigger()));
+
+            pokemon.getEvolvedFrom().setEvolutionItem(
+                    prepareEvolutionStoneEntity(pokemon.getEvolvedFrom().getEvolutionItem()));
+        }
 
         pokemon.getEvolveTo().forEach(item -> {
             item.setEvolutionTrigger(item.getEvolutionTrigger());
@@ -94,7 +93,7 @@ public class PreparePokemonToPersistSql {
 
     private EvolutionStoneEntity prepareEvolutionStoneEntity(EvolutionStoneEntity evolutionStoneEntity) {
 
-        if (evolutionStoneEntity == null || evolutionStoneEntity.getDescription() == null){
+        if (evolutionStoneEntity == null || evolutionStoneEntity.getDescription() == null) {
             return null;
         }
 
@@ -110,9 +109,27 @@ public class PreparePokemonToPersistSql {
                 .orElseGet(() -> repositoryEvolutionTrigger.save(evolutionTriggerEntity));
     }
 
-    private AbilityEntity prepareAbilityEntity(AbilityEntity abilityEntity){
+    private AbilityEntity prepareAbilityEntity(AbilityEntity abilityEntity) {
 
         return repositoryAbility.findFirstByDescriptionIgnoreCaseAndIgnoreAccents(abilityEntity.getDescription())
                 .orElseGet(() -> repositoryAbility.save(abilityEntity));
+    }
+
+    private void setEmbeddedId(PokemonEntity pokemon) {
+
+        pokemon.getType().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdTypeFk(item.getType().getId()));
+
+        pokemon.getAbility().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdAbilityFk(item.getAbility().getId()));
+
+        pokemon.getMove().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdMoveFk(item.getMove().getId()));
+
+        pokemon.getWeakness().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdTypeFk(item.getType().getId()));
+
+        pokemon.getEvolveTo().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdEvolutionFk(item.getEvolution().getId()));
     }
 }

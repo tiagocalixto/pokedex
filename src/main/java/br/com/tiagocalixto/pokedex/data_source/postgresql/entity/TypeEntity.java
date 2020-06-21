@@ -24,7 +24,7 @@ public class TypeEntity extends GenericEntity {
     @Id
     @SequenceGenerator(name = "type_id_auto", sequenceName = "type_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "type_id_auto")
-    private long id;
+    private Long id;
 
     @Column(name = "description", nullable = false, length = 50)
     private String description;

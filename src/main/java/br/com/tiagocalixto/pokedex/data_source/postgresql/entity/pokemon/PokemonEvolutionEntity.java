@@ -20,7 +20,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "pokemon_evolution")
-@SQLDelete(sql = "UPDATE pokemon_evolution SET deleted = true, audit_logical_delete_date = current_timestamp WHERE id = ?")
+@SQLDelete(sql = "UPDATE pokemon_evolution SET deleted = true, " +
+        "         audit_logical_delete_date = current_timestamp WHERE id_evolution_fk = ? and id_pokemon_fk = ?")
 @Where(clause = "deleted != true")
 public class PokemonEvolutionEntity extends GenericEntity {
 
@@ -42,7 +43,7 @@ public class PokemonEvolutionEntity extends GenericEntity {
     private EvolutionTriggerEntity evolutionTrigger;
 
     @Column(name = "level")
-    private long level;
+    private Long level;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_stone_fk", referencedColumnName = "id")

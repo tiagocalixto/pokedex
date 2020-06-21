@@ -15,8 +15,8 @@ import java.io.Serializable;
 public class PokemonAbilityPk implements Serializable {
 
     @Column(name = "id_pokemon_fk")
-    private long idPokemonFk;
+    private Long idPokemonFk;
 
     @Column(name = "id_ability_fk")
-    private long idAbilityFk;
+    private Long idAbilityFk;
 }

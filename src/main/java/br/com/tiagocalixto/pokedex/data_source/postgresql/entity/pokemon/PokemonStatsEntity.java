@@ -22,7 +22,7 @@ public class PokemonStatsEntity extends GenericEntity {
 
     @Id
     @Column(name = "id_pokemon_fk")
-    private long id;
+    private Long id;
 
     @OneToOne
     @JoinColumn(name = "id_pokemon_fk", referencedColumnName = "id", insertable = false, updatable = false)
@@ -30,20 +30,20 @@ public class PokemonStatsEntity extends GenericEntity {
     private PokemonEntity pokemon;
 
     @Column(name = "hp")
-    private long hp;
+    private Long hp;
 
     @Column(name = "attack")
-    private long attack;
+    private Long attack;
 
     @Column(name = "defense")
-    private long defense;
+    private Long defense;
 
     @Column(name = "special_attack")
-    private long specialAttack;
+    private Long specialAttack;
 
     @Column(name = "special_defense")
-    private long specialDefense;
+    private Long specialDefense;
 
     @Column(name = "speed")
-    private long speed;
+    private Long speed;
 }

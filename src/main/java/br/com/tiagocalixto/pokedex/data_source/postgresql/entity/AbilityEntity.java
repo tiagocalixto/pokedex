@@ -25,7 +25,7 @@ public class AbilityEntity extends GenericEntity {
     @Id
     @SequenceGenerator(name = "ability_id_auto", sequenceName = "ability_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ability_id_auto")
-    private long id;
+    private Long id;
 
     @Column(name = "description", nullable = false, length = 50)
     private String description;

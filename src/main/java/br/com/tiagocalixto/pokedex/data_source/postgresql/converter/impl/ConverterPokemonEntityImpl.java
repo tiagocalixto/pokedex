@@ -436,34 +436,14 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
 
     private void setPokemonEntityOnRelations(PokemonEntity pokemonEntity) {
 
-        PokemonEntity entity = getEntityAbbreviated(pokemonEntity);
-
-        pokemonEntity.getStats().setPokemon(entity);
-        pokemonEntity.getType().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(entity));
-        pokemonEntity.getAbility().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(entity));
-        pokemonEntity.getMove().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(entity));
-        pokemonEntity.getWeakness().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(entity));
-        pokemonEntity.getEvolveTo().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(entity));
+        pokemonEntity.getStats().setPokemon(pokemonEntity);
+        pokemonEntity.getType().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
+        pokemonEntity.getAbility().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
+        pokemonEntity.getMove().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
+        pokemonEntity.getWeakness().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
+        pokemonEntity.getEvolveTo().stream().filter(Objects::nonNull).forEach(item -> item.setPokemon(pokemonEntity));
 
         if (pokemonEntity.getEvolvedFrom() != null)
-            pokemonEntity.getEvolvedFrom().setEvolution(entity);
-    }
-
-    private PokemonEntity getEntityAbbreviated(PokemonEntity pokemonEntity) {
-
-        return PokemonEntity.builder()
-                .id(pokemonEntity.getId())
-                .name(pokemonEntity.getName())
-                .number(pokemonEntity.getNumber())
-                .weight(pokemonEntity.getWeight())
-                .height(pokemonEntity.getHeight())
-                .about(pokemonEntity.getAbout())
-                .urlPicture(pokemonEntity.getUrlPicture())
-                .evolveTo(Collections.emptyList())
-                .type(Collections.emptyList())
-                .ability(Collections.emptyList())
-                .move(Collections.emptyList())
-                .weakness(Collections.emptyList())
-                .build();
+            pokemonEntity.getEvolvedFrom().setEvolution(pokemonEntity);
     }
 }

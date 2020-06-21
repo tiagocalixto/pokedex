@@ -24,7 +24,7 @@ public class EvolutionStoneEntity extends GenericEntity {
     @Id
     @SequenceGenerator(name = "stone_id_auto", sequenceName = "stone_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stone_id_auto")
-    private long id;
+    private Long id;
 
     @Column(name = "description", nullable = false, length = 50)
     private String description;

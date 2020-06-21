@@ -25,7 +25,7 @@ public class PokemonEntity extends GenericEntity {
     @Id
     @SequenceGenerator(name = "pokemon_id_auto", sequenceName = "pokemon_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pokemon_id_auto")
-    private long id;
+    private Long id;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
     private PokemonStatsEntity stats;

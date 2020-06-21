@@ -24,16 +24,16 @@ public class MoveEntity extends GenericEntity {
     @Id
     @SequenceGenerator(name = "move_id_auto", sequenceName = "move_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "move_id_auto")
-    private long id;
+    private Long id;
 
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
     @Column(name = "pp", nullable = false)
-    private long pp;
+    private Long pp;
 
     @Column(name = "power", nullable = false)
-    private long power;
+    private Long power;
 
     @Column(name = "accuracy", nullable = false)
     private BigDecimal accuracy;

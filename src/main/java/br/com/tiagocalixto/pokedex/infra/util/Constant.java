@@ -74,5 +74,7 @@ public final class Constant {
     public static final String POKEMON_DONT_EVOLVES_TO = "This pokemon don't evolves to any other!";
     public static final String POKEMON_INCORRECT_EVOLVE_TO = "Pokemon evolve to is incorrect!";
     public static final String POKEMON_NOT_FOUND = "Pokemon not found!";
+    public static final String POKEMON_EVOLVED_FROM_HIMSELF = "Pokemon can't evolved from himself!";
+    public static final String POKEMON_EVOLVES_TO_HIMSELF = "Pokemon can't evolve into himself!";
 }
 

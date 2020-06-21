@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,6 +56,7 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     //</editor-fold>
 
 
+    @Transactional
     @Override
     public Pokemon insert(Pokemon pokemon) {
 
@@ -73,10 +75,15 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     @Override
     public Pokemon update(Pokemon pokemon) {
 
+        PokemonEntity entity = prepareToPersist
+                .prepareToUpdate(converter.convertToEntityNotOptional(pokemon));
+
         Pokemon updated = converter.convertToDomainNotOptional(
-                repository.save(converter.convertToEntityNotOptional(pokemon)));
+                repository.save(entity));
 
         saveCache.insertAsync(updated);
+        saveHistoric.insertAsync(updated);
+
         return updated;
     }
 

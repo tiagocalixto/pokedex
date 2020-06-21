@@ -3,6 +3,7 @@ package br.com.tiagocalixto.pokedex.controller.v1.input_rules.annotation.impl;
 import br.com.tiagocalixto.pokedex.controller.v1.dto.TypeDto;
 import br.com.tiagocalixto.pokedex.controller.v1.dto.pokemon.PokemonDto;
 import br.com.tiagocalixto.pokedex.controller.v1.input_rules.annotation.PokemonRule;
+import br.com.tiagocalixto.pokedex.infra.util.Util;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
@@ -36,6 +37,18 @@ public class PokemonRuleImpl implements ConstraintValidator<PokemonRule, Pokemon
             if(!isMoveValid(pokemon)){
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(MOVE_IS_DUPLICATE).addConstraintViolation();
+                return false;
+            }
+
+            if(evolveToAndPokemonIsTheSame(pokemon)){
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(POKEMON_EVOLVES_TO_HIMSELF).addConstraintViolation();
+                return false;
+            }
+
+            if(evolvedFromAndPokemonIsTheSame(pokemon)){
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate(POKEMON_EVOLVED_FROM_HIMSELF).addConstraintViolation();
                 return false;
             }
 
@@ -88,5 +101,19 @@ public class PokemonRuleImpl implements ConstraintValidator<PokemonRule, Pokemon
                 .map(item -> item.getMove().getDescription())
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet()).size() == pokemon.getMove().size();
+    }
+
+    private boolean evolveToAndPokemonIsTheSame(PokemonDto pokemon){
+
+        return pokemon.getEvolveTo().stream()
+                .anyMatch(item -> Util.phoneticStringsMatches(item.getPokemon().getName(), pokemon.getName()) ||
+                        item.getPokemon().getNumber().equals(pokemon.getNumber()));
+    }
+
+    private boolean evolvedFromAndPokemonIsTheSame(PokemonDto pokemon){
+
+        return pokemon.getEvolvedFrom().getPokemon().getNumber().equals(pokemon.getNumber()) ||
+               Util.phoneticStringsMatches(pokemon.getEvolvedFrom().getPokemon().getName(),
+                       pokemon.getName());
     }
 }
