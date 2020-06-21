@@ -14,11 +14,11 @@ public class ConverterCacheNationalDexImpl implements ConverterCache<PokemonNati
 
     private Gson gson;
 
-
     @Autowired
     public ConverterCacheNationalDexImpl(Gson gson){
         this.gson = gson;
     }
+
 
     @SuppressWarnings("Duplicates")
     @Override

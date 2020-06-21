@@ -6,7 +6,7 @@ import br.com.tiagocalixto.pokedex.integration.national_dex.dto.pokemon.PokemonN
 import br.com.tiagocalixto.pokedex.integration.national_dex.facade.GetPokemonFromApiFacade;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.FindOneByIdRepositoryPort;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.InsertRepositoryPort;
-import br.com.tiagocalixto.pokedex.ports.external_api.FindOneByIdExternalApiPort;
+import br.com.tiagocalixto.pokedex.ports.integration.FindOneByIdIntegrationPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component("NationalDex")
-public class NationalDexAdapter implements FindOneByIdExternalApiPort<Pokemon> {
+public class NationalDexAdapter implements FindOneByIdIntegrationPort<Pokemon> {
 
     //<editor-fold: properties>
     private GetPokemonFromApiFacade getFromNationalDex;

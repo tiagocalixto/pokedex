@@ -6,7 +6,7 @@ import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonMove;
 import br.com.tiagocalixto.pokedex.infra.exception.*;
 import br.com.tiagocalixto.pokedex.infra.util.Util;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.*;
-import br.com.tiagocalixto.pokedex.ports.external_api.FindOneByIdExternalApiPort;
+import br.com.tiagocalixto.pokedex.ports.integration.FindOneByIdIntegrationPort;
 import br.com.tiagocalixto.pokedex.use_case.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,7 +32,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     private UpdateRepositoryPort<Pokemon> updateRepository;
     private DeleteRepositoryPort<Pokemon> deleteRepository;
     private EvolutionUseCase evolutionUseCase;
-    private FindOneByIdExternalApiPort<Pokemon> nationalDex;
+    private FindOneByIdIntegrationPort<Pokemon> nationalDex;
     //</editor-fold>
 
     //<editor-fold: constructor>
@@ -45,7 +45,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
                               @Qualifier("PokemonRepositorySql") UpdateRepositoryPort<Pokemon> updateRepository,
                               @Qualifier("PokemonRepositorySql") DeleteRepositoryPort<Pokemon> deleteRepository,
                               @Qualifier("EvolutionUseCaseImpl") EvolutionUseCase evolutionUseCase,
-                              @Qualifier("NationalDex") FindOneByIdExternalApiPort<Pokemon> nationalDex) {
+                              @Qualifier("NationalDex") FindOneByIdIntegrationPort<Pokemon> nationalDex) {
 
         this.findByIdRepository = findByIdRepository;
         this.findByNameRepository = findByNameRepository;

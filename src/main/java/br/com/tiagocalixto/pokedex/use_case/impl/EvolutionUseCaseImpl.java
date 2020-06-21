@@ -5,7 +5,7 @@ import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonEvolution;
 import br.com.tiagocalixto.pokedex.infra.exception.NationalDexOutOfServiceException;
 import br.com.tiagocalixto.pokedex.infra.exception.PokemonEvolutionIncorrectException;
 import br.com.tiagocalixto.pokedex.infra.util.Util;
-import br.com.tiagocalixto.pokedex.ports.external_api.FindOneByIdExternalApiPort;
+import br.com.tiagocalixto.pokedex.ports.integration.FindOneByIdIntegrationPort;
 import br.com.tiagocalixto.pokedex.use_case.EvolutionUseCase;
 import br.com.tiagocalixto.pokedex.use_case.FindOneByIdUseCase;
 import br.com.tiagocalixto.pokedex.use_case.IsExistsUseCase;
@@ -26,7 +26,7 @@ import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
 public class EvolutionUseCaseImpl implements EvolutionUseCase {
 
     //<editor-fold: properties>
-    private FindOneByIdExternalApiPort<Pokemon> nationalDex;
+    private FindOneByIdIntegrationPort<Pokemon> nationalDex;
     private IsExistsUseCase pokemonExists;
     private FindOneByIdUseCase<Pokemon> findPokemon;
     private SaveUseCase<Pokemon> savePokemon;
@@ -40,7 +40,7 @@ public class EvolutionUseCaseImpl implements EvolutionUseCase {
 
     //<editor-fold: constructor>
     @Autowired
-    public EvolutionUseCaseImpl(@Qualifier("NationalDex") FindOneByIdExternalApiPort<Pokemon> nationalDex,
+    public EvolutionUseCaseImpl(@Qualifier("NationalDex") FindOneByIdIntegrationPort<Pokemon> nationalDex,
                                 @Lazy @Qualifier("PokemonUseCaseImpl") IsExistsUseCase pokemonExists,
                                 @Lazy @Qualifier("PokemonUseCaseImpl") FindOneByIdUseCase<Pokemon> findPokemon,
                                 @Lazy @Qualifier("PokemonUseCaseImpl") SaveUseCase<Pokemon> savePokemon) {
