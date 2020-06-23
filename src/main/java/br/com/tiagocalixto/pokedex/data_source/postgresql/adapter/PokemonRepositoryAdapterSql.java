@@ -1,17 +1,15 @@
 package br.com.tiagocalixto.pokedex.data_source.postgresql.adapter;
 
 import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEntitySql;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.EvolutionStoneEntity;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.MoveEntity;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.TypeEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.pokemon.PokemonEntity;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.MoveRepository;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.PokemonRepository;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.TypeRepository;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.ports.data_source_ports.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
@@ -31,8 +29,6 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     //<editor-fold: properties>
     private PokemonRepository repository;
     private ConverterEntitySql<PokemonEntity, Pokemon> converter;
-    private FindOneByIdRepositoryPort<Pokemon> cacheFind;
-    private InsertRepositoryPort<Pokemon> saveCache;
     private InsertRepositoryPort<Object> saveHistoric;
     private PreparePokemonToPersistSql prepareToPersist;
     //</editor-fold>
@@ -43,21 +39,18 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
                                        PreparePokemonToPersistSql prepareToPersist,
                                        ConverterEntitySql<PokemonEntity, Pokemon> converter,
                                        @Qualifier("MongoHistoricRepository")
-                                                 InsertRepositoryPort<Object> saveHistoric,
-                                       @Qualifier("PokemonCache") FindOneByIdRepositoryPort<Pokemon> cacheFind,
-                                       @Qualifier("PokemonCache") InsertRepositoryPort<Pokemon> saveCache) {
+                                               InsertRepositoryPort<Object> saveHistoric) {
+
         this.repository = repository;
         this.prepareToPersist = prepareToPersist;
         this.converter = converter;
-        this.cacheFind = cacheFind;
-        this.saveCache = saveCache;
         this.saveHistoric = saveHistoric;
     }
     //</editor-fold>
 
 
-    @Transactional
     @Override
+    @CachePut(value = "PokemonRepositorySql", key = "{#pokemon.id}")
     public Pokemon insert(Pokemon pokemon) {
 
         PokemonEntity entity = prepareToPersist
@@ -66,13 +59,13 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
         Pokemon saved = converter.convertToDomainNotOptional(
                 repository.save(entity));
 
-        saveCache.insertAsync(saved);
         saveHistoric.insertAsync(saved);
 
         return saved;
     }
 
     @Override
+    @CachePut(value = "PokemonRepositorySql", key = "{#pokemon.id}")
     public Pokemon update(Pokemon pokemon) {
 
         PokemonEntity entity = prepareToPersist
@@ -81,13 +74,13 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
         Pokemon updated = converter.convertToDomainNotOptional(
                 repository.save(entity));
 
-        saveCache.insertAsync(updated);
         saveHistoric.insertAsync(updated);
 
         return updated;
     }
 
     @Override
+    @CacheEvict(value = "PokemonRepositorySql", key = "{#pokemon.id}")
     public void delete(Pokemon pokemon) {
 
         repository.delete(converter.convertToEntityNotOptional(pokemon));
@@ -105,16 +98,10 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     }
 
     @Override
+    @Cacheable(value = "PokemonRepositorySql", key = "{#number}")
     public Optional<Pokemon> findById(Long number) {
 
-        Optional<Pokemon> founded = cacheFind.findById(number);
-
-        if (founded.isEmpty()) {
-            founded = converter.convertToDomain(repository.findFirstByNumber(number));
-            founded.ifPresent(saveCache::insertAsync);
-        }
-
-        return founded;
+        return converter.convertToDomain(repository.findById(number));
     }
 
     @Override
