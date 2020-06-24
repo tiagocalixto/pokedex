@@ -4,7 +4,7 @@ import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 
 import java.util.List;
 
-public interface FindAlByNameUseCase<T> {
+public interface FindAllByNameUseCase<T> {
 
-    List<T> findByName(String name);
+    List<T> execute(String name);
 }

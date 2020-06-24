@@ -180,7 +180,19 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({NoContentException.class, })
+    public ResponseEntity<Object> handleNoContentException(final NoContentException ex) {
 
+        log.error(ex.getMessage());
 
-    //todo - include handler exception geral Exception
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.NO_CONTENT.value())
+                .error(HttpStatus.NO_CONTENT)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.NO_CONTENT);
+    }
+
+    //todo - include handler exception general Exception
 }

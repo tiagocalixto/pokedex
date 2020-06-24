@@ -50,8 +50,6 @@ public final class Constant {
     public static final String DUPLICATED_ITEM_ABILITY = "Detected duplicated item in ability list!";
     public static final String DUPLICATED_ITEM_WEAKNESS = "Detected duplicated item in weakness list!";
     public static final String DUPLICATED_ITEM_GENERIC = "Has a duplicated item in this list!";
-    public static final String INSERT = "INSERT";
-    public static final String UPDATE = "UPDATE";
     public static final String ATTACK = "attack";
     public static final String DEFENSE = "defense";
     public static final String SPEED = "speed";
@@ -59,7 +57,7 @@ public final class Constant {
     public static final String SPECIAL_DEFENSE = "special-defense";
     public static final String SPECIAL_ATTACK = "special-attack";
     public static final String EMPTY = "";
-    public static final String POKEMON_NOT_FOUND_BY_NUMBER = "No Pokemon found by number, number = ";
+    public static final String POKEMON_NOT_FOUND_BY_ID = "No Pokemon found for id = ";
     public static final String POKEMON_NOT_FOUND_BY_NAME = "No pokemon found by name, Name = ";
     public static final String NAME = "name";
     public static final String WEAKNESS_CANT_BE_TYPE = "Weakness can't be equal type!";
@@ -76,5 +74,6 @@ public final class Constant {
     public static final String POKEMON_NOT_FOUND = "Pokemon not found!";
     public static final String POKEMON_EVOLVED_FROM_HIMSELF = "Pokemon can't evolved from himself!";
     public static final String POKEMON_EVOLVES_TO_HIMSELF = "Pokemon can't evolve into himself!";
+    public static final String PAGE_HAS_NO_CONTENT = "Page has no content!";
 }
 

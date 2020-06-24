@@ -98,10 +98,10 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     }
 
     @Override
-    @Cacheable(value = "PokemonRepositorySql", key = "{#number}")
-    public Optional<Pokemon> findById(Long number) {
+    @Cacheable(value = "PokemonRepositorySql", key = "{#id}")
+    public Optional<Pokemon> findById(Long id) {
 
-        return converter.convertToDomain(repository.findById(number));
+        return converter.convertToDomain(repository.findFirstByNumber(id));
     }
 
     @Override
@@ -114,6 +114,6 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     @Override
     public boolean isExistsById(Long id) {
 
-        return repository.existsById(id);
+        return repository.existsByNumber(id);
     }
 }

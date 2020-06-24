@@ -15,6 +15,7 @@ import java.util.Set;
 public interface PokemonRepository extends CrudRepository<PokemonEntity, Long> {
 
     Optional<PokemonEntity> findFirstByNumber(Long number);
+    boolean existsByNumber(Long number);
     Page<PokemonEntity> findAll(Pageable pageable);
 
     //todo  - CREATE EXTENSION fuzzystrmatch; on postgres in deploy

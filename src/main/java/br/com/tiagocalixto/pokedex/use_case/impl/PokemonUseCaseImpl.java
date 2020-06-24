@@ -20,13 +20,11 @@ import java.util.stream.Collectors;
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
 
 @Service("PokemonUseCaseImpl")
-public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<Pokemon>, DeleteUseCase<Long>,
-        IsExistsUseCase, FindAllPageableUseCase<Pokemon>, FindAlByNameUseCase<Pokemon>, FindOneByIdUseCase<Pokemon> {
+public class PokemonUseCaseImpl implements PersistUseCase<Pokemon>, UpdateUseCase<Pokemon>, DeleteByIdUseCase<Long>,
+        ExistsByIdUseCase, FindPageableUseCase<Pokemon>, FindAllByNameUseCase<Pokemon>, FindOneByIdUseCase<Pokemon> {
 
     //<editor-fold: properties>
-    private FindOneByIdRepositoryPort<Pokemon> findByIdRepository;
     private FindAllByNameRepositoryPort<Pokemon> findByNameRepository;
-    private FindAllPageableRepositoryPort<Pokemon> findPageableRepository;
     private ExistsByIdRepositoryPort isExistsRepository;
     private InsertRepositoryPort<Pokemon> insertRepository;
     private UpdateRepositoryPort<Pokemon> updateRepository;
@@ -37,9 +35,8 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
 
     //<editor-fold: constructor>
     @Autowired
-    public PokemonUseCaseImpl(@Qualifier("PokemonRepositorySql") FindOneByIdRepositoryPort<Pokemon> findByIdRepository,
+    public PokemonUseCaseImpl(
                               @Qualifier("PokemonRepositorySql") FindAllByNameRepositoryPort<Pokemon> findByNameRepository,
-                              @Qualifier("PokemonRepositorySql") FindAllPageableRepositoryPort<Pokemon> findPageableRepository,
                               @Qualifier("PokemonRepositorySql") ExistsByIdRepositoryPort isExistsRepository,
                               @Qualifier("PokemonRepositorySql") InsertRepositoryPort<Pokemon> insertRepository,
                               @Qualifier("PokemonRepositorySql") UpdateRepositoryPort<Pokemon> updateRepository,
@@ -47,9 +44,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
                               @Qualifier("EvolutionUseCaseImpl") EvolutionUseCase evolutionUseCase,
                               @Qualifier("NationalDex") FindOneByIdIntegrationPort<Pokemon> nationalDex) {
 
-        this.findByIdRepository = findByIdRepository;
         this.findByNameRepository = findByNameRepository;
-        this.findPageableRepository = findPageableRepository;
         this.isExistsRepository = isExistsRepository;
         this.insertRepository = insertRepository;
         this.updateRepository = updateRepository;
@@ -60,39 +55,18 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     //</editor-fold>
 
 
-    @Override
-    public Pokemon findById(Long number) {
 
-        return findByIdRepository.findById(number)
-                .orElseThrow(() -> new EntityNotFoundException(POKEMON_NOT_FOUND_BY_NUMBER + number));
-    }
+
 
     @Override
-    public List<Pokemon> findByName(String name) {
-
-        List<Pokemon> pokemon = findByNameRepository.findAllByName(name);
-
-        if (pokemon.isEmpty())
-            throw new EntityNotFoundException(POKEMON_NOT_FOUND_BY_NAME + name);
-
-        return pokemon;
-    }
-
-    @Override
-    public List<Pokemon> findAllPageable(int pageNumber) {
-
-        return findPageableRepository.findAllPageable(pageNumber, 10, NAME);
-    }
-
-    @Override
-    public boolean isExistsById(Long number) {
+    public boolean execute(Long number) {
 
         return isExistsRepository.isExistsById(number);
     }
 
     @Transactional
     @Override
-    public Pokemon save(Pokemon pokemon) {
+    public Pokemon execute(Pokemon pokemon) {
 
         verifyPokemonInfo(pokemon);
         return insertRepository.insert(pokemon);
@@ -102,7 +76,7 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
     @Override
     public Pokemon update(Pokemon pokemon) {
 
-        if(!this.isExistsById(pokemon.getNumber())){
+        if(!this.execute(pokemon.getNumber())){
             throw new EntityNotFoundException(POKEMON_NOT_FOUND + pokemon.getNumber());
         }
 
@@ -112,9 +86,9 @@ public class PokemonUseCaseImpl implements SaveUseCase<Pokemon>, UpdateUseCase<P
 
     @Transactional
     @Override
-    public void delete(Long number) {
+    public void execute(Long number) {
 
-        Pokemon pokemon = this.findById(number);
+        Pokemon pokemon = this.execute(number);
         deleteRepository.delete(pokemon);
     }
 

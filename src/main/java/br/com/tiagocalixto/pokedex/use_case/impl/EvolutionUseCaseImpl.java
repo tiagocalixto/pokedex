@@ -8,8 +8,8 @@ import br.com.tiagocalixto.pokedex.infra.util.Util;
 import br.com.tiagocalixto.pokedex.ports.integration.FindOneByIdIntegrationPort;
 import br.com.tiagocalixto.pokedex.use_case.EvolutionUseCase;
 import br.com.tiagocalixto.pokedex.use_case.FindOneByIdUseCase;
-import br.com.tiagocalixto.pokedex.use_case.IsExistsUseCase;
-import br.com.tiagocalixto.pokedex.use_case.SaveUseCase;
+import br.com.tiagocalixto.pokedex.use_case.ExistsByIdUseCase;
+import br.com.tiagocalixto.pokedex.use_case.PersistUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,9 +27,9 @@ public class EvolutionUseCaseImpl implements EvolutionUseCase {
 
     //<editor-fold: properties>
     private FindOneByIdIntegrationPort<Pokemon> nationalDex;
-    private IsExistsUseCase pokemonExists;
+    private ExistsByIdUseCase pokemonExists;
     private FindOneByIdUseCase<Pokemon> findPokemon;
-    private SaveUseCase<Pokemon> savePokemon;
+    private PersistUseCase<Pokemon> savePokemon;
 
     @Value("${pokemon.min.number}")
     private Long pokemonMinNumber;
@@ -41,9 +41,9 @@ public class EvolutionUseCaseImpl implements EvolutionUseCase {
     //<editor-fold: constructor>
     @Autowired
     public EvolutionUseCaseImpl(@Qualifier("NationalDex") FindOneByIdIntegrationPort<Pokemon> nationalDex,
-                                @Lazy @Qualifier("PokemonUseCaseImpl") IsExistsUseCase pokemonExists,
+                                @Lazy @Qualifier("PokemonUseCaseImpl") ExistsByIdUseCase pokemonExists,
                                 @Lazy @Qualifier("PokemonUseCaseImpl") FindOneByIdUseCase<Pokemon> findPokemon,
-                                @Lazy @Qualifier("PokemonUseCaseImpl") SaveUseCase<Pokemon> savePokemon) {
+                                @Lazy @Qualifier("PokemonUseCaseImpl") PersistUseCase<Pokemon> savePokemon) {
 
         this.nationalDex = nationalDex;
         this.pokemonExists = pokemonExists;
@@ -120,9 +120,9 @@ public class EvolutionUseCaseImpl implements EvolutionUseCase {
 
     private Pokemon associateOrInsert(Pokemon pokemon) {
 
-        if (pokemonExists.isExistsById(pokemon.getId())) {
+        if (pokemonExists.execute(pokemon.getId())) {
 
-            Pokemon evolution = findPokemon.findById(pokemon.getId());
+            Pokemon evolution = findPokemon.execute(pokemon.getId());
             evolution.setEvolvedFrom(null);
             evolution.setEvolveTo(Collections.emptyList());
             return evolution;
@@ -134,7 +134,7 @@ public class EvolutionUseCaseImpl implements EvolutionUseCase {
         fromNationalDex.setEvolvedFrom(null);
         fromNationalDex.setEvolveTo(Collections.emptyList());
 
-        return savePokemon.save(fromNationalDex);
+        return savePokemon.execute(fromNationalDex);
     }
 
     private boolean pokemonBelongsToRange(Pokemon pokemon) {
