@@ -16,14 +16,14 @@ public class ConverterTypeEntitySqlImpl implements ConverterEntitySql<TypeEntity
     @Override
     public Optional<TypeEntity> convertToEntity(Optional<Type> domain) {
 
-        if (domain.isEmpty()) //TODO - CREATE EXTENSION unaccent; on postgres - put in script deploy
+        if (domain.isEmpty())
             return Optional.empty();
 
         TypeEntity typeEntity = TypeEntity.builder().build();
 
         domain.ifPresent(item -> {
             typeEntity.setId(0L);
-            typeEntity.setDescription(item.getDescription().toString());
+            typeEntity.setDescription(item.getDescription().toString().toUpperCase());
         });
 
         return Optional.of(typeEntity);

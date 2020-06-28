@@ -2,6 +2,7 @@ package br.com.tiagocalixto.pokedex.infra.exception.rest_response_handler;
 
 
 import br.com.tiagocalixto.pokedex.infra.exception.*;
+import br.com.tiagocalixto.pokedex.infra.exception.rest_response_handler.dto.ApiError;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +27,8 @@ import java.util.Set;
 @SuppressWarnings("Duplicates")
 @ControllerAdvice
 @Slf4j
-public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
+public class
+RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
     public RestResponseExceptionHandler() {
         super();
@@ -194,5 +196,48 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.NO_CONTENT);
     }
 
+    @ExceptionHandler({PokemonAlreadyExistsException.class, })
+    public ResponseEntity<Object> handlePokemonAlreadyExistsException(final PokemonAlreadyExistsException ex) {
+
+        log.error(ex.getMessage());
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .error(HttpStatus.UNPROCESSABLE_ENTITY)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler({CantChangeNumberOnUpdateException.class, })
+    public ResponseEntity<Object> handleCantChangeNumberOnUpdateException(final CantChangeNumberOnUpdateException ex) {
+
+        log.error(ex.getMessage());
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({CantChangeNameOnUpdateException.class, })
+    public ResponseEntity<Object> handleCantChangeNameOnUpdateException(final CantChangeNameOnUpdateException ex) {
+
+        log.error(ex.getMessage());
+
+        ApiError apiError = ApiError.builder()
+                .message(ex.getMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST)
+                .build();
+
+        return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
     //todo - include handler exception general Exception
 }
+

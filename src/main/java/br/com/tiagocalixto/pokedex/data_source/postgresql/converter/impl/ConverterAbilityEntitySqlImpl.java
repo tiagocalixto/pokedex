@@ -4,6 +4,7 @@ package br.com.tiagocalixto.pokedex.data_source.postgresql.converter.impl;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.AbilityEntity;
 import br.com.tiagocalixto.pokedex.domain.Ability;
+import br.com.tiagocalixto.pokedex.infra.util.Util;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -23,7 +24,8 @@ public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<Ability
 
         domain.ifPresent(item -> {
             abilityEntity.setId(0L);
-            abilityEntity.setDescription(item.getDescription());
+            abilityEntity.setDescription(Util
+                    .removeUndesirableChars(item.getDescription()).toUpperCase());
         });
 
         return Optional.of(abilityEntity);

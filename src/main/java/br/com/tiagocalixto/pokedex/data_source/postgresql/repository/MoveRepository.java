@@ -11,7 +11,5 @@ import java.util.Optional;
 @Repository
 public interface MoveRepository extends CrudRepository<MoveEntity, Long> {
 
-    @Query(value = "SELECT * FROM moves WHERE unaccent(lower(description)) = " +
-            "unaccent(lower(:description)) AND deleted != true LIMIT 1", nativeQuery = true)
-    Optional<MoveEntity> findFirstByDescriptionIgnoreCaseAndIgnoreAccents(@Param("description") String description);
+    Optional<MoveEntity> findFirstByDescriptionIgnoringCase(String description);
 }

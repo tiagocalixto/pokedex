@@ -109,7 +109,7 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
     }
 
     @SuppressWarnings("Duplicates")
-    private Optional<PokemonStatsEntity> convertStatsToEntity(Optional<PokemonStats> domain, long idPokemon) {
+    private Optional<PokemonStatsEntity> convertStatsToEntity(Optional<PokemonStats> domain, Long idPokemon) {
 
         if (domain.isEmpty())
             return Optional.empty();

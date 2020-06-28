@@ -24,7 +24,7 @@ public class ConverterEvolutionStoneSqlImpl implements ConverterEntitySql<Evolut
 
         domain.ifPresent(item -> {
             entity.setId(0L);
-            entity.setDescription(item.toString());
+            entity.setDescription(item.toString().toUpperCase());
         });
 
         return Optional.of(entity);

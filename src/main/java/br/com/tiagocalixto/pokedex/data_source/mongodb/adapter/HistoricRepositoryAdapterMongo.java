@@ -3,7 +3,7 @@ package br.com.tiagocalixto.pokedex.data_source.mongodb.adapter;
 import br.com.tiagocalixto.pokedex.data_source.mongodb.entity.HistoricCollectionMongo;
 import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.HistoricRepositoryMongo;
 import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.MongoDbSequence;
-import br.com.tiagocalixto.pokedex.ports.data_source_ports.InsertRepositoryPort;
+import br.com.tiagocalixto.pokedex.ports.data_source.persist.InsertRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

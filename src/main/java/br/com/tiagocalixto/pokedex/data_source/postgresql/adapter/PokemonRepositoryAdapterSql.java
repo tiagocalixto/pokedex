@@ -4,7 +4,10 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEnt
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.pokemon.PokemonEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.PokemonRepository;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
-import br.com.tiagocalixto.pokedex.ports.data_source_ports.*;
+import br.com.tiagocalixto.pokedex.ports.data_source.delete.DeleteRepositoryPort;
+import br.com.tiagocalixto.pokedex.ports.data_source.find.*;
+import br.com.tiagocalixto.pokedex.ports.data_source.persist.InsertRepositoryPort;
+import br.com.tiagocalixto.pokedex.ports.data_source.persist.UpdateRepositoryPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
@@ -22,9 +25,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component("PokemonRepositorySql")
-public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon>, UpdateRepositoryPort<Pokemon>,
-        DeleteRepositoryPort<Pokemon>, FindAllPageableRepositoryPort<Pokemon>, FindOneByIdRepositoryPort<Pokemon>,
-        FindAllByNameRepositoryPort<Pokemon>, ExistsByIdRepositoryPort {
+public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon>, ExistsByNumberRepositoryPort,
+        FindAllByNameRepositoryPort<Pokemon>, FindPageableRepositoryPort<Pokemon>, FindOneByIdRepositoryPort<Pokemon>,
+        FindOneByNumberRepositoryPort<Pokemon>, InsertRepositoryPort<Pokemon>, UpdateRepositoryPort<Pokemon> {
 
     //<editor-fold: properties>
     private PokemonRepository repository;
@@ -48,9 +51,8 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     }
     //</editor-fold>
 
-
     @Override
-    @CachePut(value = "PokemonRepositorySql", key = "{#pokemon.id}")
+   // @CachePut(value = "PokemonRepositorySql", key = "{#pokemon.number}")
     public Pokemon insert(Pokemon pokemon) {
 
         PokemonEntity entity = prepareToPersist
@@ -65,7 +67,7 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     }
 
     @Override
-    @CachePut(value = "PokemonRepositorySql", key = "{#pokemon.id}")
+  //  @CachePut(value = "PokemonRepositorySql", key = "{#pokemon.number}")
     public Pokemon update(Pokemon pokemon) {
 
         PokemonEntity entity = prepareToPersist
@@ -80,7 +82,7 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     }
 
     @Override
-    @CacheEvict(value = "PokemonRepositorySql", key = "{#pokemon.id}")
+  //  @CacheEvict(value = "PokemonRepositorySql", key = "{#pokemon.number, #pokemon.id}")
     public void delete(Pokemon pokemon) {
 
         repository.delete(converter.convertToEntityNotOptional(pokemon));
@@ -98,22 +100,29 @@ public class PokemonRepositoryAdapterSql implements InsertRepositoryPort<Pokemon
     }
 
     @Override
-    @Cacheable(value = "PokemonRepositorySql", key = "{#id}")
-    public Optional<Pokemon> findById(Long id) {
+  //  @Cacheable(value = "PokemonRepositorySql", key = "{#number}")
+    public Optional<Pokemon> findByNumber(Long number) {
 
-        return converter.convertToDomain(repository.findFirstByNumber(id));
+        return converter.convertToDomain(repository.findFirstByNumber(number));
     }
 
     @Override
-    public List<Pokemon> findAllPageable(int pageNumber, int size, String orderBy) {
+    public List<Pokemon> findPageable(int pageNumber, int size, String orderBy) {
 
-        PageRequest pageRequest = PageRequest.of(pageNumber, size, Sort.Direction.ASC, orderBy);
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, size, Sort.Direction.ASC, orderBy);
         return converter.convertToDomainList(repository.findAll(pageRequest).getContent());
     }
 
     @Override
-    public boolean isExistsById(Long id) {
+    public boolean isExistsByNumber(Long number) {
 
-        return repository.existsByNumber(id);
+        return repository.existsByNumber(number);
+    }
+
+    @Override
+  //  @Cacheable(value = "PokemonRepositorySql", key = "{#id}")
+    public Optional<Pokemon> findById(Long id) {
+
+        return converter.convertToDomain(repository.findById(id));
     }
 }

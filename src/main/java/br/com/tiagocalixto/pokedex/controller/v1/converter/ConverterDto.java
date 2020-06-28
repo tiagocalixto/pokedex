@@ -30,4 +30,14 @@ public interface ConverterDto<T, D> {
                 .stream().map(item -> this.convertToDomain(Optional.ofNullable(item)).orElse(null))
                 .filter(Objects::nonNull).collect(Collectors.toList());
     }
+
+    default T convertToDtoNotOptional(D domain) {
+
+        return convertToDto(Optional.ofNullable(domain)).orElse(null);
+    }
+
+    default D convertToDomainNotOptional(T dto) {
+
+        return convertToDomain(Optional.ofNullable(dto)).orElse(null);
+    }
 }

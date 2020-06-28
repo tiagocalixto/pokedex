@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dcm4che3.soundex.Soundex;
 
+import java.text.Normalizer;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -32,5 +33,19 @@ public final class Util {
         String stringTwoPhonetic = soundex.toFuzzy(stringTwo.toUpperCase().trim());
 
         return stringOnePhonetic.equalsIgnoreCase(stringTwoPhonetic);
+    }
+
+    public static String getPhoneticString(String string){
+
+        Soundex soundex = new Soundex();
+        return soundex.toFuzzy(string.toUpperCase().trim());
+    }
+
+    public static String removeUndesirableChars(String str) {
+
+        return Normalizer.normalize(str, Normalizer.Form.NFD)
+                .replaceAll("[^\\p{ASCII}]", "")
+                .replace("-"," ")
+                .replace("_", " ");
     }
 }

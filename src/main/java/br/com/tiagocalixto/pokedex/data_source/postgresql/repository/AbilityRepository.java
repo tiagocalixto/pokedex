@@ -11,7 +11,5 @@ import java.util.Optional;
 @Repository
 public interface AbilityRepository extends CrudRepository<AbilityEntity, Long> {
 
-    @Query(value = "SELECT * FROM abilities WHERE unaccent(lower(description)) = " +
-            "unaccent(lower(:description)) AND deleted != true LIMIT 1", nativeQuery = true)
-    Optional<AbilityEntity> findFirstByDescriptionIgnoreCaseAndIgnoreAccents(@Param("description") String description);
+    Optional<AbilityEntity> findFirstByDescriptionIgnoringCase(String description);
 }

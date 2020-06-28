@@ -32,7 +32,7 @@ public class PokemonEvolutionDto implements Serializable {
 
     @NotNull(message = POKEMON_IS_REQUIRED, groups = FirstStepValidation.class)
     @Valid
-    @ApiModelProperty(notes = "Pokemon evolution info", dataType = "object", position = 1)
+    @ApiModelProperty(notes = "Pokemon associate_or_insert info", dataType = "object", position = 1)
     private PokemonAbbreviatedDto pokemon;
 
     @NotNull(message = EVOLUTION_TRIGGER_REQUIRED, groups = FirstStepValidation.class)

@@ -11,8 +11,5 @@ import java.util.Optional;
 @Repository
 public interface EvolutionStoneRepository extends CrudRepository<EvolutionStoneEntity, Long> {
 
-    @Query(value = "SELECT * FROM evolution_stones WHERE unaccent(lower(description)) = " +
-            "unaccent(lower(:description)) AND deleted != true LIMIT 1", nativeQuery = true)
-    Optional<EvolutionStoneEntity> findFirstByDescriptionIgnoreCaseAndIgnoreAccents(@Param("description")
-                                                                                              String description);
+    Optional<EvolutionStoneEntity> findFirstByDescriptionIgnoringCase(String description);
 }

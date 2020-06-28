@@ -15,6 +15,9 @@ public class HasDuplicatedItemInListImpl implements ConstraintValidator<HasDupli
     public boolean isValid(List<?> list, ConstraintValidatorContext context) {
 
         try {
+            if(list == null || list.isEmpty())
+                return true;
+
             return list.stream().distinct().count() == list.size();
 
         } catch (Exception ex) {

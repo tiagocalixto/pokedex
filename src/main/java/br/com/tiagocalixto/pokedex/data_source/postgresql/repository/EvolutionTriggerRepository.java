@@ -11,8 +11,5 @@ import java.util.Optional;
 @Repository
 public interface EvolutionTriggerRepository extends CrudRepository<EvolutionTriggerEntity, Long> {
 
-    @Query(value = "SELECT * FROM evolution_trigger WHERE unaccent(lower(description)) = " +
-            "unaccent(lower(:description)) AND deleted != true LIMIT 1", nativeQuery = true)
-    Optional<EvolutionTriggerEntity> findFirstByDescriptionIgnoreCaseAndIgnoreAccents(@Param("description")
-                                                                                              String description);
+    Optional<EvolutionTriggerEntity> findFirstByDescriptionIgnoringCase(String description);
 }

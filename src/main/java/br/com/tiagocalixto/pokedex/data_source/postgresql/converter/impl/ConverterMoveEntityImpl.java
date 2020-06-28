@@ -5,6 +5,7 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.MoveEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.TypeEntity;
 import br.com.tiagocalixto.pokedex.domain.Move;
 import br.com.tiagocalixto.pokedex.domain.Type;
+import br.com.tiagocalixto.pokedex.infra.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,8 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
 
         domain.ifPresent(item -> {
             moveEntity.setId(0L);
-            moveEntity.setDescription(item.getDescription());
+            moveEntity.setDescription(Util
+                    .removeUndesirableChars(item.getDescription()).toUpperCase());
             moveEntity.setPower(item.getPower());
             moveEntity.setPp(item.getPp());
             moveEntity.setAbout(item.getAbout());

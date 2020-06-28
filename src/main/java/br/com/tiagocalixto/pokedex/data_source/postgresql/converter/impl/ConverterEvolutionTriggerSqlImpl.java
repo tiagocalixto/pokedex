@@ -22,11 +22,11 @@ public class ConverterEvolutionTriggerSqlImpl implements ConverterEntitySql<Evol
 
         domain.ifPresentOrElse(item -> {
                     entity.setId(0L);
-                    entity.setDescription(item.toString());
+                    entity.setDescription(item.toString().toUpperCase());
                 }
                 , () -> {
                     entity.setId(0L);
-                    entity.setDescription(EvolutionTriggerEnum.LEVEL_UP.toString());
+                    entity.setDescription(EvolutionTriggerEnum.LEVEL_UP.toString().toUpperCase());
                 }
         );
 

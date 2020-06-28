@@ -49,6 +49,7 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         PokemonDto pokemonDto = PokemonDto.builder().build();
 
         domain.ifPresent(item -> {
+            pokemonDto.setId(item.getId());
             pokemonDto.setName(item.getName());
             pokemonDto.setNumber(item.getNumber());
             pokemonDto.setWeight(item.getWeight());
@@ -78,7 +79,7 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         Pokemon pokemon = Pokemon.builder().build();
 
         dto.ifPresent(item -> {
-            pokemon.setId(0L);
+            pokemon.setId(item.getId());
             pokemon.setName(item.getName());
             pokemon.setNumber(item.getNumber());
             pokemon.setWeight(item.getWeight());

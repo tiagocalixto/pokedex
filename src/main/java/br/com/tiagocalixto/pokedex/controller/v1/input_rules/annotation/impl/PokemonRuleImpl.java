@@ -105,12 +105,18 @@ public class PokemonRuleImpl implements ConstraintValidator<PokemonRule, Pokemon
 
     private boolean evolveToAndPokemonIsTheSame(PokemonDto pokemon){
 
+        if(pokemon.getEvolveTo() == null || pokemon.getEvolveTo().isEmpty())
+            return false;
+
         return pokemon.getEvolveTo().stream()
                 .anyMatch(item -> Util.phoneticStringsMatches(item.getPokemon().getName(), pokemon.getName()) ||
                         item.getPokemon().getNumber().equals(pokemon.getNumber()));
     }
 
     private boolean evolvedFromAndPokemonIsTheSame(PokemonDto pokemon){
+
+        if (pokemon.getEvolvedFrom() == null)
+            return false;
 
         return pokemon.getEvolvedFrom().getPokemon().getNumber().equals(pokemon.getNumber()) ||
                Util.phoneticStringsMatches(pokemon.getEvolvedFrom().getPokemon().getName(),

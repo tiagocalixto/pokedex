@@ -39,8 +39,8 @@ public final class Constant {
     public static final String ACCURACY_INVALID_RANGE = "Accuracy must be between 0.1 and 100";
     public static final String INVALID_RANGE_1_1000 = "Value must be between 1 and 1000!";
     public static final String LEVEL_IS_REQUIRED = "Level is required!";
-    public static final String EVOLUTION_LEVEL_IS_REQUIRED = "For evolution type Level Up, field level is required!";
-    public static final String EVOLUTION_ITEM_IS_REQUIRED = "For evolution type Item, field item is required!";
+    public static final String EVOLUTION_LEVEL_IS_REQUIRED = "For associate_or_insert type Level Up, field level is required!";
+    public static final String EVOLUTION_ITEM_IS_REQUIRED = "For associate_or_insert type Item, field item is required!";
     public static final String INVALID_LEVEL_RANGE = "Level must be between 1 and 100!";
     public static final String POKEMON_IS_REQUIRED = "Pokemon is required!";
     public static final String EVOLUTION_TRIGGER_REQUIRED = "Evolution trigger is required!";
@@ -57,8 +57,10 @@ public final class Constant {
     public static final String SPECIAL_DEFENSE = "special-defense";
     public static final String SPECIAL_ATTACK = "special-attack";
     public static final String EMPTY = "";
+    public static final String POKEMON_NOT_FOUND_BY_NUMBER = "No Pokemon found for number = ";
     public static final String POKEMON_NOT_FOUND_BY_ID = "No Pokemon found for id = ";
     public static final String POKEMON_NOT_FOUND_BY_NAME = "No pokemon found by name, Name = ";
+    public static final String POKEMON_ALREADY_EXISTS = "Pokemon already exists, number = ";
     public static final String NAME = "name";
     public static final String WEAKNESS_CANT_BE_TYPE = "Weakness can't be equal type!";
     public static final String EVOLVE_TO_DUPLICATED = "Duplicated item detected on evolve to list!";
@@ -71,9 +73,23 @@ public final class Constant {
     public static final String POKEMON_CONSIDER = "This api is old school, considers only first generation pokemon (1-151)";
     public static final String POKEMON_DONT_EVOLVES_TO = "This pokemon don't evolves to any other!";
     public static final String POKEMON_INCORRECT_EVOLVE_TO = "Pokemon evolve to is incorrect!";
-    public static final String POKEMON_NOT_FOUND = "Pokemon not found!";
     public static final String POKEMON_EVOLVED_FROM_HIMSELF = "Pokemon can't evolved from himself!";
     public static final String POKEMON_EVOLVES_TO_HIMSELF = "Pokemon can't evolve into himself!";
     public static final String PAGE_HAS_NO_CONTENT = "Page has no content!";
+    public static final String POKEMON_DELETE_USE_CASE = "PokemonDeleteByIdUseCase";
+    public static final String POKEMON_FIND_ALL_BY_NAME_USE_CASE = "PokemonFindAllByNameUseCase";
+    public static final String POKEMON_FIND_ONE_BY_ID_USE_CASE = "PokemonFindOneByIdUseCase";
+    public static final String POKEMON_FIND_PAGEABLE_USE_CASE = "PokemonFindPageableUseCase";
+    public static final String POKEMON_SAVE_USE_CASE = "PokemonSaveUseCase";
+    public static final String POKEMON_UPDATE_USE_CASE = "PokemonUpdateUseCase";
+    public static final String POKEMON_EVOLUTION_ABSTRACT_USE_CASE = "EvolutionAbstractUseCase";
+    public static final String POKEMON_FIND_ONE_BY_NUMBER_CASE = "PokemonFindByNumberUseCase";
+    public static final String POKEMON_EXISTS_BY_NUMBER_USE_CASE = "PokemonExistsByNumberUseCase";
+    public static final String POKEMON_PERSIST_ABSTRACT = "PokemonPersistAbstractUseCase";
+    public static final String POKEMON_ASSOCIATE_EVOLVED_FROM_USE_CASE = "EvolutionAssociateOrInsertEvolvedFromUseCase";
+    public static final String POKEMON_ASSOCIATE_EVOLVE_TO_USE_CASE = "EvolutionAssociateOrInsertEvolveToUseCase";
+    public static final String CANT_CHANGE_NAME_ON_UPDATE = "Can't change pokemon name on update!";
+    public static final String CANT_CHANGE_NUMBER_ON_UPDATE = "Can't change pokemon number on update!";
+    public static final String PAGE_NUMBER_TOO_SMALL = "Page number must be greater than 0!";
 }
 
