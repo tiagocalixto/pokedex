@@ -8,7 +8,7 @@ import java.util.List;
 public interface PokemonMediatorUseCase {
 
     void pokemonDeleteById(Long id);
-    Boolean pokemonExistsByNumber(Long number);
+    boolean pokemonExistsByNumber(Long number);
     List<Pokemon> pokemonFindAllByName(String name);
     Pokemon pokemonFindById(Long id);
     Pokemon pokemonFindByNumber(Long number);

@@ -61,7 +61,7 @@ public final class Constant {
     public static final String POKEMON_NOT_FOUND_BY_ID = "No Pokemon found for id = ";
     public static final String POKEMON_NOT_FOUND_BY_NAME = "No pokemon found by name, Name = ";
     public static final String POKEMON_ALREADY_EXISTS = "Pokemon already exists, number = ";
-    public static final String NAME = "name";
+    public static final String NUMBER = "number";
     public static final String WEAKNESS_CANT_BE_TYPE = "Weakness can't be equal type!";
     public static final String EVOLVE_TO_DUPLICATED = "Duplicated item detected on evolve to list!";
     public static final String NATIONAL_DEX_UNAVAILABLE = "Pokemon National Dex is unavailable, try again in a few minutes!";

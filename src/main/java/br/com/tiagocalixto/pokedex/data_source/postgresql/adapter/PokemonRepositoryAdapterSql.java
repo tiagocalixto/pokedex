@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +52,10 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     //</editor-fold>
 
     @Override
-   // @CachePut(value = "PokemonRepositorySql", key = "{#pokemon.number}")
+    @Caching(put = {
+            @CachePut(value = "PokemonSqlId", key = "#result.id"),
+            @CachePut(value = "PokemonSqlNumber", key = "#result.number")
+    })
     public Pokemon insert(Pokemon pokemon) {
 
         PokemonEntity entity = prepareToPersist
@@ -67,7 +70,10 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     }
 
     @Override
-  //  @CachePut(value = "PokemonRepositorySql", key = "{#pokemon.number}")
+    @Caching(put = {
+            @CachePut(value = "PokemonSqlId", key = "#result.id"),
+            @CachePut(value = "PokemonSqlNumber", key = "#result.number")
+    })
     public Pokemon update(Pokemon pokemon) {
 
         PokemonEntity entity = prepareToPersist
@@ -82,7 +88,10 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     }
 
     @Override
-  //  @CacheEvict(value = "PokemonRepositorySql", key = "{#pokemon.number, #pokemon.id}")
+    @Caching(evict = {
+            @CacheEvict(value = "PokemonSqlId", key = "#pokemon.id"),
+            @CacheEvict(value = "PokemonSqlNumber", key = "#pokemon.number")
+    })
     public void delete(Pokemon pokemon) {
 
         repository.delete(converter.convertToEntityNotOptional(pokemon));
@@ -100,7 +109,7 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     }
 
     @Override
-  //  @Cacheable(value = "PokemonRepositorySql", key = "{#number}")
+    @Cacheable(value = "PokemonSqlNumber", key = "#number")
     public Optional<Pokemon> findByNumber(Long number) {
 
         return converter.convertToDomain(repository.findFirstByNumber(number));
@@ -120,7 +129,7 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     }
 
     @Override
-  //  @Cacheable(value = "PokemonRepositorySql", key = "{#id}")
+    @Cacheable(value = "PokemonSqlId", key = "#id")
     public Optional<Pokemon> findById(Long id) {
 
         return converter.convertToDomain(repository.findById(id));

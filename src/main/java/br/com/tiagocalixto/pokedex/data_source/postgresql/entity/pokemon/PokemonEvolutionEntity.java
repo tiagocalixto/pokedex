@@ -30,12 +30,12 @@ public class PokemonEvolutionEntity extends GenericEntity {
 
     @OneToOne
     @MapsId("idPokemonFk")
-    @JoinColumn(name = "id_pokemon_fk", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "id_pokemon_fk", referencedColumnName = "id", updatable = false)
     private PokemonEntity pokemon;
 
     @OneToOne
     @MapsId("idEvolutionFk")
-    @JoinColumn(name = "id_evolution_fk", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "id_evolution_fk", referencedColumnName = "id", updatable = false)
     private PokemonEntity evolution;
 
     @ManyToOne(cascade = CascadeType.MERGE)

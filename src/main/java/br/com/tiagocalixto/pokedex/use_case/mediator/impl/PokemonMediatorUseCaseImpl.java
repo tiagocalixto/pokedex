@@ -68,7 +68,7 @@ public class PokemonMediatorUseCaseImpl implements PokemonMediatorUseCase {
     }
 
     @Override
-    public Boolean pokemonExistsByNumber(Long number) {
+    public boolean pokemonExistsByNumber(Long number) {
 
         return this.existsByNumberUseCase.execute(number);
     }

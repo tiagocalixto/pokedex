@@ -61,7 +61,7 @@ public abstract class EvolutionAbstractUseCase {
 
         preparePokemonEvolution(fromNationalDex);
         fromNationalDex.setId(null);
-        return mediator.save(fromNationalDex);
+        return fromNationalDex;
     }
 
     private void preparePokemonEvolution(Pokemon pokemon){

@@ -161,9 +161,20 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
             pokemonEntity.setId(item.getId());
             pokemonEntity.setName(item.getName());
             pokemonEntity.setNumber(item.getNumber());
+            pokemonEntity.setWeight(item.getWeight());
+            pokemonEntity.setHeight(item.getHeight());
+            pokemonEntity.setAbout(item.getAbout());
             pokemonEntity.setUrlPicture(item.getUrlPicture());
+            this.convertStatsToEntity(Optional.ofNullable(item.getStats()), item.getId()).ifPresent(pokemonEntity::setStats);
             pokemonEntity.setType(this.convertTypeToEntity(item.getType(), item.getId()));
+            pokemonEntity.setEvolveTo(Collections.emptyList());
+            pokemonEntity.setEvolvedFrom(null);
+            pokemonEntity.setAbility(this.convertAbilityToEntity(item.getAbility(), item.getId()));
+            pokemonEntity.setMove(this.convertMoveToEntity(item.getMove(), item.getId()));
+            pokemonEntity.setWeakness(this.convertWeaknessesToEntity(item.getWeakness(), item.getId()));
         });
+
+        setPokemonEntityOnRelations(pokemonEntity);
 
         return Optional.of(pokemonEntity);
     }
@@ -180,8 +191,17 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
             pokemonAbbreviated.setId(item.getId());
             pokemonAbbreviated.setName(item.getName());
             pokemonAbbreviated.setNumber(item.getNumber());
+            pokemonAbbreviated.setWeight(item.getWeight());
+            pokemonAbbreviated.setHeight(item.getHeight());
+            pokemonAbbreviated.setAbout(item.getAbout());
             pokemonAbbreviated.setUrlPicture(item.getUrlPicture());
+            this.convertStatsToDomain(Optional.ofNullable(item.getStats())).ifPresent(pokemonAbbreviated::setStats);
             pokemonAbbreviated.setType(this.convertTypeToDomain(item.getType()));
+            pokemonAbbreviated.setEvolveTo(Collections.emptyList());
+            pokemonAbbreviated.setEvolvedFrom(null);
+            pokemonAbbreviated.setAbility(this.convertAbilityToDomain(item.getAbility()));
+            pokemonAbbreviated.setMove(this.convertMoveToDomain(item.getMove()));
+            pokemonAbbreviated.setWeakness(this.convertWeaknessesToDomain(item.getWeakness()));
         });
 
         return Optional.of(pokemonAbbreviated);

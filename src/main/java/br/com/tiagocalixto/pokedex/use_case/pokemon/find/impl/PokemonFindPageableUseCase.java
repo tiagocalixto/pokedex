@@ -35,7 +35,7 @@ public class PokemonFindPageableUseCase implements FindPageableUseCase<Pokemon> 
     public List<Pokemon> execute(int pageNumber) {
 
         log.info("Find pokemon pageable, page number {}", pageNumber);
-        List<Pokemon> pokemon = repository.findPageable(pageNumber, maxPokemonPage, NAME);
+        List<Pokemon> pokemon = repository.findPageable(pageNumber, maxPokemonPage, NUMBER);
 
         if (pokemon.isEmpty()) {
             log.info(PAGE_HAS_NO_CONTENT);
