@@ -4,11 +4,7 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.*;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.pokemon.PokemonEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 @Slf4j
 @Component("PreparePokemonToPersistSql")
@@ -172,20 +168,16 @@ public class PreparePokemonToPersistSql {
                 .orElseGet(() -> repositoryEvolutionTrigger.save(evolutionTriggerEntity));
     }
 
-    @Caching(evict = {
-            @CacheEvict(value = "PokemonSqlId", key = "#pokemon.id", condition = "#pokemon.id != null"),
-            @CacheEvict(value = "PokemonSqlNumber", key = "#pokemon.number")
-    })
-    protected PokemonEntity getAttachedPokemonEntity(PokemonEntity pokemon) {
+
+    private PokemonEntity getAttachedPokemonEntity(PokemonEntity pokemon) {
 
         log.info("Getting attached pokemon evolution - {}", pokemon.getName());
 
-        if (pokemon == null) {
-            log.info("pokemon is null, will not be treated!");
-            return null;
-        }
-
         return repositoryPokemon.findFirstByNumber(pokemon.getNumber())
-                .orElse(pokemon);
+                .orElseGet(() -> {
+                    log.info("pokemon not found, will be created!");
+                    pokemon.setId(null);
+                    return pokemon;
+                });
     }
 }

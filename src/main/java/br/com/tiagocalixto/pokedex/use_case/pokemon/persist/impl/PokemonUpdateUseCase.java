@@ -38,7 +38,6 @@ public class PokemonUpdateUseCase extends PokemonPersistAbstractUseCase {
 
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Pokemon execute(Pokemon pokemon) {
 
         log.info("Update pokemon {}", pokemon);

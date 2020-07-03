@@ -36,7 +36,6 @@ public class PokemonSaveUseCase extends PokemonPersistAbstractUseCase {
 
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Pokemon execute(Pokemon pokemon) {
 
         log.info("Save pokemon {}", pokemon);

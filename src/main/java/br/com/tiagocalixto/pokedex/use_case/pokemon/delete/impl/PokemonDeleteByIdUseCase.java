@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_DELETE_USE_CASE;
@@ -31,7 +32,7 @@ public class PokemonDeleteByIdUseCase implements DeleteByIdUseCase {
     //</editor-fold>
 
 
-    @Transactional
+    //@Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void execute(Long id) {
 
