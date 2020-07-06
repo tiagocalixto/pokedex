@@ -4,13 +4,11 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.EvolutionStoneE
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.EvolutionTriggerEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.GenericEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.embeddable_pk.PokemonEvolutionPk;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.PokemonEvolutionRepository;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -31,18 +29,20 @@ public class PokemonEvolutionEntity extends GenericEntity {
     @EmbeddedId
     private PokemonEvolutionPk id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.MERGE)
     @MapsId("idPokemonFk")
-    @JoinColumn(name = "id_pokemon_fk", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "id_pokemon_fk", updatable = false)
     private PokemonEntity pokemon;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToOne(cascade = CascadeType.MERGE)
     @MapsId("idEvolutionFk")
-    @JoinColumn(name = "id_evolution_fk", referencedColumnName = "id", updatable = false, insertable = false)
+    @JoinColumn(name = "id_evolution_fk", updatable = false)
     private PokemonEntity evolution;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_trigger_fk", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_trigger_fk", nullable = false)
     private EvolutionTriggerEntity evolutionTrigger;
 
     @Column(name = "level")
@@ -52,10 +52,4 @@ public class PokemonEvolutionEntity extends GenericEntity {
     @JoinColumn(name = "id_stone_fk", referencedColumnName = "id")
     private EvolutionStoneEntity evolutionItem;
 
-    @PreRemove
-    private void preRemove(){
-
-        this.setEvolution(null);
-        this.setPokemon(null);
-    }
 }

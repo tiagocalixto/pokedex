@@ -19,6 +19,7 @@ public interface PokemonRepository extends CrudRepository<PokemonEntity, Long> {
     Page<PokemonEntity> findAll(Pageable pageable);
 
     //todo  - CREATE EXTENSION fuzzystrmatch; on postgres in deploy
-    @Query(value = "select distinct * from pokemon p where soundex(p.name) = soundex(:name)", nativeQuery = true)
-    Set<PokemonEntity> findAllByPhoneticName(@Param("name") String name);
+    @Query(value = "select distinct id from pokemon p where soundex(p.name) = soundex(:name) " +
+            "          and deleted != true", nativeQuery = true)
+    Set<Long> findAllByPhoneticName(@Param("name") String name);
 }

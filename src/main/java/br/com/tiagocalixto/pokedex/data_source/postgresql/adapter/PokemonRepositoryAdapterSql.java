@@ -2,7 +2,6 @@ package br.com.tiagocalixto.pokedex.data_source.postgresql.adapter;
 
 import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.pokemon.PokemonEntity;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.PokemonEvolutionRepository;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.PokemonRepository;
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.ports.data_source.delete.DeleteRepositoryPort;
@@ -18,7 +17,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,7 +34,6 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     private ConverterEntitySql<PokemonEntity, Pokemon> converter;
     private InsertRepositoryPort<Object> saveHistoric;
     private PreparePokemonToPersistSql prepareToPersist;
-    private PokemonEvolutionRepository evolutionRepository;
     //</editor-fold>
 
     //<editor-fold: constructor>
@@ -41,16 +42,15 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
                                        PreparePokemonToPersistSql prepareToPersist,
                                        ConverterEntitySql<PokemonEntity, Pokemon> converter,
                                        @Qualifier("MongoHistoricRepository")
-                                               InsertRepositoryPort<Object> saveHistoric,
-                                       PokemonEvolutionRepository evolutionRepository) {
+                                               InsertRepositoryPort<Object> saveHistoric) {
 
         this.repository = repository;
         this.prepareToPersist = prepareToPersist;
         this.converter = converter;
         this.saveHistoric = saveHistoric;
-        this.evolutionRepository = evolutionRepository;
     }
     //</editor-fold>
+
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -95,7 +95,6 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
         log.info("Logical deleting pokemon from postgres, pokemon {}", pokemon);
 
         repository.deleteById(pokemon.getId());
-        evolutionRepository.deleteAllByIdPokemonFk(pokemon.getId());
 
         log.info("Pokemon successfully deleted from postgres");
     }
@@ -103,10 +102,10 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     @Override
     public List<Pokemon> findAllByName(String name) {
 
-        Set<PokemonEntity> pokemon = repository.findAllByPhoneticName(name);
+        Set<Long> pokemon = repository.findAllByPhoneticName(name);
 
         return pokemon.stream()
-                .map(item -> converter.convertToDomain(repository.findById(item.getId())).orElse(null))
+                .map(item -> converter.convertToDomainNotOptional(repository.findById(item).orElse(null)))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
@@ -122,7 +121,7 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     @Override
     public List<Pokemon> findPageable(int pageNumber, int size, String orderBy) {
 
-        log.info("select pageable in postgres, Page number = {}, order by = {}", pageNumber , orderBy);
+        log.info("select pageable in postgres, Page number = {}, order by = {}", pageNumber, orderBy);
 
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, size, Sort.Direction.ASC, orderBy);
         return converter.convertToDomainList(repository.findAll(pageRequest).getContent());

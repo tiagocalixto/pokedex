@@ -1,10 +1,12 @@
 package br.com.tiagocalixto.pokedex.data_source.postgresql.entity.pokemon;
 
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.GenericEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -30,22 +32,24 @@ public class PokemonEntity extends GenericEntity {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
     private PokemonStatsEntity stats;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id.idPokemonFk", orphanRemoval = true)
     private List<PokemonTypeEntity> type;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "evolution", orphanRemoval = true)
-    private PokemonEvolutionEntity evolvedFrom;
+    @JsonBackReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id.idEvolutionFk", orphanRemoval = true)
+    private List<PokemonEvolutionEntity> evolvedFrom;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
+    @JsonBackReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id.idPokemonFk", orphanRemoval = true)
     private List<PokemonEvolutionEntity> evolveTo;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id.idPokemonFk", orphanRemoval = true)
     private List<PokemonMoveEntity> move;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id.idPokemonFk", orphanRemoval = true)
     private List<PokemonAbilityEntity> ability;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "id.idPokemonFk", orphanRemoval = true)
     private List<PokemonWeaknessesEntity> weakness;
 
     @Column(name = "name", nullable = false, length = 100)

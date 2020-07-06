@@ -23,7 +23,6 @@ public class HistoricRepositoryAdapterMongo implements InsertRepositoryPort<Obje
     //</editor-fold>
 
     //<editor-fold: constructor>
-    @Autowired
     public HistoricRepositoryAdapterMongo(MongoDbSequence sequenceGenerator,
                                           HistoricRepositoryMongo repository) {
         this.sequenceGenerator = sequenceGenerator;

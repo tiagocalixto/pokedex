@@ -6,6 +6,8 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Slf4j
 @Component("PreparePokemonToPersistSql")
 public class PreparePokemonToPersistSql {
@@ -47,11 +49,12 @@ public class PreparePokemonToPersistSql {
         return insert;
     }
 
-    @SuppressWarnings("Duplicates")
+
     public PokemonEntity prepareToUpdate(PokemonEntity update) {
 
         log.info("prepare pokemon to update {}", update.getName());
         preparePokemon(update);
+        setEmbeddedId(update);
         log.info("pokemon ready to update {}", update.getName());
 
         return update;
@@ -70,19 +73,16 @@ public class PreparePokemonToPersistSql {
             item.setMove(getAttachedMoveEntity(item.getMove()));
         });
 
-        if (pokemon.getEvolvedFrom() != null) {
+        if (!pokemon.getEvolvedFrom().isEmpty()) {
 
-            log.info("Prepare pokemon evolved from - {} ", pokemon.getEvolvedFrom().getPokemon().getName());
+            pokemon.getEvolvedFrom().forEach(item -> {
+                log.info("Prepare pokemon evolved from  - {} ", item.getPokemon().getName());
 
-            pokemon.getEvolvedFrom().setEvolutionTrigger(
-                    getAttachedEvolutionTrigger(pokemon.getEvolvedFrom().getEvolutionTrigger()));
-
-            pokemon.getEvolvedFrom().setEvolutionItem(
-                    getAttachedEvolutionStoneEntity(pokemon.getEvolvedFrom().getEvolutionItem()));
-
-            preparePokemon(pokemon.getEvolvedFrom().getPokemon());
-
-            pokemon.getEvolvedFrom().setPokemon(getAttachedPokemonEntity(pokemon.getEvolvedFrom().getPokemon()));
+                item.setEvolutionTrigger(getAttachedEvolutionTrigger(item.getEvolutionTrigger()));
+                item.setEvolutionItem(getAttachedEvolutionStoneEntity(item.getEvolutionItem()));
+                preparePokemon(item.getPokemon());
+                item.setPokemon(getAttachedPokemonEntity(item.getPokemon()));
+            });
 
             log.info("Pokemon evolved from attached successfully");
         }
@@ -123,8 +123,16 @@ public class PreparePokemonToPersistSql {
             return null;
         }
 
-        return repositoryMove.findFirstByDescriptionIgnoringCase(moveEntity.getDescription())
+        MoveEntity move = repositoryMove.findFirstByDescriptionIgnoringCase(moveEntity.getDescription())
                 .orElseGet(() -> repositoryMove.save(moveEntity));
+
+        move.setType(getAttachedTypeEntity(moveEntity.getType()));
+        move.setAbout(moveEntity.getAbout());
+        move.setAccuracy(moveEntity.getAccuracy());
+        move.setPower(moveEntity.getPower());
+        move.setPp(moveEntity.getPp());
+
+        return move;
     }
 
     private AbilityEntity getAttachedAbilityEntity(AbilityEntity abilityEntity) {
@@ -179,5 +187,23 @@ public class PreparePokemonToPersistSql {
                     pokemon.setId(null);
                     return pokemon;
                 });
+    }
+
+    private void setEmbeddedId(PokemonEntity pokemon) {
+
+        pokemon.getType().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdTypeFk(item.getType().getId()));
+
+        pokemon.getAbility().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdAbilityFk(item.getAbility().getId()));
+
+        pokemon.getMove().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdMoveFk(item.getMove().getId()));
+
+        pokemon.getWeakness().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdTypeFk(item.getType().getId()));
+
+        pokemon.getEvolveTo().stream().filter(Objects::nonNull)
+                .forEach(item -> item.getId().setIdEvolutionFk(item.getEvolution().getId()));
     }
 }
