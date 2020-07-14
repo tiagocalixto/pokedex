@@ -10,14 +10,10 @@ import br.com.tiagocalixto.pokedex.ports.entry_point.get.GetOneByNumberEntryPoin
 import br.com.tiagocalixto.pokedex.ports.entry_point.get.GetPageableEntryPointPort;
 import br.com.tiagocalixto.pokedex.ports.entry_point.post.PostEntryPointPort;
 import br.com.tiagocalixto.pokedex.ports.entry_point.put.PutEntryPointPort;
-import br.com.tiagocalixto.pokedex.use_case.mediator.PokemonMediatorUseCase;
+import br.com.tiagocalixto.pokedex.use_case.handler.HandlerUseCase;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
-
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_NOT_FOUND_BY_ID;
 
 @Component
 public class PokemonRestControllerAdapter implements GetOneByIdEntryPointPort<PokemonDto>,
@@ -25,43 +21,44 @@ public class PokemonRestControllerAdapter implements GetOneByIdEntryPointPort<Po
         GetPageableEntryPointPort<PokemonDto>, PostEntryPointPort<PokemonDto>,
         PutEntryPointPort<PokemonDto>, DeleteEntryPointPort {
 
-    private PokemonMediatorUseCase pokemonMediator;
+    private HandlerUseCase handler;
     private ConverterDto<PokemonDto, Pokemon> converter;
 
-    public PokemonRestControllerAdapter(PokemonMediatorUseCase pokemonMediator,
-                                        ConverterDto<PokemonDto, Pokemon> converter) {
-        this.pokemonMediator = pokemonMediator;
+    public PokemonRestControllerAdapter(HandlerUseCase handler, ConverterDto<PokemonDto, Pokemon> converter) {
+
+        this.handler = handler;
         this.converter = converter;
     }
+
 
     @Override
     public void deleteById(Long id) {
 
-        pokemonMediator.pokemonDeleteById(id);
+        handler.deletePokemonById(id);
     }
 
     @Override
     public List<PokemonDto> getAllByName(String name) {
 
-       return converter.convertToDtoList(pokemonMediator.pokemonFindAllByName(name));
+       return converter.convertToDtoList(handler.findPokemonByName(name));
     }
 
     @Override
     public PokemonDto getOneById(Long id) {
 
-        return converter.convertToDtoNotOptional(pokemonMediator.pokemonFindById(id));
+        return converter.convertToDtoNotOptional(handler.findPokemonById(id));
     }
 
     @Override
     public PokemonDto getOneByNumber(Long number) {
 
-        return converter.convertToDtoNotOptional(pokemonMediator.pokemonFindByNumber(number));
+        return converter.convertToDtoNotOptional(handler.findPokemonByNumber(number));
     }
 
     @Override
     public List<PokemonDto> getPage(int pageNumber) {
 
-        return converter.convertToDtoList(pokemonMediator.pokemonFindPageable(pageNumber));
+        return converter.convertToDtoList(handler.findPokemonPageable(pageNumber));
     }
 
     @Override
@@ -69,13 +66,13 @@ public class PokemonRestControllerAdapter implements GetOneByIdEntryPointPort<Po
 
         Pokemon domain = converter.convertToDomainNotOptional(pokemon);
         domain.setId(null);
-        return converter.convertToDtoNotOptional(pokemonMediator.save(domain));
+        return converter.convertToDtoNotOptional(handler.savePokemon(domain));
     }
 
     @Override
     public PokemonDto update(PokemonDto pokemon) {
 
         Pokemon domain = converter.convertToDomainNotOptional(pokemon);
-        return converter.convertToDtoNotOptional(pokemonMediator.update(domain));
+        return converter.convertToDtoNotOptional(handler.updatePokemon(domain));
     }
 }

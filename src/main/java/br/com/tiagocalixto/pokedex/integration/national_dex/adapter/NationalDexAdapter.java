@@ -5,13 +5,14 @@ import br.com.tiagocalixto.pokedex.integration.national_dex.converter.ConverterN
 import br.com.tiagocalixto.pokedex.integration.national_dex.dto.pokemon.PokemonNationalDexDto;
 import br.com.tiagocalixto.pokedex.integration.national_dex.facade.GetPokemonFromApiFacade;
 import br.com.tiagocalixto.pokedex.ports.integration.FindOneByIdIntegrationPort;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("NationalDex")
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
+
+@Component(INTEGRATION_NATIONAL_DEX)
 public class NationalDexAdapter implements FindOneByIdIntegrationPort<Pokemon> {
 
     //<editor-fold: properties>
@@ -20,7 +21,6 @@ public class NationalDexAdapter implements FindOneByIdIntegrationPort<Pokemon> {
     //</editor-fold>
 
     //<editor-fold: constructor>
-    @Autowired
     public NationalDexAdapter(GetPokemonFromApiFacade getFromNationalDex,
                               ConverterNationalDex<PokemonNationalDexDto, Pokemon> converter) {
 

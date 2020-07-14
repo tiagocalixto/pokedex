@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Component("pokemonConverterEntity")
+@Component
 public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEntity, Pokemon> {
 
     //<editor-fold: properties>

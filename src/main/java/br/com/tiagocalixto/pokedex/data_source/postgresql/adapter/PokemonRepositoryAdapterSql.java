@@ -23,8 +23,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_AUDIT;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
+
 @Slf4j
-@Component("PokemonRepositorySql")
+@Component(POKEMON_REPOSITORY_SQL)
 public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon>, ExistsByNumberRepositoryPort,
         FindAllByNameRepositoryPort<Pokemon>, FindPageableRepositoryPort<Pokemon>, FindOneByIdRepositoryPort<Pokemon>,
         FindOneByNumberRepositoryPort<Pokemon>, InsertRepositoryPort<Pokemon>, UpdateRepositoryPort<Pokemon> {
@@ -32,7 +35,7 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     //<editor-fold: properties>
     private PokemonRepository repository;
     private ConverterEntitySql<PokemonEntity, Pokemon> converter;
-    private InsertRepositoryPort<Object> saveHistoric;
+    private InsertRepositoryPort<Object> audit;
     private PreparePokemonToPersistSql prepareToPersist;
     //</editor-fold>
 
@@ -41,13 +44,13 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     public PokemonRepositoryAdapterSql(PokemonRepository repository,
                                        PreparePokemonToPersistSql prepareToPersist,
                                        ConverterEntitySql<PokemonEntity, Pokemon> converter,
-                                       @Qualifier("MongoHistoricRepository")
-                                               InsertRepositoryPort<Object> saveHistoric) {
+                                       @Qualifier(POKEMON_AUDIT)
+                                               InsertRepositoryPort<Object> audit) {
 
         this.repository = repository;
         this.prepareToPersist = prepareToPersist;
         this.converter = converter;
-        this.saveHistoric = saveHistoric;
+        this.audit = audit;
     }
     //</editor-fold>
 
@@ -64,7 +67,7 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
         Pokemon saved = converter.convertToDomainNotOptional(
                 repository.save(entity));
 
-        saveHistoric.insertAsync(saved);
+        audit.insertAsync(saved);
 
         log.info("Pokemon successfully inserted on postgres with id {}", saved.getId());
         return saved;
@@ -82,7 +85,7 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
         Pokemon updated = converter.convertToDomainNotOptional(
                 repository.save(entity));
 
-        saveHistoric.insertAsync(updated);
+        audit.insertAsync(updated);
 
         log.info("Pokemon successfully updated on postgres");
         return updated;

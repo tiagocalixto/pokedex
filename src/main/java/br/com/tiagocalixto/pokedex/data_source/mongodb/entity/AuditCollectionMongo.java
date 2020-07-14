@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Document(collection = "historic")
-public class HistoricCollectionMongo {
+@Document(collection = "audit")
+public class AuditCollectionMongo {
 
     @Transient
-    public static final String SEQUENCE_NAME = "historic_sequence";
+    public static final String SEQUENCE_NAME = "audit_sequence";
 
     @Id
     private String id;

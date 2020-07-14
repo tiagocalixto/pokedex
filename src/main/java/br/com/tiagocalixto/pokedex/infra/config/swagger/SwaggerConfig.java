@@ -25,11 +25,14 @@ import java.util.List;
 @EnableSwagger2
 public class SwaggerConfig {
 
+    //<editor-fold: properties>
     private static final String BASE_PACKAGE = "br.com.tiagocalixto.pokedex.controller";
     private static final String TITLE = "POKEDEX";
-    private static final String DESCRIPTION = "Api to learn more about pokemons!";
+    private static final String DESCRIPTION = "Api to learn more about Pokemons!";
     private static final String VERSION = "1.0.0";
     private static final String LICENSE = "Copyright TIAGO CALIXTO - 2020";
+    //</editor-fold>
+
 
     @Bean
     public Docket api() {
@@ -51,6 +54,7 @@ public class SwaggerConfig {
 
     @Bean
     public AlternateTypeRuleConvention typeConvention(final TypeResolver resolver) {
+
         return new AlternateTypeRuleConvention() {
 
             @Override
@@ -68,6 +72,7 @@ public class SwaggerConfig {
     }
 
     private Class<?> jsonNodeApi() {
+
         return new AlternateTypeBuilder()
                 .fullyQualifiedClassName(
                         String.format("%s.generated.%s",

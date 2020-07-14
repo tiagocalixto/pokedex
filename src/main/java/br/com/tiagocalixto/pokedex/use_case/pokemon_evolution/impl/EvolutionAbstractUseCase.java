@@ -15,7 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.NATIONAL_DEX_UNAVAILABLE;
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_EVOLUTION_ABSTRACT_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_EVOLUTION_ABSTRACT_USE_CASE;
 
 @Getter
 @Slf4j
@@ -34,7 +35,8 @@ public abstract class EvolutionAbstractUseCase {
     //</editor-fold>
 
     //<editor-fold: constructor>
-    public EvolutionAbstractUseCase(@Qualifier("NationalDex") FindOneByIdIntegrationPort<Pokemon> nationalDex,
+    public EvolutionAbstractUseCase(@Qualifier(INTEGRATION_NATIONAL_DEX)
+                                            FindOneByIdIntegrationPort<Pokemon> nationalDex,
                                     @Lazy PokemonMediatorUseCase mediator) {
 
         this.nationalDex = nationalDex;
@@ -64,7 +66,7 @@ public abstract class EvolutionAbstractUseCase {
         return fromNationalDex;
     }
 
-    private void preparePokemonEvolution(Pokemon pokemon){
+    private void preparePokemonEvolution(Pokemon pokemon) {
 
         pokemon.setEvolvedFrom(null);
         pokemon.setEvolveTo(Collections.emptyList());

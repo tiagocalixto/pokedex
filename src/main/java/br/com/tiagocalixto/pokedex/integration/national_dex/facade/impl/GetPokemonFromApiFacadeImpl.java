@@ -16,12 +16,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("GetPokemonApiFacade")
+@Component
 public class GetPokemonFromApiFacadeImpl implements GetPokemonFromApiFacade {
 
     private PokeApi pokeApi;
 
-    @Autowired
     public GetPokemonFromApiFacadeImpl(PokeApi pokeApi) {
 
         this.pokeApi = pokeApi;

@@ -8,6 +8,7 @@ import br.com.tiagocalixto.pokedex.ports.integration.FindOneByIdIntegrationPort;
 import br.com.tiagocalixto.pokedex.use_case.mediator.PokemonMediatorUseCase;
 import br.com.tiagocalixto.pokedex.use_case.pokemon_evolution.AssociateOrInsertEvolveToUseCase;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_CONSIDER;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_ASSOCIATE_EVOLVE_TO_USE_CASE;
 
 @Slf4j
 @Service(POKEMON_ASSOCIATE_EVOLVE_TO_USE_CASE)
@@ -23,7 +25,8 @@ public class EvolutionAssociateOrInsertEvolveToUseCase extends EvolutionAbstract
         implements AssociateOrInsertEvolveToUseCase {
 
     //<editor-fold: constructor>
-    public EvolutionAssociateOrInsertEvolveToUseCase(FindOneByIdIntegrationPort<Pokemon> nationalDex,
+    public EvolutionAssociateOrInsertEvolveToUseCase(@Qualifier(INTEGRATION_NATIONAL_DEX)
+                                                             FindOneByIdIntegrationPort<Pokemon> nationalDex,
                                                      @Lazy PokemonMediatorUseCase mediator) {
         super(nationalDex, mediator);
     }

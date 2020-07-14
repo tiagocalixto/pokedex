@@ -1,7 +1,5 @@
 package br.com.tiagocalixto.pokedex.infra.util;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.dcm4che3.soundex.Soundex;
 
 import java.text.Normalizer;
@@ -19,12 +17,6 @@ public final class Util {
         return calendar.getTime();
     }
 
-    public static JsonNode convertObjectToJson(Object object) {
-
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.convertValue(object, JsonNode.class);
-    }
-
     public static boolean phoneticStringsMatches(String stringOne, String stringTwo) {
 
         Soundex soundex = new Soundex();
@@ -35,7 +27,7 @@ public final class Util {
         return stringOnePhonetic.equalsIgnoreCase(stringTwoPhonetic);
     }
 
-    public static String getPhoneticString(String string){
+    public static String getPhoneticString(String string) {
 
         Soundex soundex = new Soundex();
         return soundex.toFuzzy(string.toUpperCase().trim());
@@ -45,7 +37,7 @@ public final class Util {
 
         return Normalizer.normalize(str, Normalizer.Form.NFD)
                 .replaceAll("[^\\p{ASCII}]", "")
-                .replace("-"," ")
+                .replace("-", " ")
                 .replace("_", " ");
     }
 }

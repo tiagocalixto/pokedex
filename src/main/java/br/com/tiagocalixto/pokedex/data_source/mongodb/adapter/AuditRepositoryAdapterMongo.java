@@ -1,10 +1,9 @@
 package br.com.tiagocalixto.pokedex.data_source.mongodb.adapter;
 
-import br.com.tiagocalixto.pokedex.data_source.mongodb.entity.HistoricCollectionMongo;
-import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.HistoricRepositoryMongo;
+import br.com.tiagocalixto.pokedex.data_source.mongodb.entity.AuditCollectionMongo;
+import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.AuditRepositoryMongo;
 import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.MongoDbSequence;
 import br.com.tiagocalixto.pokedex.ports.data_source.persist.InsertRepositoryPort;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -13,18 +12,19 @@ import java.time.ZoneId;
 import java.util.Optional;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.EMPTY;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_AUDIT;
 
-@Component("MongoHistoricRepository")
-public class HistoricRepositoryAdapterMongo implements InsertRepositoryPort<Object> {
+@Component(POKEMON_AUDIT)
+public class AuditRepositoryAdapterMongo implements InsertRepositoryPort<Object> {
 
     //<editor-fold: properties>
     private MongoDbSequence sequenceGenerator;
-    private HistoricRepositoryMongo repository;
+    private AuditRepositoryMongo repository;
     //</editor-fold>
 
     //<editor-fold: constructor>
-    public HistoricRepositoryAdapterMongo(MongoDbSequence sequenceGenerator,
-                                          HistoricRepositoryMongo repository) {
+    public AuditRepositoryAdapterMongo(MongoDbSequence sequenceGenerator,
+                                       AuditRepositoryMongo repository) {
         this.sequenceGenerator = sequenceGenerator;
         this.repository = repository;
     }
@@ -34,11 +34,11 @@ public class HistoricRepositoryAdapterMongo implements InsertRepositoryPort<Obje
     @Override
     public Object insert(Object entity) {
 
-        createHistoric(entity).ifPresent(repository::save);
+        createAudit(entity).ifPresent(repository::save);
         return entity;
     }
 
-    private Optional<HistoricCollectionMongo> createHistoric(Object entity) {
+    private Optional<AuditCollectionMongo> createAudit(Object entity) {
 
         String idEntity = getEntityId(entity);
 
@@ -46,8 +46,8 @@ public class HistoricRepositoryAdapterMongo implements InsertRepositoryPort<Obje
             return Optional.empty();
         }
 
-        HistoricCollectionMongo historic = HistoricCollectionMongo.builder()
-                .id(sequenceGenerator.nextId(HistoricCollectionMongo.SEQUENCE_NAME))
+        AuditCollectionMongo historic = AuditCollectionMongo.builder()
+                .id(sequenceGenerator.nextId(AuditCollectionMongo.SEQUENCE_NAME))
                 .date(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))
                 .entityName(entity.getClass().getSimpleName())
                 .idEntity(idEntity)
@@ -75,7 +75,7 @@ public class HistoricRepositoryAdapterMongo implements InsertRepositoryPort<Obje
     private String getNextVersion(String idEntity, String entityName) {
 
         Long version = Long.valueOf(repository.findFirstByEntityNameAndIdEntityOrderByVersionAsc(entityName, idEntity)
-                .map(HistoricCollectionMongo::getVersion).orElse("0")) + 1L;
+                .map(AuditCollectionMongo::getVersion).orElse("0")) + 1L;
 
         return version.toString();
     }

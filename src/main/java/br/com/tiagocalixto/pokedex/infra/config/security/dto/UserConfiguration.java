@@ -1,4 +1,4 @@
-package br.com.tiagocalixto.pokedex.infra.config.security;
+package br.com.tiagocalixto.pokedex.infra.config.security.dto;
 
 
 import lombok.AccessLevel;

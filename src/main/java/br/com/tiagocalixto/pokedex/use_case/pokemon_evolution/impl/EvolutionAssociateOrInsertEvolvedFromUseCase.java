@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_ASSOCIATE_EVOLVED_FROM_USE_CASE;
 
 @Slf4j
 @Service(POKEMON_ASSOCIATE_EVOLVED_FROM_USE_CASE)
@@ -20,8 +22,8 @@ public class EvolutionAssociateOrInsertEvolvedFromUseCase extends EvolutionAbstr
         implements AssociateOrInsertEvolvedFromUseCase {
 
     //<editor-fold: constructor>
-    public EvolutionAssociateOrInsertEvolvedFromUseCase(@Qualifier("NationalDex")
-                                                              FindOneByIdIntegrationPort<Pokemon> nationalDex,
+    public EvolutionAssociateOrInsertEvolvedFromUseCase(@Qualifier(INTEGRATION_NATIONAL_DEX)
+                                                                FindOneByIdIntegrationPort<Pokemon> nationalDex,
                                                         @Lazy PokemonMediatorUseCase mediator) {
         super(nationalDex, mediator);
     }

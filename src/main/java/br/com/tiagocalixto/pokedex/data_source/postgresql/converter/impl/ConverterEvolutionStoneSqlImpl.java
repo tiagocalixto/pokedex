@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.EMPTY;
 
-@Component("ConverterEvolutionStone")
+@Component
 public class ConverterEvolutionStoneSqlImpl implements ConverterEntitySql<EvolutionStoneEntity, EvolutionStoneEnum> {
 
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 @Slf4j
-@Component("PreparePokemonToPersistSql")
+@Component
 public class PreparePokemonToPersistSql {
 
     //<editor-fold: properties>

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("abilityConverterEntity")
+@Component
 public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<AbilityEntity, Ability> {
 
 

@@ -8,10 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_DELETE_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_DELETE_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
 
 @Slf4j
 @Service(POKEMON_DELETE_USE_CASE)
@@ -23,7 +22,7 @@ public class PokemonDeleteByIdUseCase implements DeleteByIdUseCase {
     //</editor-fold>
 
     //<editor-fold: constructor>
-    public PokemonDeleteByIdUseCase(@Qualifier("PokemonRepositorySql")
+    public PokemonDeleteByIdUseCase(@Qualifier(POKEMON_REPOSITORY_SQL)
                                             DeleteRepositoryPort<Pokemon> repository,
                                     @Lazy PokemonMediatorUseCase mediator) {
         this.repository = repository;
@@ -32,7 +31,6 @@ public class PokemonDeleteByIdUseCase implements DeleteByIdUseCase {
     //</editor-fold>
 
 
-    //@Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void execute(Long id) {
 

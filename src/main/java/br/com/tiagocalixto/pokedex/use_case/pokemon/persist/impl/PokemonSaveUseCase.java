@@ -9,11 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_ALREADY_EXISTS;
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_SAVE_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.*;
 
 @Slf4j
 @Service(POKEMON_SAVE_USE_CASE)
@@ -25,9 +23,9 @@ public class PokemonSaveUseCase extends PokemonPersistAbstractUseCase {
 
     //<editor-fold: constructor>
     public PokemonSaveUseCase(@Lazy PokemonMediatorUseCase mediator,
-                              @Qualifier("NationalDex")
+                              @Qualifier(INTEGRATION_NATIONAL_DEX)
                                       FindOneByIdIntegrationPort<Pokemon> nationalDex,
-                              @Qualifier("PokemonRepositorySql")
+                              @Qualifier(POKEMON_REPOSITORY_SQL)
                                       InsertRepositoryPort<Pokemon> repository) {
         super(mediator, nationalDex);
         this.repository = repository;

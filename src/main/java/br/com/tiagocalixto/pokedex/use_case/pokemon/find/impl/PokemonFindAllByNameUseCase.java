@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_NOT_FOUND_BY_NAME;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_FIND_ALL_BY_NAME_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
 
 @Slf4j
 @Service(POKEMON_FIND_ALL_BY_NAME_USE_CASE)
@@ -21,7 +23,7 @@ public class PokemonFindAllByNameUseCase implements FindAllByNameUseCase<Pokemon
     //</editor-fold>
 
     //<editor-fold: constructor>
-    public PokemonFindAllByNameUseCase(@Qualifier("PokemonRepositorySql")
+    public PokemonFindAllByNameUseCase(@Qualifier(POKEMON_REPOSITORY_SQL)
                                                FindAllByNameRepositoryPort<Pokemon> repository) {
         this.repository = repository;
     }

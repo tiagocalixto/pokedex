@@ -1,5 +1,7 @@
 package br.com.tiagocalixto.pokedex.infra.config.security;
 
+import br.com.tiagocalixto.pokedex.infra.config.security.dto.User;
+import br.com.tiagocalixto.pokedex.infra.config.security.dto.UserConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private UserConfiguration configuration;
 
-    @Autowired
+
     public WebSecurityConfig(UserConfiguration configuration) {
 
         this.configuration = configuration;

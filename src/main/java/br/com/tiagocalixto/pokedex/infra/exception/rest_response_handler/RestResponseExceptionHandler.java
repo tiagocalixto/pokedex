@@ -237,7 +237,5 @@ RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(apiError, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
-
-    //todo - include handler exception general Exception
 }
 

@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_NOT_FOUND_BY_ID;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_FIND_ONE_BY_ID_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
 
 @Slf4j
 @Service(POKEMON_FIND_ONE_BY_ID_USE_CASE)
@@ -20,8 +22,8 @@ public class PokemonFindOneByIdUseCase implements FindOneByIdUseCase<Pokemon> {
     //</editor-fold>
 
     //<editor-fold: constructor>
-    public PokemonFindOneByIdUseCase(@Qualifier("PokemonRepositorySql")
-                                          FindOneByIdRepositoryPort<Pokemon> repository) {
+    public PokemonFindOneByIdUseCase(@Qualifier(POKEMON_REPOSITORY_SQL)
+                                             FindOneByIdRepositoryPort<Pokemon> repository) {
         this.repository = repository;
     }
     //</editor-fold>

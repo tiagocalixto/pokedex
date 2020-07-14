@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("ConverterEvolutionTrigger")
+@Component
 public class ConverterEvolutionTriggerSqlImpl implements ConverterEntitySql<EvolutionTriggerEntity, EvolutionTriggerEnum> {
 
 

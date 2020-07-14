@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_FIND_ONE_BY_NUMBER_CASE;
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_NOT_FOUND_BY_NUMBER;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_FIND_ONE_BY_NUMBER_CASE;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
 
 @Slf4j
 @Service(POKEMON_FIND_ONE_BY_NUMBER_CASE)
@@ -21,7 +22,7 @@ public class PokemonFindOneByNumberUseCase implements FindOneByNumberUseCase {
     //</editor-fold>
 
     //<editor-fold: constructor>
-    public PokemonFindOneByNumberUseCase(@Qualifier("PokemonRepositorySql")
+    public PokemonFindOneByNumberUseCase(@Qualifier(POKEMON_REPOSITORY_SQL)
                                                  FindOneByNumberRepositoryPort<Pokemon> repository) {
         this.repository = repository;
     }

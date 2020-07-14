@@ -7,15 +7,14 @@ import br.com.tiagocalixto.pokedex.infra.util.Util;
 import br.com.tiagocalixto.pokedex.ports.data_source.persist.UpdateRepositoryPort;
 import br.com.tiagocalixto.pokedex.ports.integration.FindOneByIdIntegrationPort;
 import br.com.tiagocalixto.pokedex.use_case.mediator.PokemonMediatorUseCase;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.util.Constant.CANT_CHANGE_NAME_ON_UPDATE;
+import static br.com.tiagocalixto.pokedex.infra.util.Constant.CANT_CHANGE_NUMBER_ON_UPDATE;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.*;
 
 @Slf4j
 @Service(POKEMON_UPDATE_USE_CASE)
@@ -27,9 +26,9 @@ public class PokemonUpdateUseCase extends PokemonPersistAbstractUseCase {
 
     //<editor-fold: constructor>
     public PokemonUpdateUseCase(@Lazy PokemonMediatorUseCase mediator,
-                                @Qualifier("NationalDex")
-                                      FindOneByIdIntegrationPort<Pokemon> nationalDex,
-                                @Qualifier("PokemonRepositorySql")
+                                @Qualifier(INTEGRATION_NATIONAL_DEX)
+                                        FindOneByIdIntegrationPort<Pokemon> nationalDex,
+                                @Qualifier(POKEMON_REPOSITORY_SQL)
                                         UpdateRepositoryPort<Pokemon> repository) {
         super(mediator, nationalDex);
         this.repository = repository;
@@ -51,14 +50,14 @@ public class PokemonUpdateUseCase extends PokemonPersistAbstractUseCase {
         return updated;
     }
 
-    private void verifyPokemonOnUpdate(Pokemon pokemon, Pokemon pokemonDb){
+    private void verifyPokemonOnUpdate(Pokemon pokemon, Pokemon pokemonDb) {
 
-        if(!Util.phoneticStringsMatches(pokemon.getName(), pokemonDb.getName())){
+        if (!Util.phoneticStringsMatches(pokemon.getName(), pokemonDb.getName())) {
             log.info(CANT_CHANGE_NAME_ON_UPDATE);
             throw new CantChangeNameOnUpdateException(CANT_CHANGE_NAME_ON_UPDATE);
         }
 
-        if(!pokemon.getNumber().equals(pokemonDb.getNumber())){
+        if (!pokemon.getNumber().equals(pokemonDb.getNumber())) {
             log.info(CANT_CHANGE_NUMBER_ON_UPDATE);
             throw new CantChangeNumberOnUpdateException(CANT_CHANGE_NUMBER_ON_UPDATE);
         }

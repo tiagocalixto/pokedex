@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
+import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_PERSIST_ABSTRACT;
 
 @Slf4j
 @Getter
@@ -34,8 +36,8 @@ public abstract class PokemonPersistAbstractUseCase implements PersistUseCase<Po
 
     //<editor-fold: constructor>
     public PokemonPersistAbstractUseCase(@Lazy PokemonMediatorUseCase mediator,
-                                         @Qualifier("NationalDex")
-                                          FindOneByIdIntegrationPort<Pokemon> nationalDex) {
+                                         @Qualifier(INTEGRATION_NATIONAL_DEX)
+                                                 FindOneByIdIntegrationPort<Pokemon> nationalDex) {
 
         this.mediator = mediator;
         this.nationalDex = nationalDex;
