@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.POKEMON_ALREADY_EXISTS;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.*;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.POKEMON_ALREADY_EXISTS;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.*;
 
 @Slf4j
 @Service(POKEMON_SAVE_USE_CASE)

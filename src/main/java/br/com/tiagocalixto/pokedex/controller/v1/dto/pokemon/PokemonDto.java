@@ -27,7 +27,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.*;
 
 
 @Data

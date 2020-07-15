@@ -11,7 +11,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.*;
 
 @Component
 public class PokemonRuleImpl implements ConstraintValidator<PokemonRule, PokemonDto> {

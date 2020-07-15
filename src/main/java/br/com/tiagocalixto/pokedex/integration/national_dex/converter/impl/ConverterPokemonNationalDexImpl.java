@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.EMPTY;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.EMPTY;
 
 @Component
 public class ConverterPokemonNationalDexImpl implements ConverterNationalDex<PokemonNationalDexDto, Pokemon> {

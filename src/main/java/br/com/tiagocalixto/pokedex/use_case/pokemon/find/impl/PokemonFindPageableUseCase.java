@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.NUMBER;
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.PAGE_HAS_NO_CONTENT;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_FIND_PAGEABLE_USE_CASE;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.NUMBER;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.PAGE_HAS_NO_CONTENT;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_FIND_PAGEABLE_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
 
 @Slf4j
 @Service(POKEMON_FIND_PAGEABLE_USE_CASE)

@@ -23,8 +23,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_AUDIT;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_AUDIT;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
 
 @Slf4j
 @Component(POKEMON_REPOSITORY_SQL)

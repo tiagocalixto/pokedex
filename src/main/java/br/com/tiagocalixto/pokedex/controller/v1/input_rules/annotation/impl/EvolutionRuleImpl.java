@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.*;
 
 @Component
 public class EvolutionRuleImpl implements ConstraintValidator<EvolutionRule, PokemonEvolutionDto> {

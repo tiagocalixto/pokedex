@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.DESCRIPTION_FIELD_IS_REQUIRED;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.DESCRIPTION_FIELD_IS_REQUIRED;
 
 
 @Data

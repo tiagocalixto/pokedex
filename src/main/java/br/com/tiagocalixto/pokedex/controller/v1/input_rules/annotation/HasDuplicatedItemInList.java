@@ -10,7 +10,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.DUPLICATED_ITEM_GENERIC;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.DUPLICATED_ITEM_GENERIC;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ElementType.FIELD})

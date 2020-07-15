@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.EMPTY;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_AUDIT;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.EMPTY;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_AUDIT;
 
 @Component(POKEMON_AUDIT)
 public class AuditRepositoryAdapterMongo implements InsertRepositoryPort<Object> {

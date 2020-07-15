@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_DELETE_USE_CASE;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_DELETE_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
 
 @Slf4j
 @Service(POKEMON_DELETE_USE_CASE)

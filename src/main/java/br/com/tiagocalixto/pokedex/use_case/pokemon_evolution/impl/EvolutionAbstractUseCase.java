@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.NATIONAL_DEX_UNAVAILABLE;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_EVOLUTION_ABSTRACT_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.NATIONAL_DEX_UNAVAILABLE;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_EVOLUTION_ABSTRACT_USE_CASE;
 
 @Getter
 @Slf4j

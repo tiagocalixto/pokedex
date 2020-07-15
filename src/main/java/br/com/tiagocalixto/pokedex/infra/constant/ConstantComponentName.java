@@ -1,4 +1,4 @@
-package br.com.tiagocalixto.pokedex.infra.util.constant;
+package br.com.tiagocalixto.pokedex.infra.constant;
 
 public final class ConstantComponentName {
 

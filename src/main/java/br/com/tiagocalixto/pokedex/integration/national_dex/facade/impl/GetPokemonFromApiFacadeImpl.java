@@ -11,7 +11,6 @@ import br.com.tiagocalixto.pokedex.integration.national_dex.dto.pokemon.PokemonS
 import br.com.tiagocalixto.pokedex.integration.national_dex.facade.GetPokemonFromApiFacade;
 import lombok.SneakyThrows;
 import me.sargunvohra.lib.pokekotlin.client.PokeApi;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
 
 @Component(INTEGRATION_NATIONAL_DEX)
 public class NationalDexAdapter implements FindOneByIdIntegrationPort<Pokemon> {

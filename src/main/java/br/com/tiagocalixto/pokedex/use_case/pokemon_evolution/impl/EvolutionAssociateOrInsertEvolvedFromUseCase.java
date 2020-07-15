@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.*;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_ASSOCIATE_EVOLVED_FROM_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.*;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.INTEGRATION_NATIONAL_DEX;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_ASSOCIATE_EVOLVED_FROM_USE_CASE;
 
 @Slf4j
 @Service(POKEMON_ASSOCIATE_EVOLVED_FROM_USE_CASE)

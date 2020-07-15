@@ -6,8 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_EXISTS_BY_NUMBER_USE_CASE;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_EXISTS_BY_NUMBER_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_REPOSITORY_SQL;
 
 @Slf4j
 @Service(POKEMON_EXISTS_BY_NUMBER_USE_CASE)

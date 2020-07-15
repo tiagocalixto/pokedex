@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.INVALID_NAME_OR_NUMBER;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.INVALID_NAME_OR_NUMBER;
 
 @Component
 public class PokemonAbbreviatedRuleImpl implements ConstraintValidator<PokemonAbbreviatedRule, PokemonAbbreviatedDto> {

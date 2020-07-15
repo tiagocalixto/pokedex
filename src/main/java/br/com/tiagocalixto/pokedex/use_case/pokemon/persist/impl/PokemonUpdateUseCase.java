@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.CANT_CHANGE_NAME_ON_UPDATE;
-import static br.com.tiagocalixto.pokedex.infra.util.Constant.CANT_CHANGE_NUMBER_ON_UPDATE;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.*;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.CANT_CHANGE_NAME_ON_UPDATE;
+import static br.com.tiagocalixto.pokedex.infra.constant.Constant.CANT_CHANGE_NUMBER_ON_UPDATE;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.*;
 
 @Slf4j
 @Service(POKEMON_UPDATE_USE_CASE)

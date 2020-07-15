@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_SAVE_USE_CASE;
-import static br.com.tiagocalixto.pokedex.infra.util.constant.ConstantComponentName.POKEMON_UPDATE_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_SAVE_USE_CASE;
+import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_UPDATE_USE_CASE;
 
 @Component
 public class HandlerUseCaseImpl implements HandlerUseCase {
