@@ -79,5 +79,6 @@ public final class Constant {
     public static final String CANT_CHANGE_NAME_ON_UPDATE = "Can't change pokemon name on update!";
     public static final String CANT_CHANGE_NUMBER_ON_UPDATE = "Can't change pokemon number on update!";
     public static final String PAGE_NUMBER_TOO_SMALL = "Page number must be greater than 0!";
+    public static final String ID_TOO_SMALL = "Id must be greater than 0!";
 }
 

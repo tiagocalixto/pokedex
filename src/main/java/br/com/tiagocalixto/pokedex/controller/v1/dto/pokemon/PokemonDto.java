@@ -42,14 +42,14 @@ public class PokemonDto implements Serializable {
     @ApiModelProperty(notes = "Pokemon id", dataType = "integer", example = "0", position = 1)
     private Long id;
 
-    @NotNull(message = NUMBER_IS_REQUIRED)
+    @NotNull(message = NUMBER_IS_REQUIRED, groups = FirstStepValidation.class)
     @Min(value = 1, message = NUMBER_INVALID_RANGE, groups = SecondStepValidation.class)
     @Max(value = 151, message = NUMBER_INVALID_RANGE, groups = SecondStepValidation.class)
     @ApiModelProperty(notes = "Pokemon number", dataType = "integer", example = "7", position = 2)
     private Long number;
 
     @NotBlank(message = NAME_IS_REQUIRED, groups = FirstStepValidation.class)
-    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .']*$", message = NAME_IS_INVALID, groups = SecondStepValidation.class)
+    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .'-]*$", message = NAME_IS_INVALID, groups = SecondStepValidation.class)
     @Length(min = 3, max = 50, message = NAME_INVALID_SIZE, groups = SecondStepValidation.class)
     @ApiModelProperty(notes = "Pokemon name", dataType = "string", example = "Squirtle", position = 3)
     private String name;
@@ -68,7 +68,7 @@ public class PokemonDto implements Serializable {
 
     @JsonSetter(nulls = Nulls.SKIP)
     @Builder.Default
-    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú0-9 .,']*$", message = ABOUT_ESPECIAL_CHAR, groups = SecondStepValidation.class)
+    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú0-9 .,%']*$", message = ABOUT_ESPECIAL_CHAR, groups = SecondStepValidation.class)
     @Size(min = 3, max = 255, message = ABOUT_LENGTH_INVALID, groups = ThirdStepValidation.class)
     @ApiModelProperty(notes = "About Pokemon", dataType = "string",
             example = "Squirtle is a Water type Pokemon. It is known as the Tiny Turtle Pokémon.", position = 6)

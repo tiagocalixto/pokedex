@@ -67,7 +67,7 @@ public class PokemonRestController {
             @ApiResponse(code = 200, message = "", response = PokemonDto.class),
             @ApiResponse(code = 404, message = "Pokemon not found!")})
     @GetMapping(value = "/id/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PokemonDto> getById(@PathVariable Long id) {
+    public ResponseEntity<PokemonDto> getById(@Min(value = 1, message = ID_TOO_SMALL) @PathVariable Long id) {
 
         return new ResponseEntity<>(getOneByIdPort.getOneById(id), HttpStatus.OK);
     }
@@ -77,8 +77,8 @@ public class PokemonRestController {
             @ApiResponse(code = 404, message = "Pokemon not found!")})
     @GetMapping(value = "/number/{number}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PokemonDto> getByNumber(@Min(value = 1, message = NUMBER_INVALID_RANGE)
-                                                            @Max(value = 151, message = NUMBER_INVALID_RANGE)
-                                                            @PathVariable Long number) {
+                                                  @Max(value = 151, message = NUMBER_INVALID_RANGE)
+                                                  @PathVariable Long number) {
 
         return new ResponseEntity<>(getOneByNUmberPort.getOneByNumber(number), HttpStatus.OK);
     }
@@ -87,20 +87,21 @@ public class PokemonRestController {
             @ApiResponse(code = 200, message = "", response = PokemonDto.class),
             @ApiResponse(code = 404, message = "Pokemon not found!")})
     @GetMapping(value = "/name/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PokemonDto>> getAllByByName(@Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .']*$", message = NAME_IS_INVALID)
-                                                                @Length(min = 3, max = 50,
-                                                                        message = NAME_INVALID_SIZE)
-                                                                @PathVariable String name) {
+    public ResponseEntity<List<PokemonDto>> getAllByByName(@Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .']*$",
+            message = NAME_IS_INVALID)
+                                                           @Length(min = 3, max = 50,
+                                                                   message = NAME_INVALID_SIZE)
+                                                           @PathVariable String name) {
 
         return new ResponseEntity<>(getAllByNamePort.getAllByName(name), HttpStatus.OK);
     }
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "", response = PokemonDto.class),
-            @ApiResponse(code = 404, message = "Any Pokemon founded!")})
+            @ApiResponse(code = 404, message = "No Pokemon founded!")})
     @GetMapping(value = "/pageable/{pageNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PokemonDto>> getPageable(@Min(value = 1, message=PAGE_NUMBER_TOO_SMALL)
-                                                            @PathVariable Integer pageNumber) {
+    public ResponseEntity<List<PokemonDto>> getPageable(@Min(value = 1, message = PAGE_NUMBER_TOO_SMALL)
+                                                        @PathVariable Integer pageNumber) {
 
         return new ResponseEntity<>(getPageablePort.getPage(pageNumber), HttpStatus.OK);
     }
@@ -131,7 +132,8 @@ public class PokemonRestController {
             @ApiResponse(code = 400, message = "Bad request"),
             @ApiResponse(code = 404, message = "Pokemon not found")})
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> delete(@Min(value = 1, message = ID_TOO_SMALL)
+                                             @PathVariable Long id) {
 
         deletePort.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
