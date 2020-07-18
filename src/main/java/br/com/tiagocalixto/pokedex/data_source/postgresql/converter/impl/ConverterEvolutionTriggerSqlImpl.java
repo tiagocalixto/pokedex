@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@SuppressWarnings("Duplicates")
 @Component
 public class ConverterEvolutionTriggerSqlImpl implements ConverterEntitySql<EvolutionTriggerEntity, EvolutionTriggerEnum> {
 
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<EvolutionTriggerEntity> convertToEntity(Optional<EvolutionTriggerEnum> domain) {
 
@@ -33,7 +33,6 @@ public class ConverterEvolutionTriggerSqlImpl implements ConverterEntitySql<Evol
         return Optional.of(entity);
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<EvolutionTriggerEnum> convertToDomain(Optional<EvolutionTriggerEntity> entity) {
 

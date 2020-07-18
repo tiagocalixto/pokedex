@@ -5,6 +5,7 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.EvolutionTrigge
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.GenericEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.embeddable_pk.PokemonEvolutionPk;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,13 +30,13 @@ public class PokemonEvolutionEntity extends GenericEntity {
     @EmbeddedId
     private PokemonEvolutionPk id;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne(cascade = CascadeType.MERGE)
     @MapsId("idPokemonFk")
     @JoinColumn(name = "id_pokemon_fk", updatable = false)
     private PokemonEntity pokemon;
 
-    @JsonBackReference
+    @JsonManagedReference
     @ManyToOne(cascade = CascadeType.MERGE)
     @MapsId("idEvolutionFk")
     @JoinColumn(name = "id_evolution_fk", updatable = false)

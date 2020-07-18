@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@SuppressWarnings("Duplicates")
 @Component
 public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, Move> {
 
@@ -21,7 +22,6 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
         this.convertType = convertType;
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<MoveEntity> convertToEntity(Optional<Move> domain) {
 
@@ -44,7 +44,6 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
         return Optional.of(moveEntity);
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<Move> convertToDomain(Optional<MoveEntity> entity) {
 

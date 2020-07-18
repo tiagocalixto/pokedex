@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("Duplicates")
 @Slf4j
 @Component
 public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEntity, Pokemon> {
@@ -52,7 +53,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
     //</editor-fold>
 
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<PokemonEntity> convertToEntity(Optional<Pokemon> domain) {
 
@@ -86,7 +86,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return Optional.of(pokemonEntity);
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<Pokemon> convertToDomain(Optional<PokemonEntity> entity) {
 
@@ -115,7 +114,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return Optional.of(pokemon);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<PokemonStatsEntity> convertStatsToEntity(Optional<PokemonStats> domain, Long idPokemon) {
 
         if (domain.isEmpty())
@@ -136,7 +134,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return Optional.of(pokemonStatsEntity);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<PokemonStats> convertStatsToDomain(Optional<PokemonStatsEntity> entity) {
 
         if (entity.isEmpty())
@@ -156,7 +153,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return Optional.of(pokemonStats);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<PokemonEntity> convertAbbreviatedToEntity(Optional<Pokemon> domain) {
 
         if (domain.isEmpty())
@@ -186,7 +182,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return Optional.of(pokemonEntity);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<Pokemon> convertAbbreviatedToDomain(Optional<PokemonEntity> entity) {
 
         if (entity.isEmpty())
@@ -214,7 +209,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return Optional.of(pokemonAbbreviated);
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonTypeEntity> convertTypeToEntity(List<Type> domain, Long idPokemon) {
 
         if (domain == null || domain.isEmpty())
@@ -237,7 +231,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return list;
     }
 
-    @SuppressWarnings("Duplicates")
     private List<Type> convertTypeToDomain(List<PokemonTypeEntity> entity) {
 
         if (entity == null || entity.isEmpty())
@@ -252,7 +245,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return list;
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonEvolutionEntity> convertEvolveToToEntity(List<PokemonEvolution> domain,
                                                                  Long idEvolution) {
 
@@ -276,7 +268,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
                 .collect(Collectors.toList());
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonEvolution> convertEvolveToToDomain(List<PokemonEvolutionEntity> entity) {
 
         if (entity == null || entity.isEmpty())
@@ -295,7 +286,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
                 .collect(Collectors.toList());
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonEvolutionEntity> convertEvolvedFromToEntity(Optional<PokemonEvolution> domain,
                                                                     Long idPokemon) {
 
@@ -323,7 +313,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return List.of(pokemonEvolutionEntity);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<PokemonEvolution> convertEvolvedFromToDomain(List<PokemonEvolutionEntity> entity) {
 
         if (entity == null || entity.isEmpty())
@@ -342,7 +331,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return Optional.of(pokemonEvolution);
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonAbilityEntity> convertAbilityToEntity(List<Ability> domain, Long idPokemon) {
 
         if (domain == null || domain.isEmpty())
@@ -365,7 +353,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return list;
     }
 
-    @SuppressWarnings("Duplicates")
     private List<Ability> convertAbilityToDomain(List<PokemonAbilityEntity> entity) {
 
         if (entity == null || entity.isEmpty())
@@ -380,7 +367,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return list;
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonMoveEntity> convertMoveToEntity(List<PokemonMove> domain, Long idPokemon) {
 
         if (domain == null || domain.isEmpty())
@@ -404,7 +390,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return list;
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonMove> convertMoveToDomain(List<PokemonMoveEntity> entity) {
 
         if (entity == null || entity.isEmpty())
@@ -423,7 +408,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return list;
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonWeaknessesEntity> convertWeaknessesToEntity(List<Type> domain, Long idPokemon) {
 
         if (domain == null || domain.isEmpty())
@@ -446,7 +430,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
         return list;
     }
 
-    @SuppressWarnings("Duplicates")
     private List<Type> convertWeaknessesToDomain(List<PokemonWeaknessesEntity> entity) {
 
         if (entity == null || entity.isEmpty())

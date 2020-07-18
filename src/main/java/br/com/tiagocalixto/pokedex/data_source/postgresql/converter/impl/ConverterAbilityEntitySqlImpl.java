@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@SuppressWarnings("Duplicates")
 @Component
 public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<AbilityEntity, Ability> {
 
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<AbilityEntity> convertToEntity(Optional<Ability> domain) {
 
@@ -31,7 +31,6 @@ public class ConverterAbilityEntitySqlImpl implements ConverterEntitySql<Ability
         return Optional.of(abilityEntity);
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<Ability> convertToDomain(Optional<AbilityEntity> entity) {
 

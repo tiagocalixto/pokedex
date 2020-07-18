@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@SuppressWarnings("Duplicates")
 @Component
 public class ConverterTypeDtoImpl implements ConverterDto<TypeDto, Type> {
 
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<TypeDto> convertToDto(Optional<Type> domain) {
 
@@ -29,7 +29,6 @@ public class ConverterTypeDtoImpl implements ConverterDto<TypeDto, Type> {
         return Optional.of(typeDto);
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<Type> convertToDomain(Optional<TypeDto> dto) {
 

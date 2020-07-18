@@ -2,7 +2,7 @@ package br.com.tiagocalixto.pokedex.data_source.mongodb.adapter;
 
 import br.com.tiagocalixto.pokedex.data_source.mongodb.entity.AuditCollectionMongo;
 import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.AuditRepositoryMongo;
-import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.MongoDbSequence;
+import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.SequenceGeneratorMongo;
 import br.com.tiagocalixto.pokedex.ports.data_source.persist.InsertRepositoryPort;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +18,12 @@ import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.P
 public class AuditRepositoryAdapterMongo implements InsertRepositoryPort<Object> {
 
     //<editor-fold: properties>
-    private MongoDbSequence sequenceGenerator;
+    private SequenceGeneratorMongo sequenceGenerator;
     private AuditRepositoryMongo repository;
     //</editor-fold>
 
     //<editor-fold: constructor>
-    public AuditRepositoryAdapterMongo(MongoDbSequence sequenceGenerator,
+    public AuditRepositoryAdapterMongo(SequenceGeneratorMongo sequenceGenerator,
                                        AuditRepositoryMongo repository) {
         this.sequenceGenerator = sequenceGenerator;
         this.repository = repository;

@@ -10,13 +10,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@SuppressWarnings("Duplicates")
 @Component
 public class ConverterMoveDtoImpl implements ConverterDto<MoveDto, Move> {
 
-    @Autowired
     ConverterDto<TypeDto, Type> convertType;
 
-    @SuppressWarnings("Duplicates")
+    public ConverterMoveDtoImpl(ConverterDto<TypeDto, Type> convertType) {
+        this.convertType = convertType;
+    }
+
+
     @Override
     public Optional<MoveDto> convertToDto(Optional<Move> domain) {
 
@@ -37,7 +41,6 @@ public class ConverterMoveDtoImpl implements ConverterDto<MoveDto, Move> {
         return Optional.of(moveDto);
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<Move> convertToDomain(Optional<MoveDto> dto) {
 

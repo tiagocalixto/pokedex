@@ -7,11 +7,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+@SuppressWarnings("Duplicates")
 @Component
 public class ConverterEvolutionStoneSqlImpl implements ConverterEntitySql<EvolutionStoneEntity, EvolutionStoneEnum> {
 
 
-    @SuppressWarnings("Duplicates")
+
     @Override
     public Optional<EvolutionStoneEntity> convertToEntity(Optional<EvolutionStoneEnum> domain) {
 
@@ -28,7 +29,6 @@ public class ConverterEvolutionStoneSqlImpl implements ConverterEntitySql<Evolut
         return Optional.of(entity);
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<EvolutionStoneEnum> convertToDomain(Optional<EvolutionStoneEntity> entity) {
 

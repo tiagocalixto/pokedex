@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @Document(collection = "mongo_sequences")
-public class MongoDbSequences {
+public class SequenceCollectionMongo {
 
         @Id
         private String id;

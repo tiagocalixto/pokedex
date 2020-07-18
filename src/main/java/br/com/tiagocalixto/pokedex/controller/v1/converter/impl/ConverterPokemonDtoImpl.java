@@ -16,12 +16,12 @@ import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonEvolution;
 import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonMove;
 import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonStats;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("Duplicates")
 @Component
 public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon> {
 
@@ -29,7 +29,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
     private ConverterDto<MoveDto, Move> convertMove;
     private ConverterDto<AbilityDto, Ability> convertAbility;
 
-    @Autowired
     public ConverterPokemonDtoImpl(ConverterDto<TypeDto, Type> convertType, ConverterDto<MoveDto, Move> convertMove,
                                    ConverterDto<AbilityDto, Ability> convertAbility) {
 
@@ -39,7 +38,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
     }
 
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<PokemonDto> convertToDto(Optional<Pokemon> domain) {
 
@@ -69,7 +67,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         return Optional.of(pokemonDto);
     }
 
-    @SuppressWarnings("Duplicates")
     @Override
     public Optional<Pokemon> convertToDomain(Optional<PokemonDto> dto) {
 
@@ -98,7 +95,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         return Optional.of(pokemon);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<PokemonStatsDto> convertStatsToDto(Optional<PokemonStats> domain) {
 
         if (domain.isEmpty())
@@ -118,7 +114,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         return Optional.of(pokemonStatsDto);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<PokemonStats> convertStatsToDomain(Optional<PokemonStatsDto> dto) {
 
         if (dto.isEmpty())
@@ -138,7 +133,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         return Optional.of(pokemonStats);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<PokemonAbbreviatedDto> convertAbbreviatedToDto(Optional<Pokemon> domain) {
 
         if (domain.isEmpty())
@@ -156,7 +150,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         return Optional.of(pokemonAbbreviatedDto);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<Pokemon> convertAbbreviatedToDomain(Optional<PokemonAbbreviatedDto> dto) {
 
         if (dto.isEmpty())
@@ -172,7 +165,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         return Optional.of(pokemonAbbreviated);
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<PokemonEvolutionDto> convertEvolutionToDto(Optional<PokemonEvolution> domain) {
 
         if (domain.isEmpty())
@@ -200,7 +192,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
                 .filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    @SuppressWarnings("Duplicates")
     private Optional<PokemonEvolution> convertEvolutionToDomain(Optional<PokemonEvolutionDto> dto) {
 
         if (dto.isEmpty())
@@ -228,7 +219,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
                 .filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonMoveDto> convertPokemonMoveToDto(List<PokemonMove> moves) {
 
         if (moves == null || moves.isEmpty())
@@ -246,7 +236,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         return list;
     }
 
-    @SuppressWarnings("Duplicates")
     private List<PokemonMove> convertPokemonMoveToDomain(List<PokemonMoveDto> moves) {
 
         if (moves == null || moves.isEmpty())
