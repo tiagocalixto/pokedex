@@ -27,7 +27,6 @@ import java.util.List;
 
 import static br.com.tiagocalixto.pokedex.infra.constant.Constant.*;
 
-@Slf4j
 @RestController
 @RequestMapping(value = "/v1/pokemon")
 @Api(value = "Pokemon")

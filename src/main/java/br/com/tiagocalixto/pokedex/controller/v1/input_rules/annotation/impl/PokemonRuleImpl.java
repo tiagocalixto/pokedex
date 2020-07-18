@@ -4,6 +4,7 @@ import br.com.tiagocalixto.pokedex.controller.v1.dto.TypeDto;
 import br.com.tiagocalixto.pokedex.controller.v1.dto.pokemon.PokemonDto;
 import br.com.tiagocalixto.pokedex.controller.v1.input_rules.annotation.PokemonRule;
 import br.com.tiagocalixto.pokedex.infra.util.Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static br.com.tiagocalixto.pokedex.infra.constant.Constant.*;
 
+@Slf4j
 @Component
 public class PokemonRuleImpl implements ConstraintValidator<PokemonRule, PokemonDto> {
 
@@ -25,30 +27,35 @@ public class PokemonRuleImpl implements ConstraintValidator<PokemonRule, Pokemon
             if (!isWeaknessValid(pokemon)) {
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(WEAKNESS_CANT_BE_TYPE).addConstraintViolation();
+                log.info(WEAKNESS_CANT_BE_TYPE);
                 return false;
             }
 
             if (!isEvolveToValid(pokemon)) {
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(EVOLVE_TO_DUPLICATED).addConstraintViolation();
+                log.info(EVOLVE_TO_DUPLICATED);
                 return false;
             }
 
             if(!isMoveValid(pokemon)){
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(MOVE_IS_DUPLICATE).addConstraintViolation();
+                log.info(MOVE_IS_DUPLICATE);
                 return false;
             }
 
             if(evolveToAndPokemonIsTheSame(pokemon)){
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(POKEMON_EVOLVES_TO_HIMSELF).addConstraintViolation();
+                log.info(POKEMON_EVOLVES_TO_HIMSELF);
                 return false;
             }
 
             if(evolvedFromAndPokemonIsTheSame(pokemon)){
                 context.disableDefaultConstraintViolation();
                 context.buildConstraintViolationWithTemplate(POKEMON_EVOLVED_FROM_HIMSELF).addConstraintViolation();
+                log.info(POKEMON_EVOLVED_FROM_HIMSELF);
                 return false;
             }
 

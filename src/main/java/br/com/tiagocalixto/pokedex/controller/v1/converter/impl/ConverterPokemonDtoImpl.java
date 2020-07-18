@@ -25,10 +25,13 @@ import java.util.stream.Collectors;
 @Component
 public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon> {
 
+    //<editor-fold: properties>
     private ConverterDto<TypeDto, Type> convertType;
     private ConverterDto<MoveDto, Move> convertMove;
     private ConverterDto<AbilityDto, Ability> convertAbility;
+    //</editor-fold>
 
+    //<editor-fold: constructor>
     public ConverterPokemonDtoImpl(ConverterDto<TypeDto, Type> convertType, ConverterDto<MoveDto, Move> convertMove,
                                    ConverterDto<AbilityDto, Ability> convertAbility) {
 
@@ -36,6 +39,7 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         this.convertMove = convertMove;
         this.convertAbility = convertAbility;
     }
+    //</editor-fold>
 
 
     @Override
