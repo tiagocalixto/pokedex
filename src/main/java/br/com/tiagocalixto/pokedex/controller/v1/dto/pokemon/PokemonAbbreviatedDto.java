@@ -40,7 +40,7 @@ public class PokemonAbbreviatedDto implements Serializable {
 
     @JsonSetter(nulls = Nulls.SKIP)
     @Builder.Default
-    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .']*$", message = NAME_IS_INVALID, groups = SecondStepValidation.class)
+    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .'-]*$", message = NAME_IS_INVALID, groups = SecondStepValidation.class)
     @Length(min = 3, max = 50, message = NAME_INVALID_SIZE, groups = SecondStepValidation.class)
     @ApiModelProperty(notes = "PokemonDto name", dataType = "string", example = "Wartortle", position = 2)
     private String name = "";

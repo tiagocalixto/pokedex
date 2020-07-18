@@ -31,7 +31,7 @@ import static br.com.tiagocalixto.pokedex.infra.constant.Constant.*;
 public class MoveDto implements Serializable {
 
     @NotBlank(message = DESCRIPTION_FIELD_IS_REQUIRED, groups = FirstStepValidation.class)
-    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú' ]*$", message = DESCRIPTION_FIELD_IS_INVALID, groups = SecondStepValidation.class)
+    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú .'-]*$", message = DESCRIPTION_FIELD_IS_INVALID, groups = SecondStepValidation.class)
     @Size(min = 3, max = 50, message = DESCRIPTION_LENGTH_INVALID, groups = ThirdStepValidation.class)
     @ApiModelProperty(notes = "Move description", dataType = "string", example = "Water Gun", position = 1)
     private String description;
@@ -61,7 +61,7 @@ public class MoveDto implements Serializable {
 
     @JsonSetter(nulls = Nulls.SKIP)
     @Builder.Default
-    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú0-9 .,%']*$", message = ABOUT_ESPECIAL_CHAR, groups = SecondStepValidation.class)
+    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú0-9 .,%'-]*$", message = ABOUT_ESPECIAL_CHAR, groups = SecondStepValidation.class)
     @Size(min = 3, max = 255, message = ABOUT_LENGTH_INVALID, groups = ThirdStepValidation.class)
     @ApiModelProperty(notes = "About", dataType = "string",
             example = "Water Gun deals damage with no additional effect.", position = 6)

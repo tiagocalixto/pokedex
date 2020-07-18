@@ -68,7 +68,7 @@ public class PokemonDto implements Serializable {
 
     @JsonSetter(nulls = Nulls.SKIP)
     @Builder.Default
-    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú0-9 .,%']*$", message = ABOUT_ESPECIAL_CHAR, groups = SecondStepValidation.class)
+    @Pattern(regexp = "^[a-zà-ú-A-ZÀ-Ú0-9 .,%'-]*$", message = ABOUT_ESPECIAL_CHAR, groups = SecondStepValidation.class)
     @Size(min = 3, max = 255, message = ABOUT_LENGTH_INVALID, groups = ThirdStepValidation.class)
     @ApiModelProperty(notes = "About Pokemon", dataType = "string",
             example = "Squirtle is a Water type Pokemon. It is known as the Tiny Turtle Pokémon.", position = 6)
