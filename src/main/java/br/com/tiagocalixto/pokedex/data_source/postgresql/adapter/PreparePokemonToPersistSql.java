@@ -49,7 +49,6 @@ public class PreparePokemonToPersistSql {
         return insert;
     }
 
-
     public PokemonEntity prepareToUpdate(PokemonEntity update) {
 
         log.info("prepare pokemon to update {}", update.getName());

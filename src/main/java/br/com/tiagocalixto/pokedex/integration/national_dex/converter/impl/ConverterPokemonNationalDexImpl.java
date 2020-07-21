@@ -33,7 +33,6 @@ public class ConverterPokemonNationalDexImpl implements ConverterNationalDex<Pok
     private ConverterNationalDex<MoveNationalDexDto, Move> moveConverter;
     private ConverterNationalDex<TypeNationalDexDto, Type> typeConverter;
 
-    @Autowired
     public ConverterPokemonNationalDexImpl(ConverterNationalDex<AbilityNationalDexDto, Ability> abilityConverter,
                                            ConverterNationalDex<MoveNationalDexDto, Move> moveConverter,
                                            ConverterNationalDex<TypeNationalDexDto, Type> typeConverter) {

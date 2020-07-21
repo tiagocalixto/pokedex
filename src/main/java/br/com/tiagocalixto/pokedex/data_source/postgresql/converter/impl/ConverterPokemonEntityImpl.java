@@ -37,7 +37,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
     //</editor-fold>
 
     //<editor-fold: constructor>
-    @Autowired
     public ConverterPokemonEntityImpl(ConverterEntitySql<TypeEntity, Type> convertType,
                                       ConverterEntitySql<AbilityEntity, Ability> convertAbility,
                                       ConverterEntitySql<MoveEntity, Move> convertMove,

@@ -17,10 +17,10 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
 
     private ConverterEntitySql<TypeEntity, Type> convertType;
 
-    @Autowired
     public ConverterMoveEntityImpl(ConverterEntitySql<TypeEntity, Type> convertType) {
         this.convertType = convertType;
     }
+
 
     @Override
     public Optional<MoveEntity> convertToEntity(Optional<Move> domain) {

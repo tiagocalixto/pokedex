@@ -40,7 +40,6 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     //</editor-fold>
 
     //<editor-fold: constructor>
-    @Autowired
     public PokemonRepositoryAdapterSql(PokemonRepository repository,
                                        PreparePokemonToPersistSql prepareToPersist,
                                        ConverterEntitySql<PokemonEntity, Pokemon> converter,
@@ -131,16 +130,16 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     }
 
     @Override
-    public boolean isExistsByNumber(Long number) {
-
-        log.info("verify if pokemon exists  in postgres by number {}", number);
-        return repository.existsByNumber(number);
-    }
-
-    @Override
     public Optional<Pokemon> findById(Long id) {
 
         log.info("select optional pokemon for id in postgres, id = {}", id);
         return converter.convertToDomain(repository.findById(id));
+    }
+
+    @Override
+    public boolean isExistsByNumber(Long number) {
+
+        log.info("verify if pokemon exists  in postgres by number {}", number);
+        return repository.existsByNumber(number);
     }
 }

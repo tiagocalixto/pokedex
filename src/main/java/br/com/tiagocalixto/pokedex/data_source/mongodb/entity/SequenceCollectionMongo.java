@@ -17,7 +17,7 @@ import javax.persistence.Id;
 @Document(collection = "mongo_sequences")
 public class SequenceCollectionMongo {
 
-        @Id
-        private String id;
-        private long seq;
+    @Id
+    private String id;
+    private long seq;
 }
