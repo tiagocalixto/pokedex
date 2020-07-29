@@ -1,21 +1,18 @@
-package br.com.tiagocalixto.pokedex.controller;
+package br.com.tiagocalixto.pokedex.controller.rest;
 
 import br.com.tiagocalixto.pokedex.controller.v1.dto.pokemon.PokemonDto;
 import br.com.tiagocalixto.pokedex.controller.v1.rest.PokemonRestController;
-import br.com.tiagocalixto.pokedex.infra.exception.NoContentException;
 import br.com.tiagocalixto.pokedex.mock.MocksDto;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;

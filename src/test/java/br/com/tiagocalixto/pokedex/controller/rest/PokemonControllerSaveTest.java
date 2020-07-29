@@ -1,4 +1,4 @@
-package br.com.tiagocalixto.pokedex.controller;
+package br.com.tiagocalixto.pokedex.controller.rest;
 
 import br.com.tiagocalixto.pokedex.controller.v1.dto.enums.EvolutionTriggerDtoEnum;
 import br.com.tiagocalixto.pokedex.controller.v1.dto.pokemon.PokemonDto;
@@ -15,19 +15,19 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = PokemonRestController.class)
-public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
+public class PokemonControllerSaveTest extends PokemonControllerMockBean {
 
     @Autowired
     private MockMvc mvc;
@@ -36,2276 +36,2256 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemon_whenUpdate_logged_theReturnReturnOk() {
+    public void givenPokemon_whenSave_logged_theReturnReturnPokemonCreated() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
-        verify(putPort, times(1)).update(any(PokemonDto.class));
+        verify(postPort, times(1)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @SneakyThrows
-    public void givenPokemon_whenUpdate_notLogged_theReturnReturnUnauthorized() {
+    public void givenPokemon_whenSave_notLogged_theReturnReturnUnauthorized() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonNotExistent_whenUpdate_logged_theReturnReturnNotFound() {
+    public void givenPokemonAlreadyExistent_whenSave_logged_theReturnReturnUnprocessableEntity() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
-        when(putPort.update(any(PokemonDto.class))).thenThrow(EntityNotFoundException.class);
+        when(postPort.save(any(PokemonDto.class))).thenThrow(PokemonAlreadyExistsException.class);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isNotFound());
+                .andExpect(status().isUnprocessableEntity());
 
-        verify(putPort, times(1)).update(any(PokemonDto.class));
+        verify(postPort, times(1)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonTryingToChangeName_whenUpdate_logged_theReturnReturnNotFound() {
+    public void givenPokemon_whenSaveNationalDexOutOfService_logged_theReturnReturnServiceUnavailable() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
-        when(putPort.update(any(PokemonDto.class))).thenThrow(CantChangeNameOnUpdateException.class);
+        when(postPort.save(any(PokemonDto.class))).thenThrow(NationalDexOutOfServiceException.class);
 
-        mvc.perform(put("/v1/pokemon")
-                .content(json.toJson(pokemon))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-
-        verify(putPort, times(1)).update(any(PokemonDto.class));
-        resetMock();
-    }
-
-    @Test
-    @WithMockUser("admin")
-    @SneakyThrows
-    public void givenPokemonTryingToChangeNumber_whenUpdate_logged_theReturnReturnNotFound() {
-
-        PokemonDto pokemon = MocksDto.createPokemon();
-
-        when(putPort.update(any(PokemonDto.class))).thenThrow(CantChangeNumberOnUpdateException.class);
-
-        mvc.perform(put("/v1/pokemon")
-                .content(json.toJson(pokemon))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isBadRequest());
-
-        verify(putPort, times(1)).update(any(PokemonDto.class));
-        resetMock();
-    }
-
-    @Test
-    @WithMockUser("admin")
-    @SneakyThrows
-    public void givenPokemon_whenUpdateNationalDexOutOfService_logged_theReturnReturnServiceUnavailable() {
-
-        PokemonDto pokemon = MocksDto.createPokemon();
-
-        when(putPort.update(any(PokemonDto.class))).thenThrow(NationalDexOutOfServiceException.class);
-
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isServiceUnavailable());
 
-        verify(putPort, times(1)).update(any(PokemonDto.class));
+        verify(postPort, times(1)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithInvalidType_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithInvalidName_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
-        when(putPort.update(any(PokemonDto.class))).thenThrow(PokemonIncorrectTypeException.class);
+        when(postPort.save(any(PokemonDto.class))).thenThrow(PokemonNameIncorrectException.class);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(1)).update(any(PokemonDto.class));
+        verify(postPort, times(1)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithInvalidMove_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithInvalidType_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
-        when(putPort.update(any(PokemonDto.class))).thenThrow(PokemonMoveIncorrectException.class);
+        when(postPort.save(any(PokemonDto.class))).thenThrow(PokemonIncorrectTypeException.class);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(1)).update(any(PokemonDto.class));
+        verify(postPort, times(1)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithInvalidEvolution_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithInvalidMove_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
-        when(putPort.update(any(PokemonDto.class))).thenThrow(PokemonEvolutionIncorrectException.class);
+        when(postPort.save(any(PokemonDto.class))).thenThrow(PokemonMoveIncorrectException.class);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(1)).update(any(PokemonDto.class));
+        verify(postPort, times(1)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNumberTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithInvalidEvolution_whenSave_logged_theReturnReturnBadRequest() {
+
+        PokemonDto pokemon = MocksDto.createPokemon();
+
+        when(postPort.save(any(PokemonDto.class))).thenThrow(PokemonEvolutionIncorrectException.class);
+
+        mvc.perform(post("/v1/pokemon")
+                .content(json.toJson(pokemon))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        verify(postPort, times(1)).save(any(PokemonDto.class));
+        resetMock();
+    }
+
+    @Test
+    @WithMockUser("admin")
+    @SneakyThrows
+    public void givenPokemonWithNumberTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setNumber(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNumberTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithNumberTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setNumber(399L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNoNumber_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithNoNumber_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setNumber(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNameNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithNameNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNameSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithNameSpecialChar_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName(pokemon.getName().concat("&"));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNameTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithNameTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName("Ka");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNameTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithNameTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName("K".repeat(55));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithWeightTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithWeightTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeight(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithWeightTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithWeightTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeight(1001L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithWeightNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithWeightNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeight(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithHeightTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithHeightTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setHeight(BigDecimal.valueOf(0));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithHeightTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithHeightTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setHeight(BigDecimal.valueOf(26.0));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithHeightNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithHeightNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setHeight(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithAboutSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithAboutSpecialChar_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setAbout(pokemon.getAbout().concat("#"));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithAboutTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithAboutTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setAbout("oi");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithAboutTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithAboutTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setAbout("o".repeat(256));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithUrlPictureNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithUrlPictureNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setUrlPicture(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithUrlPictureBlank_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithUrlPictureBlank_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setUrlPicture("");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithUrlPictureInvalid_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithUrlPictureInvalid_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setUrlPicture("this is my website");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setStats(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsHpNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsHpNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setHp(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsHpToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsHpToSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setHp(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsHpToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsHpToBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setHp(1001L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsAttackNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsAttackNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setAttack(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsAttackToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsAttackToSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setAttack(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsAttackToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsAttackToBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setAttack(1001L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsDefenseNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsDefenseNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setDefense(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsDefenseToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsDefenseToSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setDefense(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsDefenseToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsDefenseToBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setDefense(1001L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialAttackNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsSpecialAttackNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialAttack(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialAttackToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsSpecialAttackToSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialAttack(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialAttackToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsSpecialAttackToBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialAttack(1001L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialDefenseNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsSpecialDefenseNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialDefense(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialDefenseToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsSpecialDefenseToSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialDefense(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialDefenseToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsSpecialDefenseToBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialDefense(1001L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpeedNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsSpeedNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpeed(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpeedToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsSpeedToSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpeed(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpeedToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithStatsSpeedToBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpeed(1001L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithTypeNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithTypeNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setType(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithTypeEmpty_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithTypeEmpty_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setType(Collections.emptyList());
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithTypeDuplicatedItem_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithTypeDuplicatedItem_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setType(new ArrayList<>());
         pokemon.getType().add(MocksDto.createType());
         pokemon.getType().add(MocksDto.createType());
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithTypeDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithTypeDescriptionNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getType().get(0).setDescription(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromEvolutionTriggerNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromEvolutionTriggerNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().setTrigger(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromEvolutionTriggerLevelUpAndLevelNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromEvolutionTriggerLevelUpAndLevelNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().setTrigger(EvolutionTriggerDtoEnum.LEVEL_UP);
         pokemon.getEvolvedFrom().setLevel(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromEvolutionTriggerUseItemAndItemNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromEvolutionTriggerUseItemAndItemNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().setTrigger(EvolutionTriggerDtoEnum.USE_ITEM);
         pokemon.getEvolvedFrom().setItem(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromPokemonNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().setPokemon(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNumberTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromPokemonNumberTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setNumber(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNumberTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromPokemonNumberTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setNumber(155L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNameSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromPokemonNameSpecialChar_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName(pokemon.getEvolvedFrom().getPokemon().getName() + "$");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNameTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromPokemonNameTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName("AA");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNameTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromPokemonNameTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName("A".repeat(58));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNumberInvalidAndNameInvalid_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromPokemonNumberInvalidAndNameInvalid_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName("");
         pokemon.getEvolvedFrom().getPokemon().setNumber(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNumberNullAndNameNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromPokemonNumberNullAndNameNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName(null);
         pokemon.getEvolvedFrom().getPokemon().setNumber(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromHimself_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolvedFromHimself_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName(pokemon.getName());
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToEvolutionTriggerNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToEvolutionTriggerNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).setTrigger(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToEvolutionTriggerLevelUpAndLevelNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToEvolutionTriggerLevelUpAndLevelNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).setTrigger(EvolutionTriggerDtoEnum.LEVEL_UP);
         pokemon.getEvolveTo().get(0).setLevel(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToEvolutionTriggerUseItemAndItemNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToEvolutionTriggerUseItemAndItemNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).setTrigger(EvolutionTriggerDtoEnum.USE_ITEM);
         pokemon.getEvolveTo().get(0).setItem(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToPokemonNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).setPokemon(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNumberTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToPokemonNumberTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setNumber(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNumberTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToPokemonNumberTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setNumber(155L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNameSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToPokemonNameSpecialChar_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName(pokemon.getEvolvedFrom().getPokemon().getName() + "$");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNameTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToPokemonNameTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName("AA");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNameTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToPokemonNameTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName("A".repeat(58));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNumberInvalidAndNameInvalid_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToPokemonNumberInvalidAndNameInvalid_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName("");
         pokemon.getEvolveTo().get(0).getPokemon().setNumber(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNumberNullAndNameNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToPokemonNumberNullAndNameNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName(null);
         pokemon.getEvolveTo().get(0).getPokemon().setNumber(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToDuplicated_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setEvolveTo(new ArrayList<>());
         pokemon.getEvolveTo().add(MocksDto.createPokemonEvolutionTrade(MocksDto.createEvolveTo()));
         pokemon.getEvolveTo().add(MocksDto.createPokemonEvolutionTrade(MocksDto.createEvolveTo()));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToHimself_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithEvolveToHimself_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setNumber(pokemon.getNumber());
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithMoveDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithMoveDuplicated_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setMove(new ArrayList<>());
         pokemon.getMove().add(MocksDto.createPokemonMove(MocksDto.createMove()));
         pokemon.getMove().add(MocksDto.createPokemonMove(MocksDto.createMove()));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).setMove(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveLevelLearnNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveLevelLearnNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).setLevelLearn(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveLevelLearnTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveLevelLearnTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).setLevelLearn(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveLevelLearnTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveLevelLearnTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).setLevelLearn(101L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveDescriptionNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionEmpty_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveDescriptionEmpty_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription("");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveDescriptionSpecialChar_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription(pokemon.getMove().get(0).getMove().getDescription() + "*");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveDescriptionToSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription("b");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveDescriptionToBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription("b".repeat(99));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveTypeNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveTypeNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setType(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveTypeDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveTypeDescriptionNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().getType().setDescription(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePpNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMovePpNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPp(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePpTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMovePpTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPp(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePpTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMovePpTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPp(1001L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePowerNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMovePowerNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPower(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePowerTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMovePowerTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPower(0L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePowerTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMovePowerTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPower(1001L);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAccuracyNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveAccuracyNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAccuracy(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAccuracyTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveAccuracyTooSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAccuracy(BigDecimal.valueOf(0));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAccuracyTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveAccuracyTooBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAccuracy(BigDecimal.valueOf(101));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAboutSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveAboutSpecialChar_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAbout("Any Thing with $p&ci@l char");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAboutToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveAboutToSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAbout("A");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAboutToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonMoveMoveAboutToBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAbout("A".repeat(300));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonAbilityDuplicated_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setAbility(new ArrayList<>());
         pokemon.getAbility().add(MocksDto.createAbility());
         pokemon.getAbility().add(MocksDto.createAbility());
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonAbilityDescriptionNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getAbility().get(0).setDescription(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDescriptionSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonAbilityDescriptionSpecialChar_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getAbility().get(0).setDescription("D#$cr!pt!0n");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDescriptionToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonAbilityDescriptionToSmall_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getAbility().get(0).setDescription("D");
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDescriptionToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonAbilityDescriptionToBig_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getAbility().get(0).setDescription("D".repeat(67));
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonWeaknessesDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonWeaknessesDuplicated_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeakness(new ArrayList<>());
         pokemon.getWeakness().add(MocksDto.createWeakness());
         pokemon.getWeakness().add(MocksDto.createWeakness());
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonWeaknessesTypeDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonWeaknessesTypeDescriptionNull_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getWeakness().get(0).setDescription(null);
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonWeaknessesEqualType_whenUpdate_logged_theReturnReturnBadRequest() {
+    public void givenPokemonWithPokemonWeaknessesEqualType_whenSave_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeakness(pokemon.getType());
 
-        when(putPort.update(any(PokemonDto.class))).thenReturn(pokemon);
+        when(postPort.save(any(PokemonDto.class))).thenReturn(pokemon);
 
-        mvc.perform(put("/v1/pokemon")
+        mvc.perform(post("/v1/pokemon")
                 .content(json.toJson(pokemon))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
-        verify(putPort, times(0)).update(any(PokemonDto.class));
+        verify(postPort, times(0)).save(any(PokemonDto.class));
         resetMock();
     }
 }

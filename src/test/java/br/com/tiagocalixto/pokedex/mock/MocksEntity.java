@@ -1,14 +1,18 @@
 package br.com.tiagocalixto.pokedex.mock;
 
+import br.com.tiagocalixto.pokedex.data_source.mongodb.entity.AuditCollectionMongo;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.*;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.embeddable_pk.PokemonAbilityPk;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.embeddable_pk.PokemonEvolutionPk;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.embeddable_pk.PokemonMovePk;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.embeddable_pk.PokemonTypePk;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.pokemon.*;
+import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import org.apache.commons.math3.random.RandomDataGenerator;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -240,5 +244,20 @@ public class MocksEntity {
         pokemonEntity.getEvolvedFrom().stream().filter(Objects::nonNull).forEach(item -> item.setEvolution(pokemonEntity));
 
         return pokemonEntity;
+    }
+
+    public static AuditCollectionMongo createAuditCollection(){
+
+        Pokemon pokemon = MocksDomain.createPokemon();
+
+        return AuditCollectionMongo.builder()
+                .id(String.valueOf(new RandomDataGenerator().nextLong(1,1000)))
+                .date(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))
+                .date(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))
+                .entityName(pokemon.getClass().getSimpleName())
+                .idEntity(pokemon.getId().toString())
+                .version(String.valueOf(new RandomDataGenerator().nextLong(1,1000)))
+                .entity((Object) pokemon)
+                .build();
     }
 }
