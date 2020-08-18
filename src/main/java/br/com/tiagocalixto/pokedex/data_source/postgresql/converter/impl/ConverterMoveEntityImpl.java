@@ -6,7 +6,6 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.TypeEntity;
 import br.com.tiagocalixto.pokedex.domain.Move;
 import br.com.tiagocalixto.pokedex.domain.Type;
 import br.com.tiagocalixto.pokedex.infra.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

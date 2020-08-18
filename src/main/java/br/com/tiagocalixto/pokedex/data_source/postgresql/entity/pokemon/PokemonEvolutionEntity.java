@@ -4,7 +4,6 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.EvolutionStoneE
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.EvolutionTriggerEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.GenericEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.embeddable_pk.PokemonEvolutionPk;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

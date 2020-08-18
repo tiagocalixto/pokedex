@@ -22,48 +22,44 @@ public class PokemonRuleImpl implements ConstraintValidator<PokemonRule, Pokemon
     @Override
     public boolean isValid(PokemonDto pokemon, ConstraintValidatorContext context) {
 
-        try {
 
-            if (!isWeaknessValid(pokemon)) {
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(WEAKNESS_CANT_BE_TYPE).addConstraintViolation();
-                log.info(WEAKNESS_CANT_BE_TYPE);
-                return false;
-            }
-
-            if (!isEvolveToValid(pokemon)) {
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(EVOLVE_TO_DUPLICATED).addConstraintViolation();
-                log.info(EVOLVE_TO_DUPLICATED);
-                return false;
-            }
-
-            if(!isMoveValid(pokemon)){
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(MOVE_IS_DUPLICATE).addConstraintViolation();
-                log.info(MOVE_IS_DUPLICATE);
-                return false;
-            }
-
-            if(evolveToAndPokemonIsTheSame(pokemon)){
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(POKEMON_EVOLVES_TO_HIMSELF).addConstraintViolation();
-                log.info(POKEMON_EVOLVES_TO_HIMSELF);
-                return false;
-            }
-
-            if(evolvedFromAndPokemonIsTheSame(pokemon)){
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate(POKEMON_EVOLVED_FROM_HIMSELF).addConstraintViolation();
-                log.info(POKEMON_EVOLVED_FROM_HIMSELF);
-                return false;
-            }
-
-            return true;
-
-        } catch (Exception ex) {
+        if (!isWeaknessValid(pokemon)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(WEAKNESS_CANT_BE_TYPE).addConstraintViolation();
+            log.info(WEAKNESS_CANT_BE_TYPE);
             return false;
         }
+
+        if (!isEvolveToValid(pokemon)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(EVOLVE_TO_DUPLICATED).addConstraintViolation();
+            log.info(EVOLVE_TO_DUPLICATED);
+            return false;
+        }
+
+        if (!isMoveValid(pokemon)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(MOVE_IS_DUPLICATE).addConstraintViolation();
+            log.info(MOVE_IS_DUPLICATE);
+            return false;
+        }
+
+        if (evolveToAndPokemonIsTheSame(pokemon)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(POKEMON_EVOLVES_TO_HIMSELF).addConstraintViolation();
+            log.info(POKEMON_EVOLVES_TO_HIMSELF);
+            return false;
+        }
+
+        if (evolvedFromAndPokemonIsTheSame(pokemon)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(POKEMON_EVOLVED_FROM_HIMSELF).addConstraintViolation();
+            log.info(POKEMON_EVOLVED_FROM_HIMSELF);
+            return false;
+        }
+
+        return true;
+
     }
 
     private boolean isWeaknessValid(PokemonDto pokemon) {
@@ -110,9 +106,9 @@ public class PokemonRuleImpl implements ConstraintValidator<PokemonRule, Pokemon
                 .collect(Collectors.toSet()).size() == pokemon.getMove().size();
     }
 
-    private boolean evolveToAndPokemonIsTheSame(PokemonDto pokemon){
+    private boolean evolveToAndPokemonIsTheSame(PokemonDto pokemon) {
 
-        if(pokemon.getEvolveTo() == null || pokemon.getEvolveTo().isEmpty())
+        if (pokemon.getEvolveTo() == null || pokemon.getEvolveTo().isEmpty())
             return false;
 
         return pokemon.getEvolveTo().stream()
@@ -120,13 +116,13 @@ public class PokemonRuleImpl implements ConstraintValidator<PokemonRule, Pokemon
                         item.getPokemon().getNumber().equals(pokemon.getNumber()));
     }
 
-    private boolean evolvedFromAndPokemonIsTheSame(PokemonDto pokemon){
+    private boolean evolvedFromAndPokemonIsTheSame(PokemonDto pokemon) {
 
         if (pokemon.getEvolvedFrom() == null)
             return false;
 
         return pokemon.getEvolvedFrom().getPokemon().getNumber().equals(pokemon.getNumber()) ||
-               Util.phoneticStringsMatches(pokemon.getEvolvedFrom().getPokemon().getName(),
-                       pokemon.getName());
+                Util.phoneticStringsMatches(pokemon.getEvolvedFrom().getPokemon().getName(),
+                        pokemon.getName());
     }
 }

@@ -2,7 +2,6 @@ package br.com.tiagocalixto.pokedex.data_source.mongodb.repository;
 
 import br.com.tiagocalixto.pokedex.data_source.mongodb.entity.SequenceCollectionMongo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;

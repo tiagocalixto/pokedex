@@ -48,10 +48,6 @@ public class ConverterPokemonDtoImpl implements ConverterDto<PokemonDto, Pokemon
         if (domain.isEmpty())
             return Optional.empty();
 
-        System.out.println(convertAbility);
-        System.out.println(convertMove);
-        System.out.println(convertType);
-
         PokemonDto pokemonDto = PokemonDto.builder().build();
 
         domain.ifPresent(item -> {
