@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = PokemonRestController.class)
-public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
+class PokemonControllerUpdateTest extends PokemonControllerMockBean {
 
     @Autowired
     private MockMvc mvc;
@@ -36,7 +36,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemon_whenUpdate_logged_theReturnReturnOk() {
+    void givenPokemon_whenUpdate_logged_theReturnReturnOk() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -55,7 +55,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
 
     @Test
     @SneakyThrows
-    public void givenPokemon_whenUpdate_notLogged_theReturnReturnUnauthorized() {
+    void givenPokemon_whenUpdate_notLogged_theReturnReturnUnauthorized() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -75,7 +75,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonNotExistent_whenUpdate_logged_theReturnReturnNotFound() {
+    void givenPokemonNotExistent_whenUpdate_logged_theReturnReturnNotFound() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -95,7 +95,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonTryingToChangeName_whenUpdate_logged_theReturnReturnNotFound() {
+    void givenPokemonTryingToChangeName_whenUpdate_logged_theReturnReturnNotFound() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -115,7 +115,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonTryingToChangeNumber_whenUpdate_logged_theReturnReturnNotFound() {
+    void givenPokemonTryingToChangeNumber_whenUpdate_logged_theReturnReturnNotFound() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -135,7 +135,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemon_whenUpdateNationalDexOutOfService_logged_theReturnReturnServiceUnavailable() {
+    void givenPokemon_whenUpdateNationalDexOutOfService_logged_theReturnReturnServiceUnavailable() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -155,7 +155,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithInvalidType_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithInvalidType_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -175,7 +175,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithInvalidMove_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithInvalidMove_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -195,7 +195,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithInvalidEvolution_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithInvalidEvolution_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -215,7 +215,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNumberTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithNumberTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setNumber(0L);
@@ -236,7 +236,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNumberTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithNumberTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setNumber(399L);
@@ -257,7 +257,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNoNumber_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithNoNumber_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setNumber(null);
@@ -278,7 +278,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNameNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithNameNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName(null);
@@ -299,7 +299,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNameSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithNameSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName(pokemon.getName().concat("&"));
@@ -320,7 +320,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNameTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithNameTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName("Ka");
@@ -341,7 +341,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithNameTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithNameTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName("K".repeat(55));
@@ -362,7 +362,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithWeightTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithWeightTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeight(0L);
@@ -383,7 +383,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithWeightTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithWeightTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeight(1001L);
@@ -404,7 +404,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithWeightNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithWeightNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeight(null);
@@ -425,7 +425,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithHeightTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithHeightTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setHeight(BigDecimal.valueOf(0));
@@ -446,7 +446,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithHeightTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithHeightTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setHeight(BigDecimal.valueOf(26.0));
@@ -467,7 +467,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithHeightNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithHeightNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setHeight(null);
@@ -488,7 +488,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithAboutSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithAboutSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setAbout(pokemon.getAbout().concat("#"));
@@ -509,7 +509,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithAboutTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithAboutTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setAbout("oi");
@@ -530,7 +530,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithAboutTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithAboutTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setAbout("o".repeat(256));
@@ -551,7 +551,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithUrlPictureNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithUrlPictureNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setUrlPicture(null);
@@ -572,7 +572,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithUrlPictureBlank_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithUrlPictureBlank_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setUrlPicture("");
@@ -593,7 +593,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithUrlPictureInvalid_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithUrlPictureInvalid_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setUrlPicture("this is my website");
@@ -614,7 +614,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setStats(null);
@@ -635,7 +635,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsHpNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsHpNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setHp(null);
@@ -656,7 +656,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsHpToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsHpToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setHp(0L);
@@ -677,7 +677,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsHpToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsHpToBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setHp(1001L);
@@ -698,7 +698,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsAttackNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsAttackNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setAttack(null);
@@ -719,7 +719,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsAttackToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsAttackToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setAttack(0L);
@@ -740,7 +740,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsAttackToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsAttackToBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setAttack(1001L);
@@ -761,7 +761,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsDefenseNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsDefenseNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setDefense(null);
@@ -782,7 +782,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsDefenseToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsDefenseToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setDefense(0L);
@@ -803,7 +803,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsDefenseToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsDefenseToBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setDefense(1001L);
@@ -824,7 +824,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialAttackNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsSpecialAttackNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialAttack(null);
@@ -845,7 +845,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialAttackToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsSpecialAttackToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialAttack(0L);
@@ -866,7 +866,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialAttackToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsSpecialAttackToBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialAttack(1001L);
@@ -887,7 +887,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialDefenseNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsSpecialDefenseNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialDefense(null);
@@ -908,7 +908,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialDefenseToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsSpecialDefenseToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialDefense(0L);
@@ -929,7 +929,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpecialDefenseToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsSpecialDefenseToBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpecialDefense(1001L);
@@ -950,7 +950,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpeedNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsSpeedNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpeed(null);
@@ -971,7 +971,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpeedToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsSpeedToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpeed(0L);
@@ -992,7 +992,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithStatsSpeedToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithStatsSpeedToBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getStats().setSpeed(1001L);
@@ -1013,7 +1013,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithTypeNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithTypeNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setType(null);
@@ -1034,7 +1034,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithTypeEmpty_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithTypeEmpty_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setType(Collections.emptyList());
@@ -1055,7 +1055,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithTypeDuplicatedItem_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithTypeDuplicatedItem_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setType(new ArrayList<>());
@@ -1078,7 +1078,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithTypeDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithTypeDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getType().get(0).setDescription(null);
@@ -1099,7 +1099,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromEvolutionTriggerNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromEvolutionTriggerNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().setTrigger(null);
@@ -1120,7 +1120,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromEvolutionTriggerLevelUpAndLevelNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromEvolutionTriggerLevelUpAndLevelNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().setTrigger(EvolutionTriggerDtoEnum.LEVEL_UP);
@@ -1142,7 +1142,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromEvolutionTriggerUseItemAndItemNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromEvolutionTriggerUseItemAndItemNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().setTrigger(EvolutionTriggerDtoEnum.USE_ITEM);
@@ -1164,7 +1164,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromPokemonNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().setPokemon(null);
@@ -1185,7 +1185,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNumberTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromPokemonNumberTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setNumber(0L);
@@ -1206,7 +1206,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNumberTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromPokemonNumberTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setNumber(155L);
@@ -1227,7 +1227,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNameSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromPokemonNameSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName(pokemon.getEvolvedFrom().getPokemon().getName() + "$");
@@ -1248,7 +1248,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNameTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromPokemonNameTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName("AA");
@@ -1269,7 +1269,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNameTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromPokemonNameTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName("A".repeat(58));
@@ -1290,7 +1290,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNumberInvalidAndNameInvalid_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromPokemonNumberInvalidAndNameInvalid_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName("");
@@ -1312,7 +1312,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromPokemonNumberNullAndNameNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromPokemonNumberNullAndNameNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName(null);
@@ -1334,7 +1334,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolvedFromHimself_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolvedFromHimself_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolvedFrom().getPokemon().setName(pokemon.getName());
@@ -1355,7 +1355,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToEvolutionTriggerNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToEvolutionTriggerNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).setTrigger(null);
@@ -1376,7 +1376,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToEvolutionTriggerLevelUpAndLevelNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToEvolutionTriggerLevelUpAndLevelNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).setTrigger(EvolutionTriggerDtoEnum.LEVEL_UP);
@@ -1398,7 +1398,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToEvolutionTriggerUseItemAndItemNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToEvolutionTriggerUseItemAndItemNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).setTrigger(EvolutionTriggerDtoEnum.USE_ITEM);
@@ -1420,7 +1420,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToPokemonNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).setPokemon(null);
@@ -1441,7 +1441,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNumberTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToPokemonNumberTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setNumber(0L);
@@ -1462,7 +1462,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNumberTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToPokemonNumberTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setNumber(155L);
@@ -1483,7 +1483,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNameSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToPokemonNameSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName(pokemon.getEvolvedFrom().getPokemon().getName() + "$");
@@ -1504,7 +1504,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNameTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToPokemonNameTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName("AA");
@@ -1525,7 +1525,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNameTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToPokemonNameTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName("A".repeat(58));
@@ -1546,7 +1546,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNumberInvalidAndNameInvalid_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToPokemonNumberInvalidAndNameInvalid_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName("");
@@ -1568,7 +1568,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToPokemonNumberNullAndNameNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToPokemonNumberNullAndNameNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setName(null);
@@ -1590,7 +1590,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setEvolveTo(new ArrayList<>());
@@ -1613,7 +1613,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithEvolveToHimself_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithEvolveToHimself_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getEvolveTo().get(0).getPokemon().setNumber(pokemon.getNumber());
@@ -1634,7 +1634,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithMoveDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithMoveDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setMove(new ArrayList<>());
@@ -1657,7 +1657,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).setMove(null);
@@ -1678,7 +1678,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveLevelLearnNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveLevelLearnNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).setLevelLearn(null);
@@ -1699,7 +1699,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveLevelLearnTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveLevelLearnTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).setLevelLearn(0L);
@@ -1720,7 +1720,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveLevelLearnTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveLevelLearnTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).setLevelLearn(101L);
@@ -1741,7 +1741,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription(null);
@@ -1762,7 +1762,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionEmpty_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveDescriptionEmpty_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription("");
@@ -1783,7 +1783,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveDescriptionSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription(pokemon.getMove().get(0).getMove().getDescription() + "*");
@@ -1804,7 +1804,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveDescriptionToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription("b");
@@ -1825,7 +1825,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveDescriptionToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveDescriptionToBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setDescription("b".repeat(99));
@@ -1846,7 +1846,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveTypeNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveTypeNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setType(null);
@@ -1867,7 +1867,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveTypeDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveTypeDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().getType().setDescription(null);
@@ -1888,7 +1888,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePpNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMovePpNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPp(null);
@@ -1909,7 +1909,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePpTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMovePpTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPp(0L);
@@ -1930,7 +1930,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePpTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMovePpTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPp(1001L);
@@ -1951,7 +1951,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePowerNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMovePowerNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPower(null);
@@ -1972,7 +1972,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePowerTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMovePowerTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPower(0L);
@@ -1993,7 +1993,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMovePowerTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMovePowerTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setPower(1001L);
@@ -2014,7 +2014,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAccuracyNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveAccuracyNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAccuracy(null);
@@ -2035,7 +2035,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAccuracyTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveAccuracyTooSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAccuracy(BigDecimal.valueOf(0));
@@ -2056,7 +2056,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAccuracyTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveAccuracyTooBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAccuracy(BigDecimal.valueOf(101));
@@ -2077,7 +2077,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAboutSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveAboutSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAbout("Any Thing with $p&ci@l char");
@@ -2098,7 +2098,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAboutToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveAboutToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAbout("A");
@@ -2119,7 +2119,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonMoveMoveAboutToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonMoveMoveAboutToBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getMove().get(0).getMove().setAbout("A".repeat(300));
@@ -2140,7 +2140,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonAbilityDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setAbility(new ArrayList<>());
@@ -2163,7 +2163,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonAbilityDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getAbility().get(0).setDescription(null);
@@ -2184,7 +2184,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDescriptionSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonAbilityDescriptionSpecialChar_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getAbility().get(0).setDescription("D#$cr!pt!0n");
@@ -2205,7 +2205,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDescriptionToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonAbilityDescriptionToSmall_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getAbility().get(0).setDescription("D");
@@ -2226,7 +2226,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonAbilityDescriptionToBig_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonAbilityDescriptionToBig_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getAbility().get(0).setDescription("D".repeat(67));
@@ -2247,7 +2247,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonWeaknessesDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonWeaknessesDuplicated_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeakness(new ArrayList<>());
@@ -2270,7 +2270,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonWeaknessesTypeDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonWeaknessesTypeDescriptionNull_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.getWeakness().get(0).setDescription(null);
@@ -2291,7 +2291,7 @@ public class PokemonControllerUpdateTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPokemonWithPokemonWeaknessesEqualType_whenUpdate_logged_theReturnReturnBadRequest() {
+    void givenPokemonWithPokemonWeaknessesEqualType_whenUpdate_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setWeakness(pokemon.getType());

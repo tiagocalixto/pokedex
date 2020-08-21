@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = PokemonRestController.class)
-public class PokemonControllerFindTest extends PokemonControllerMockBean {
+class PokemonControllerFindTest extends PokemonControllerMockBean {
 
     @Autowired
     private MockMvc mvc;
@@ -35,7 +35,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenId_whenGetOneById_logged_theReturnPokemon() {
+    void givenId_whenGetOneById_logged_theReturnPokemon() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -54,7 +54,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
 
     @Test
     @SneakyThrows
-    public void givenId_whenGetOneById_notLogged_thenReturnUnauthorized() {
+    void givenId_whenGetOneById_notLogged_thenReturnUnauthorized() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -74,7 +74,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenId_whenGetOneByIdNotFound_logged_thenReturnNotFound() {
+    void givenId_whenGetOneByIdNotFound_logged_thenReturnNotFound() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -94,7 +94,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenInvalidId_whenGetOneByIdNotFound_logged_thenReturnBadRequest() {
+    void givenInvalidId_whenGetOneByIdNotFound_logged_thenReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setId(0L);
@@ -115,7 +115,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenNumber_whenGetOneByNumber_logged_thenReturnPokemon() {
+    void givenNumber_whenGetOneByNumber_logged_thenReturnPokemon() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -134,7 +134,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
 
     @Test
     @SneakyThrows
-    public void givenNumber_whenGetOneByNumber_notLogged_thenReturnUnauthorized() {
+    void givenNumber_whenGetOneByNumber_notLogged_thenReturnUnauthorized() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -154,7 +154,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenNumber_whenGetOneByNumberNotFound_logged_thenReturnNotFound() {
+    void givenNumber_whenGetOneByNumberNotFound_logged_thenReturnNotFound() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -174,7 +174,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenNumberLessThanOne_whenGetOneByNumber_logged_thenReturnBadRequest() {
+    void givenNumberLessThanOne_whenGetOneByNumber_logged_thenReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setNumber(0L);
@@ -195,7 +195,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenNumberGreaterThanOneHundredFifthOne_whenGetOneByNumber_logged_thenReturnBadRequest() {
+    void givenNumberGreaterThanOneHundredFifthOne_whenGetOneByNumber_logged_thenReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setNumber(557L);
@@ -216,7 +216,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenName_whenGetAllByName_logged_thenReturnPokemonList() {
+    void givenName_whenGetAllByName_logged_thenReturnPokemonList() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -235,7 +235,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
 
     @Test
     @SneakyThrows
-    public void givenName_whenGetAllByName_notLogged_thenReturnUnauthorized() {
+    void givenName_whenGetAllByName_notLogged_thenReturnUnauthorized() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -255,7 +255,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenName_whenGetAllByNameNotFound_logged_thenReturnNotFound() {
+    void givenName_whenGetAllByNameNotFound_logged_thenReturnNotFound() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -275,7 +275,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenNameTooShort_whenGetAllByName_logged_thenReturnBadRequest() {
+    void givenNameTooShort_whenGetAllByName_logged_thenReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName("Ka");
@@ -296,7 +296,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenNameTooLong_whenGetAllByName_logged_thenReturnBadRequest() {
+    void givenNameTooLong_whenGetAllByName_logged_thenReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName("K".repeat(55));
@@ -317,7 +317,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenNameWithSpecialChar_whenGetAllByName_logged_thenReturnBadRequest() {
+    void givenNameWithSpecialChar_whenGetAllByName_logged_thenReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setName(pokemon.getName().concat("$"));
@@ -338,7 +338,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPageNumber_whenGetPageable_logged_thenReturnPokemonList() {
+    void givenPageNumber_whenGetPageable_logged_thenReturnPokemonList() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         int pageNumber = 1;
@@ -358,7 +358,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
 
     @Test
     @SneakyThrows
-    public void givenPageNumber_whenGetPageable_notLogged_thenReturnUnauthorized() {
+    void givenPageNumber_whenGetPageable_notLogged_thenReturnUnauthorized() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         int pageNumber = 1;
@@ -379,7 +379,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPageNumber_whenGetPageableNoContent_logged_thenReturnNoContent() {
+    void givenPageNumber_whenGetPageableNoContent_logged_thenReturnNoContent() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         int pageNumber = 1;
@@ -400,7 +400,7 @@ public class PokemonControllerFindTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenPageNumberInvalid_whenGetPageable_logged_thenReturnBadRequest() {
+    void givenPageNumberInvalid_whenGetPageable_logged_thenReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         int pageNumber = 0;

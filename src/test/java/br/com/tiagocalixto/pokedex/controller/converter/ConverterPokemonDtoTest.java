@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(SpringExtension.class)
-public class ConverterPokemonDtoTest {
+class ConverterPokemonDtoTest {
 
     @Mock(name = "type")
     private ConverterTypeDtoImpl converterType;
@@ -51,7 +51,7 @@ public class ConverterPokemonDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenPokemonOptional_whenConvertToDto_thenReturnPokemonDtoOptional() {
+    void givenPokemonOptional_whenConvertToDto_thenReturnPokemonDtoOptional() {
 
         PokemonDto pokemonDto = MocksDto.createPokemon();
         Pokemon pokemon = MocksDomain.createPokemon(pokemonDto.getId());
@@ -84,7 +84,7 @@ public class ConverterPokemonDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenPokemonDtoOptional_whenConvertToDomain_thenReturnPokemonOptional() {
+    void givenPokemonDtoOptional_whenConvertToDomain_thenReturnPokemonOptional() {
 
         PokemonDto pokemonDto = MocksDto.createPokemon();
         Pokemon pokemon = MocksDomain.createPokemon(pokemonDto.getId());
@@ -117,7 +117,7 @@ public class ConverterPokemonDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenPokemonOptionalEmpty_whenConvertToDto_thenReturnOptionalEmpty() {
+    void givenPokemonOptionalEmpty_whenConvertToDto_thenReturnOptionalEmpty() {
 
         PokemonDto pokemonDto = MocksDto.createPokemon();
         Pokemon pokemon = MocksDomain.createPokemon(pokemonDto.getId());
@@ -139,7 +139,7 @@ public class ConverterPokemonDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenPokemonDtoOptionalEmpty_whenConvertToDomain_thenReturnOptionalEmpty() {
+    void givenPokemonDtoOptionalEmpty_whenConvertToDomain_thenReturnOptionalEmpty() {
 
         PokemonDto pokemonDto = MocksDto.createPokemon();
         Pokemon pokemon = MocksDomain.createPokemon(pokemonDto.getId());
@@ -161,7 +161,7 @@ public class ConverterPokemonDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenPokemon_whenConvertToDtoNotOptional_thenReturnPokemonDto() {
+    void givenPokemon_whenConvertToDtoNotOptional_thenReturnPokemonDto() {
 
         PokemonDto pokemonDto = MocksDto.createPokemon();
         Pokemon pokemon = MocksDomain.createPokemon(pokemonDto.getId());
@@ -192,7 +192,7 @@ public class ConverterPokemonDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenPokemonDto_whenConvertToDomainNotOptional_thenReturnPokemon() {
+    void givenPokemonDto_whenConvertToDomainNotOptional_thenReturnPokemon() {
 
         PokemonDto pokemonDto = MocksDto.createPokemon();
         Pokemon pokemon = MocksDomain.createPokemon(pokemonDto.getId());
@@ -223,7 +223,7 @@ public class ConverterPokemonDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenPokemonList_whenConvertToDtoList_thenReturnPokemonDtoList() {
+    void givenPokemonList_whenConvertToDtoList_thenReturnPokemonDtoList() {
 
         PokemonDto pokemonDto = MocksDto.createPokemon();
         Pokemon pokemon = MocksDomain.createPokemon(pokemonDto.getId());
@@ -256,7 +256,7 @@ public class ConverterPokemonDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenPokemonDtoList_whenConvertToDomainList_thenReturnPokemonList() {
+    void givenPokemonDtoList_whenConvertToDomainList_thenReturnPokemonList() {
 
         PokemonDto pokemonDto = MocksDto.createPokemon();
         Pokemon pokemon = MocksDomain.createPokemon(pokemonDto.getId());

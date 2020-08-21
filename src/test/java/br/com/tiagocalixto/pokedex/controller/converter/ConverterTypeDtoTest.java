@@ -20,7 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-public class ConverterTypeDtoTest {
+class ConverterTypeDtoTest {
 
     @InjectMocks
     private ConverterTypeDtoImpl converter;
@@ -28,7 +28,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenTypeOptional_whenConvertToDto_thenReturnTypeDtoOptional() {
+    void givenTypeOptional_whenConvertToDto_thenReturnTypeDtoOptional() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -42,7 +42,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenTypeOptionalEmpty_whenConvertToDto_thenReturnOptionalEmpty() {
+    void givenTypeOptionalEmpty_whenConvertToDto_thenReturnOptionalEmpty() {
 
         Optional<TypeDto> result = converter.convertToDto(Optional.empty());
 
@@ -51,7 +51,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenTypeDtoOptional_whenConvertToDomain_thenReturnTypeOptional() {
+    void givenTypeDtoOptional_whenConvertToDomain_thenReturnTypeOptional() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -65,7 +65,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenTypeDtoOptionalEmpty_whenConvertToDomain_thenReturnOptionalEmpty() {
+    void givenTypeDtoOptionalEmpty_whenConvertToDomain_thenReturnOptionalEmpty() {
 
         Optional<Type> result = converter.convertToDomain(Optional.empty());
 
@@ -74,7 +74,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenType_whenConvertToDomainNotOptional_thenReturnTypeDto() {
+    void givenType_whenConvertToDomainNotOptional_thenReturnTypeDto() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -86,7 +86,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenTypeDto_whenConvertToDomainNotOptional_thenReturnType() {
+    void givenTypeDto_whenConvertToDomainNotOptional_thenReturnType() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -98,7 +98,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenTypeList_whenConvertToDomainList_thenReturnTypeDtoList() {
+    void givenTypeList_whenConvertToDomainList_thenReturnTypeDtoList() {
 
         List<TypeDto> typeDto = List.of(MocksDto.createType());
         List<Type> type = List.of(MocksDomain.createType());
@@ -110,7 +110,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenTypeListEmpty_whenConvertToDtoList_thenReturnEmptyList() {
+    void givenTypeListEmpty_whenConvertToDtoList_thenReturnEmptyList() {
 
         List<TypeDto> result = converter.convertToDtoList(Collections.emptyList());
 
@@ -119,7 +119,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenTypeDtoList_whenConvertToDomainList_thenReturnTypeList() {
+    void givenTypeDtoList_whenConvertToDomainList_thenReturnTypeList() {
 
         List<TypeDto> typeDto = List.of(MocksDto.createType());
         List<Type> type = List.of(MocksDomain.createType());
@@ -131,7 +131,7 @@ public class ConverterTypeDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenTypeDtoListEmpty_whenConvertToDomainList_thenReturnEmptyList() {
+    void givenTypeDtoListEmpty_whenConvertToDomainList_thenReturnEmptyList() {
 
         List<Type> result = converter.convertToDomainList(Collections.emptyList());
 

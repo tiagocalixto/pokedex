@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-public class ConverterMoveDtoTest {
+class ConverterMoveDtoTest {
 
     @InjectMocks
     private ConverterMoveDtoImpl converter;
@@ -34,7 +34,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMoveOptional_whenConvertToDto_thenReturnMoveDtoOptional() {
+    void givenMoveOptional_whenConvertToDto_thenReturnMoveDtoOptional() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -54,7 +54,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMoveOptionalEmpty_whenConvertToDto_thenReturnOptionalEmpty() {
+    void givenMoveOptionalEmpty_whenConvertToDto_thenReturnOptionalEmpty() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -70,7 +70,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMoveDtoOptional_whenConvertToDomain_thenReturnMoveOptional() {
+    void givenMoveDtoOptional_whenConvertToDomain_thenReturnMoveOptional() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -90,7 +90,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMoveDtoOptionalEmpty_whenConvertToDomain_thenReturnOptionalEmpty() {
+    void givenMoveDtoOptionalEmpty_whenConvertToDomain_thenReturnOptionalEmpty() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -106,7 +106,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMove_whenConvertToDtoNotOptional_thenReturnMoveDto() {
+    void givenMove_whenConvertToDtoNotOptional_thenReturnMoveDto() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -124,7 +124,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMoveDto_whenConvertToDomainNotOptional_thenReturnMove() {
+    void givenMoveDto_whenConvertToDomainNotOptional_thenReturnMove() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -142,7 +142,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMoveList_whenConvertToDtoList_thenReturnMoveDtoList() {
+    void givenMoveList_whenConvertToDtoList_thenReturnMoveDtoList() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -160,7 +160,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMoveListEmpty_whenConvertToDtoList_thenReturnEmptyList() {
+    void givenMoveListEmpty_whenConvertToDtoList_thenReturnEmptyList() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -176,7 +176,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMoveDtoList_whenConvertToDomainList_thenReturnMoveList() {
+    void givenMoveDtoList_whenConvertToDomainList_thenReturnMoveList() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();
@@ -194,7 +194,7 @@ public class ConverterMoveDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenMoveDtoListEmpty_whenConvertToDomainList_thenReturnEmptyList() {
+    void givenMoveDtoListEmpty_whenConvertToDomainList_thenReturnEmptyList() {
 
         TypeDto typeDto = MocksDto.createType();
         Type type = MocksDomain.createType();

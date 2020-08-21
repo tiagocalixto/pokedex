@@ -2,12 +2,12 @@ package br.com.tiagocalixto.pokedex.use_case.handler.impl;
 
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.use_case.handler.HandlerUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.delete.DeleteByIdUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.find.FindAllByNameUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.find.FindOneByIdUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.find.FindOneByNumberUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.find.FindPageableUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.persist.PersistUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.delete.DeleteByIdUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.find.FindAllByNameUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.find.FindOneByIdUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.find.FindOneByNumberUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.find.FindPageableUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.persist.PersistUseCase;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 

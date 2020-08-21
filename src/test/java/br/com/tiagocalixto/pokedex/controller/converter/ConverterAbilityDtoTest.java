@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-public class ConverterAbilityDtoTest {
+class ConverterAbilityDtoTest {
 
     @InjectMocks
     private ConverterAbilityDtoImpl converter;
@@ -26,7 +26,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbilityOptional_whenConvertToDto_thenReturnAbilityDtoOptional() {
+    void givenAbilityOptional_whenConvertToDto_thenReturnAbilityDtoOptional() {
 
         AbilityDto abilityDto = MocksDto.createAbility();
         Ability ability = MocksDomain.createAbility();
@@ -40,7 +40,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbilityOptionalEmpty_whenConvertToDto_thenReturnOptionalEmpty() {
+    void givenAbilityOptionalEmpty_whenConvertToDto_thenReturnOptionalEmpty() {
 
         Optional<AbilityDto> result = converter.convertToDto(Optional.empty());
 
@@ -49,7 +49,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbilityDtoOptional_whenConvertToDomain_thenReturnAbilityOptional() {
+    void givenAbilityDtoOptional_whenConvertToDomain_thenReturnAbilityOptional() {
 
         AbilityDto abilityDto = MocksDto.createAbility();
         Ability ability = MocksDomain.createAbility();
@@ -63,7 +63,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbilityDtoOptionalEmpty_whenConvertToDomain_thenReturnOptionalEmpty() {
+    void givenAbilityDtoOptionalEmpty_whenConvertToDomain_thenReturnOptionalEmpty() {
 
         Optional<Ability> result = converter.convertToDomain(Optional.empty());
 
@@ -72,7 +72,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbility_whenConvertToDomainNotOptional_thenReturnAbilityDto() {
+    void givenAbility_whenConvertToDomainNotOptional_thenReturnAbilityDto() {
 
         AbilityDto abilityDto = MocksDto.createAbility();
         Ability ability = MocksDomain.createAbility();
@@ -84,7 +84,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbilityDto_whenConvertToDomainNotOptional_thenReturnAbility() {
+    void givenAbilityDto_whenConvertToDomainNotOptional_thenReturnAbility() {
 
         AbilityDto abilityDto = MocksDto.createAbility();
         Ability ability = MocksDomain.createAbility();
@@ -96,7 +96,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbilityList_whenConvertToDtoList_thenReturnAbilityDtoList() {
+    void givenAbilityList_whenConvertToDtoList_thenReturnAbilityDtoList() {
 
         List<AbilityDto> abilityDto = List.of(MocksDto.createAbility());
         List<Ability> ability = List.of(MocksDomain.createAbility());
@@ -108,7 +108,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbilityListEmpty_whenConvertToDtoList_thenReturnEmptyList() {
+    void givenAbilityListEmpty_whenConvertToDtoList_thenReturnEmptyList() {
 
         List<AbilityDto> result = converter.convertToDtoList(Collections.emptyList());
 
@@ -117,7 +117,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbilityDtoList_whenConvertToDomainList_thenReturnAbilityList() {
+    void givenAbilityDtoList_whenConvertToDomainList_thenReturnAbilityList() {
 
         List<AbilityDto> abilityDto = List.of(MocksDto.createAbility());
         List<Ability> ability = List.of(MocksDomain.createAbility());
@@ -129,7 +129,7 @@ public class ConverterAbilityDtoTest {
 
     @Test
     @SneakyThrows
-    public void givenAbilityDtoListEmpty_whenConvertToDomainList_thenReturnEmptyList() {
+    void givenAbilityDtoListEmpty_whenConvertToDomainList_thenReturnEmptyList() {
 
         List<Ability> result = converter.convertToDomainList(Collections.emptyList());
 

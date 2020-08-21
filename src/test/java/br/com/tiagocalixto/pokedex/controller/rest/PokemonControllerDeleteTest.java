@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = PokemonRestController.class)
-public class PokemonControllerDeleteTest extends PokemonControllerMockBean {
+class PokemonControllerDeleteTest extends PokemonControllerMockBean {
 
     @Autowired
     private MockMvc mvc;
@@ -32,7 +32,7 @@ public class PokemonControllerDeleteTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenId_whenDeleteById_logged_theReturnReturnOk() {
+    void givenId_whenDeleteById_logged_theReturnReturnOk() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -48,7 +48,7 @@ public class PokemonControllerDeleteTest extends PokemonControllerMockBean {
 
     @Test
     @SneakyThrows
-    public void givenId_whenDeleteById_notLogged_theReturnReturnUnauthorized() {
+    void givenId_whenDeleteById_notLogged_theReturnReturnUnauthorized() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -65,7 +65,7 @@ public class PokemonControllerDeleteTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenId_whenDeleteByIdNotFound_logged_theReturnReturnNotFound() {
+    void givenId_whenDeleteByIdNotFound_logged_theReturnReturnNotFound() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
 
@@ -82,7 +82,7 @@ public class PokemonControllerDeleteTest extends PokemonControllerMockBean {
     @Test
     @WithMockUser("admin")
     @SneakyThrows
-    public void givenIdTooLess_whenDeleteById_logged_theReturnReturnBadRequest() {
+    void givenIdTooLess_whenDeleteById_logged_theReturnReturnBadRequest() {
 
         PokemonDto pokemon = MocksDto.createPokemon();
         pokemon.setId(0L);

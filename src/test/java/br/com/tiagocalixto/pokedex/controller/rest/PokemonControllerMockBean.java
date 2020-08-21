@@ -13,7 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.Mockito.reset;
 
-public class PokemonControllerMockBean {
+class PokemonControllerMockBean {
 
     protected Gson json = new Gson();
 
