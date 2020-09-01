@@ -1,7 +1,5 @@
 package br.com.tiagocalixto.pokedex.data_source.postgresql.adapter;
 
-import br.com.tiagocalixto.pokedex.data_source.postgresql.adapter.PokemonRepositoryAdapterSql;
-import br.com.tiagocalixto.pokedex.data_source.postgresql.adapter.PreparePokemonToPersistSql;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.converter.ConverterEntitySql;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.pokemon.PokemonEntity;
 import br.com.tiagocalixto.pokedex.data_source.postgresql.repository.PokemonRepository;

@@ -113,7 +113,7 @@ public class MocksEntity {
     public static EvolutionStoneEntity createEvolutionStone() {
 
         return EvolutionStoneEntity.builder()
-                .description("Test Stone")
+                .description("FIRE_STONE")
                 .build();
     }
 
