@@ -25,7 +25,7 @@ public class HandlerUseCaseImpl implements HandlerUseCase {
     private DeleteByIdUseCase delete;
     private FindOneByIdUseCase<Pokemon> findById;
     private FindAllByNameUseCase<Pokemon> findByName;
-    private FindOneByNumberUseCase findByNUmber;
+    private FindOneByNumberUseCase findByNumber;
     private FindPageableUseCase<Pokemon> findPageable;
     //</editor-fold>
 
@@ -34,14 +34,14 @@ public class HandlerUseCaseImpl implements HandlerUseCase {
                               @Qualifier(POKEMON_UPDATE_USE_CASE) PersistUseCase<Pokemon> update,
                               DeleteByIdUseCase delete, FindOneByIdUseCase<Pokemon> findById,
                               FindAllByNameUseCase<Pokemon> findByName,
-                              FindOneByNumberUseCase findByNUmber,
+                              FindOneByNumberUseCase findByNumber,
                               FindPageableUseCase<Pokemon> findPageable) {
         this.save = save;
         this.update = update;
         this.delete = delete;
         this.findById = findById;
         this.findByName = findByName;
-        this.findByNUmber = findByNUmber;
+        this.findByNumber = findByNumber;
         this.findPageable = findPageable;
     }
     //</editor-fold>
@@ -80,7 +80,7 @@ public class HandlerUseCaseImpl implements HandlerUseCase {
     @Override
     public Pokemon findPokemonByNumber(Long number) {
 
-        return findByNUmber.execute(number);
+        return findByNumber.execute(number);
     }
 
     @Override
