@@ -1,7 +1,5 @@
 package br.com.tiagocalixto.pokedex.mock;
 
-import br.com.tiagocalixto.pokedex.controller.v1.dto.AbilityDto;
-import br.com.tiagocalixto.pokedex.domain.Move;
 import br.com.tiagocalixto.pokedex.domain.enums.TypeEnum;
 import br.com.tiagocalixto.pokedex.integration.national_dex.dto.AbilityNationalDexDto;
 import br.com.tiagocalixto.pokedex.integration.national_dex.dto.MoveNationalDexDto;
@@ -67,14 +65,14 @@ public class MocksNationalDexDto {
                 .build();
     }
 
-    public static AbilityNationalDexDto createAbility(){
+    public static AbilityNationalDexDto createAbility() {
 
         return AbilityNationalDexDto.builder()
                 .description("Magic-guard")
                 .build();
     }
 
-    public static EvolvedFromNationalDexDto createEvolvedFrom(){
+    public static EvolvedFromNationalDexDto createEvolvedFrom() {
 
         return EvolvedFromNationalDexDto.builder()
                 .id(63L)
@@ -82,7 +80,7 @@ public class MocksNationalDexDto {
                 .build();
     }
 
-    public static EvolveToNationalDexDto createEvolveTo(){
+    public static EvolveToNationalDexDto createEvolveTo() {
 
         return EvolveToNationalDexDto.builder()
                 .name("Alakazam")
@@ -91,7 +89,7 @@ public class MocksNationalDexDto {
                 .build();
     }
 
-    public static EvolutionChainNationalDexDto createEvolutionChain(){
+    public static EvolutionChainNationalDexDto createEvolutionChain() {
 
         return EvolutionChainNationalDexDto.builder()
                 .evolveTo(List.of(createEvolveTo()))
@@ -101,7 +99,7 @@ public class MocksNationalDexDto {
                 .build();
     }
 
-    public static PokemonSpecieNationalDexDto createSpecie(){
+    public static PokemonSpecieNationalDexDto createSpecie() {
 
         return PokemonSpecieNationalDexDto.builder()
                 .evolvedFrom(createEvolvedFrom())
