@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 class PokemonRepositoryAdapterSqlTest {
 
     @InjectMocks
-    PokemonRepositoryAdapterSql adapter;
+    private PokemonRepositoryAdapterSql adapter;
 
     @Mock
     private PokemonRepository repository;

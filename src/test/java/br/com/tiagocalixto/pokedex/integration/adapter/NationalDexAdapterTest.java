@@ -1,4 +1,4 @@
-package br.com.tiagocalixto.pokedex.integration;
+package br.com.tiagocalixto.pokedex.integration.adapter;
 
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.integration.national_dex.adapter.NationalDexAdapter;
@@ -6,11 +6,8 @@ import br.com.tiagocalixto.pokedex.integration.national_dex.converter.ConverterN
 import br.com.tiagocalixto.pokedex.integration.national_dex.dto.pokemon.PokemonNationalDexDto;
 import br.com.tiagocalixto.pokedex.integration.national_dex.facade.GetPokemonFromApiFacade;
 import br.com.tiagocalixto.pokedex.mock.MocksDomain;
-import br.com.tiagocalixto.pokedex.mock.MocksNationalDex;
 import br.com.tiagocalixto.pokedex.mock.MocksNationalDexDto;
 import lombok.SneakyThrows;
-import me.sargunvohra.lib.pokekotlin.model.EvolutionChain;
-import me.sargunvohra.lib.pokekotlin.model.PokemonSpecies;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
