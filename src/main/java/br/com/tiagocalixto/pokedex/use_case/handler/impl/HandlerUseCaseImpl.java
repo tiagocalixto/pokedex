@@ -2,12 +2,12 @@ package br.com.tiagocalixto.pokedex.use_case.handler.impl;
 
 import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
 import br.com.tiagocalixto.pokedex.use_case.handler.HandlerUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.delete.DeleteByIdUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.find.FindAllByNameUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.find.FindOneByIdUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.find.FindOneByNumberUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.find.FindPageableUseCase;
-import br.com.tiagocalixto.pokedex.use_case.pokemon.persist.PersistUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.delete.DeleteByIdUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.find.FindAllByNameUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.find.FindOneByIdUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.find.FindOneByNumberUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.find.FindPageableUseCase;
+import br.com.tiagocalixto.pokedex.use_case.business.pokemon.persist.PersistUseCase;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +25,7 @@ public class HandlerUseCaseImpl implements HandlerUseCase {
     private DeleteByIdUseCase delete;
     private FindOneByIdUseCase<Pokemon> findById;
     private FindAllByNameUseCase<Pokemon> findByName;
-    private FindOneByNumberUseCase findByNUmber;
+    private FindOneByNumberUseCase findByNumber;
     private FindPageableUseCase<Pokemon> findPageable;
     //</editor-fold>
 
@@ -34,14 +34,14 @@ public class HandlerUseCaseImpl implements HandlerUseCase {
                               @Qualifier(POKEMON_UPDATE_USE_CASE) PersistUseCase<Pokemon> update,
                               DeleteByIdUseCase delete, FindOneByIdUseCase<Pokemon> findById,
                               FindAllByNameUseCase<Pokemon> findByName,
-                              FindOneByNumberUseCase findByNUmber,
+                              FindOneByNumberUseCase findByNumber,
                               FindPageableUseCase<Pokemon> findPageable) {
         this.save = save;
         this.update = update;
         this.delete = delete;
         this.findById = findById;
         this.findByName = findByName;
-        this.findByNUmber = findByNUmber;
+        this.findByNumber = findByNumber;
         this.findPageable = findPageable;
     }
     //</editor-fold>
@@ -80,7 +80,7 @@ public class HandlerUseCaseImpl implements HandlerUseCase {
     @Override
     public Pokemon findPokemonByNumber(Long number) {
 
-        return findByNUmber.execute(number);
+        return findByNumber.execute(number);
     }
 
     @Override

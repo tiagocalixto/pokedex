@@ -4,6 +4,7 @@ import br.com.tiagocalixto.pokedex.data_source.mongodb.entity.AuditCollectionMon
 import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.AuditRepositoryMongo;
 import br.com.tiagocalixto.pokedex.data_source.mongodb.repository.SequenceGeneratorMongo;
 import br.com.tiagocalixto.pokedex.ports.data_source.persist.InsertRepositoryPort;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import static br.com.tiagocalixto.pokedex.infra.constant.Constant.EMPTY;
 import static br.com.tiagocalixto.pokedex.infra.constant.ConstantComponentName.POKEMON_AUDIT;
 
+@Slf4j
 @Component(POKEMON_AUDIT)
 public class AuditRepositoryAdapterMongo implements InsertRepositoryPort<Object> {
 
@@ -34,19 +36,21 @@ public class AuditRepositoryAdapterMongo implements InsertRepositoryPort<Object>
     @Override
     public Object insert(Object entity) {
 
+        log.info("Saving audit - {}", entity);
         createAudit(entity).ifPresent(repository::save);
         return entity;
     }
 
     private Optional<AuditCollectionMongo> createAudit(Object entity) {
 
+        log.info("Creating audit object");
         String idEntity = getEntityId(entity);
 
         if (idEntity.equalsIgnoreCase(EMPTY)) {
             return Optional.empty();
         }
 
-        AuditCollectionMongo historic = AuditCollectionMongo.builder()
+        AuditCollectionMongo audit = AuditCollectionMongo.builder()
                 .id(sequenceGenerator.nextId(AuditCollectionMongo.SEQUENCE_NAME))
                 .date(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))
                 .entityName(entity.getClass().getSimpleName())
@@ -55,16 +59,21 @@ public class AuditRepositoryAdapterMongo implements InsertRepositoryPort<Object>
                 .entity(entity)
                 .build();
 
-        return Optional.of(historic);
+        log.info("object audit created - {}", audit);
+        return Optional.of(audit);
     }
 
     private String getEntityId(Object entity) {
 
         try {
+            log.info("trying to get id from object");
+
             Class<?> clazz = entity.getClass();
             Field field = org.springframework.util.ReflectionUtils.findField(clazz, "id");
             org.springframework.util.ReflectionUtils.makeAccessible(field);
             var id = field.get(entity);
+
+            log.info("Id successfully recovered from object - {}", id);
             return id.toString();
 
         } catch (Exception ex) {

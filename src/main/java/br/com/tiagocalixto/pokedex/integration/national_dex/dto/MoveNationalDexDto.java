@@ -21,7 +21,7 @@ public class MoveNationalDexDto implements Serializable {
     private Long pp;
     private Long power;
     private BigDecimal accuracy;
-    private Type type;
+    private TypeNationalDexDto type;
     private String about;
     private Long levelLearn;
 }

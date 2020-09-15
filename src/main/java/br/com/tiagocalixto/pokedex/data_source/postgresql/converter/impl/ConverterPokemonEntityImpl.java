@@ -17,7 +17,6 @@ import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonEvolution;
 import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonMove;
 import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonStats;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -37,7 +36,6 @@ public class ConverterPokemonEntityImpl implements ConverterEntitySql<PokemonEnt
     //</editor-fold>
 
     //<editor-fold: constructor>
-    @Autowired
     public ConverterPokemonEntityImpl(ConverterEntitySql<TypeEntity, Type> convertType,
                                       ConverterEntitySql<AbilityEntity, Ability> convertAbility,
                                       ConverterEntitySql<MoveEntity, Move> convertMove,

@@ -27,4 +27,5 @@ public final class ConstantComponentName {
 
     //AUDIT
     public static final String POKEMON_AUDIT = "PokemonAuditMongo";
+    public static final String SEQUENCE_GENERATOR_MONGO = "MongoDbSequence";
 }

@@ -15,9 +15,6 @@ public class ConverterEvolutionTriggerSqlImpl implements ConverterEntitySql<Evol
     @Override
     public Optional<EvolutionTriggerEntity> convertToEntity(Optional<EvolutionTriggerEnum> domain) {
 
-        if (domain.isEmpty())
-            return Optional.empty();
-
         EvolutionTriggerEntity entity = EvolutionTriggerEntity.builder().build();
 
         domain.ifPresentOrElse(item -> {

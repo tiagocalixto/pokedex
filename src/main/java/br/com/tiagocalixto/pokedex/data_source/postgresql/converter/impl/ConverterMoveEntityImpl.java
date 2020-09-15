@@ -6,7 +6,6 @@ import br.com.tiagocalixto.pokedex.data_source.postgresql.entity.TypeEntity;
 import br.com.tiagocalixto.pokedex.domain.Move;
 import br.com.tiagocalixto.pokedex.domain.Type;
 import br.com.tiagocalixto.pokedex.infra.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -17,10 +16,10 @@ public class ConverterMoveEntityImpl implements ConverterEntitySql<MoveEntity, M
 
     private ConverterEntitySql<TypeEntity, Type> convertType;
 
-    @Autowired
     public ConverterMoveEntityImpl(ConverterEntitySql<TypeEntity, Type> convertType) {
         this.convertType = convertType;
     }
+
 
     @Override
     public Optional<MoveEntity> convertToEntity(Optional<Move> domain) {

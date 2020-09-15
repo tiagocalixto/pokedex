@@ -9,7 +9,6 @@ import br.com.tiagocalixto.pokedex.ports.data_source.find.*;
 import br.com.tiagocalixto.pokedex.ports.data_source.persist.InsertRepositoryPort;
 import br.com.tiagocalixto.pokedex.ports.data_source.persist.UpdateRepositoryPort;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -40,7 +39,6 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     //</editor-fold>
 
     //<editor-fold: constructor>
-    @Autowired
     public PokemonRepositoryAdapterSql(PokemonRepository repository,
                                        PreparePokemonToPersistSql prepareToPersist,
                                        ConverterEntitySql<PokemonEntity, Pokemon> converter,
@@ -131,16 +129,16 @@ public class PokemonRepositoryAdapterSql implements DeleteRepositoryPort<Pokemon
     }
 
     @Override
-    public boolean isExistsByNumber(Long number) {
-
-        log.info("verify if pokemon exists  in postgres by number {}", number);
-        return repository.existsByNumber(number);
-    }
-
-    @Override
     public Optional<Pokemon> findById(Long id) {
 
         log.info("select optional pokemon for id in postgres, id = {}", id);
         return converter.convertToDomain(repository.findById(id));
+    }
+
+    @Override
+    public boolean isExistsByNumber(Long number) {
+
+        log.info("verify if pokemon exists  in postgres by number {}", number);
+        return repository.existsByNumber(number);
     }
 }

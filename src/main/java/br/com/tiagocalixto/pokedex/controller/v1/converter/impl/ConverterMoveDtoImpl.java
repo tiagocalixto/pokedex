@@ -1,11 +1,10 @@
 package br.com.tiagocalixto.pokedex.controller.v1.converter.impl;
 
+import br.com.tiagocalixto.pokedex.controller.v1.converter.ConverterDto;
 import br.com.tiagocalixto.pokedex.controller.v1.dto.MoveDto;
 import br.com.tiagocalixto.pokedex.controller.v1.dto.TypeDto;
-import br.com.tiagocalixto.pokedex.controller.v1.converter.ConverterDto;
 import br.com.tiagocalixto.pokedex.domain.Move;
 import br.com.tiagocalixto.pokedex.domain.Type;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

@@ -1,5 +1,12 @@
 package br.com.tiagocalixto.pokedex.integration.national_dex.converter.impl;
 
+import br.com.tiagocalixto.pokedex.domain.Ability;
+import br.com.tiagocalixto.pokedex.domain.Move;
+import br.com.tiagocalixto.pokedex.domain.Type;
+import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
+import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonEvolution;
+import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonMove;
+import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonStats;
 import br.com.tiagocalixto.pokedex.integration.national_dex.converter.ConverterNationalDex;
 import br.com.tiagocalixto.pokedex.integration.national_dex.dto.AbilityNationalDexDto;
 import br.com.tiagocalixto.pokedex.integration.national_dex.dto.MoveNationalDexDto;
@@ -8,14 +15,6 @@ import br.com.tiagocalixto.pokedex.integration.national_dex.dto.evolution_chain.
 import br.com.tiagocalixto.pokedex.integration.national_dex.dto.evolution_chain.EvolvedFromNationalDexDto;
 import br.com.tiagocalixto.pokedex.integration.national_dex.dto.pokemon.PokemonNationalDexDto;
 import br.com.tiagocalixto.pokedex.integration.national_dex.dto.pokemon.PokemonStatsNationalDexDto;
-import br.com.tiagocalixto.pokedex.domain.Ability;
-import br.com.tiagocalixto.pokedex.domain.Move;
-import br.com.tiagocalixto.pokedex.domain.Type;
-import br.com.tiagocalixto.pokedex.domain.pokemon.Pokemon;
-import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonEvolution;
-import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonMove;
-import br.com.tiagocalixto.pokedex.domain.pokemon.PokemonStats;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -33,7 +32,6 @@ public class ConverterPokemonNationalDexImpl implements ConverterNationalDex<Pok
     private ConverterNationalDex<MoveNationalDexDto, Move> moveConverter;
     private ConverterNationalDex<TypeNationalDexDto, Type> typeConverter;
 
-    @Autowired
     public ConverterPokemonNationalDexImpl(ConverterNationalDex<AbilityNationalDexDto, Ability> abilityConverter,
                                            ConverterNationalDex<MoveNationalDexDto, Move> moveConverter,
                                            ConverterNationalDex<TypeNationalDexDto, Type> typeConverter) {
@@ -111,7 +109,7 @@ public class ConverterPokemonNationalDexImpl implements ConverterNationalDex<Pok
 
     private List<PokemonMove> convertPokemonMove(List<MoveNationalDexDto> moves) {
 
-        if(moves == null)
+        if (moves == null)
             return Collections.emptyList();
 
         return moves.stream()
@@ -163,7 +161,7 @@ public class ConverterPokemonNationalDexImpl implements ConverterNationalDex<Pok
 
     private List<PokemonEvolution> convertPokemonEvolveToList(List<EvolveToNationalDexDto> listEvolveTo) {
 
-        if(listEvolveTo == null)
+        if (listEvolveTo == null)
             return Collections.emptyList();
 
         return listEvolveTo.stream()
